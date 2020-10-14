@@ -1,0 +1,91 @@
+header {
+  width: 100%;
+  background-color: #fff;
+  #headerTop {
+    border-bottom: 1px solid #ececec;
+    .wrap {
+      width: 1230px;
+      margin: 0 auto;
+      padding: 12px 15px;
+      #topLogo {
+        img {
+          width: 115px;
+        }
+      }
+      #userInf {
+        padding: 8px 0 0;
+        text-align: right;
+      }
+    }
+  }
+  #searchArea {
+    border-bottom: 1px solid #ececec;
+    .wrap {
+      width: 1200px;
+      margin: 0 auto;
+      padding: 15px 0;
+      justify-content: space-between;
+      #searchOption {
+        width: 90%;
+        li {
+          padding: 0 0 15px;
+          h4 {
+            margin: 0 35px 0 0;
+            font-size: 18px;
+            line-height: 35px;
+          }
+          #periodDate {
+            margin: 0 8px 0 0;
+            input {
+              width: 160px;
+              border: 2px solid #1f496d;
+              padding: 5px 15px 5px 30px;
+              font-size: 16px;
+              color: #1f496d;
+              outline: none;
+              border-radius: 10px;
+              -webkit-border-radius: 10px;
+              -moz-border-radius: 10px;
+              -ms-border-radius: 10px;
+              -o-border-radius: 10px;
+}
+          }
+          #periodTime {
+            select {
+              outline: none;
+              border: 2px solid #1f496d;
+              padding: 5px 15px;
+              font-size: 16px;
+              color: #1f496d;
+              border-radius: 10px;
+              -webkit-border-radius: 10px;
+              -moz-border-radius: 10px;
+              -ms-border-radius: 10px;
+              -o-border-radius: 10px;
+            }
+          }
+          #directBtns {
+            button {
+              width: auto;
+              padding: 6px 12px;
+              font-size: .8rem;
+              background-color: $main-color;
+              margin: 0 7px 0 0;
+              &.active {
+                background-color: #1f496d;
+              }
+            }
+          }
+        }
+      }
+      .btn-wrap {
+        width: 10%;
+        #btnExecution {
+          background-color: #337ab7;
+          height: 36px;
+          margin: 15px 0 0;
+        }
+      }
+    }
+  }
+}
