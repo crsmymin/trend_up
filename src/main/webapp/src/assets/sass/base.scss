@@ -5,7 +5,7 @@
 html,body {
   margin: 0;
   padding: 0;
-  background-color: #20232a;
+  background-color: #fff;
 }
 h1,h2,h3,h4,h5,h6,p,ul,ol,li,article,section,dl,dd,dt,figure {
   margin: 0;
@@ -95,18 +95,8 @@ $main-color : #337ab7;
     background-repeat: no-repeat;
     background-size: 150px;
     background-position: center;
-    // border: 5px solid #dadada;
-    // border-top: 5px solid $main-color;
-    // -webkit-animation: spin 3s linear infinite;
-    // animation: spin 3s linear infinite;
-    // border-radius: 50%;
-    // -webkit-border-radius: 50%;
-    // -moz-border-radius: 50%;
-    // -ms-border-radius: 50%;
-    // -o-border-radius: 50%;
   }
 }
-
 .loading-indicator {
   position: absolute;
   width: 100%;
@@ -125,7 +115,7 @@ $main-color : #337ab7;
 .container {
   width: 1230px;
   margin: 0 auto;
-  padding: 25px 15px 120px;
+  padding: 0 15px 120px;
 }
 
 .flex-cont {
@@ -221,7 +211,7 @@ $main-color : #337ab7;
   text-align: center;
   color: #fff;
   border-radius: 15px;
-  line-height: 28px;
+  line-height: 30px;
   margin: 0 0 0 6px;
   border-radius: 15px;
   -webkit-border-radius: 15px;

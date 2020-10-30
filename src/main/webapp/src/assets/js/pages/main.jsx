@@ -4,8 +4,9 @@ import ReactDom from "react-dom";
 import axios from 'axios'
 
 // components
-import Nav from '../layouts/nav.jsx';
-import Footer from '../layouts/footer.jsx';
+import Header from '../layouts/header.jsx'
+import SearchTrend from '../layouts/searchTrend.jsx'
+import Footer from '../layouts/footer.jsx'
 import Keywords from '../components/keywords.jsx'
 import Buzz from '../components/buzz.jsx'
 import Relation from '../components/relation.jsx'
@@ -367,9 +368,10 @@ class App extends Component {
   }
 
   render(){
-    return (  
+    return (
       <Fragment>
-        <Nav 
+        <Header />
+        <SearchTrend
           isLoading={this.state.isLoading}
           getSearchResultByPeriod={this._getSearchResultByPeriod}
         />
@@ -378,37 +380,38 @@ class App extends Component {
             <Keywords
               naver={this.state.naver}
               zum={this.state.zum}
-              twitter={this.state.twitter} 
+              twitter={this.state.twitter}
               isLoadingKeyword={this.state.isLoadingKeyword}
               getSearchResultByKeywords={this._getSearchResultByKeywords}
               selectedDate={this.state.selectedDate}
-              />
+            />
             <Buzz
               searchValue={this.state.searchValue}
-              buzzTotal={this.state.buzzTotal} 
+              buzzTotal={this.state.buzzTotal}
               isLoadingBuzz={this.state.isLoadingBuzz}
-              buzzTotalNews={this.state.buzzTotalNews} 
-              buzzTotalBlog={this.state.buzzTotalBlog} 
-              buzzTotalCafe={this.state.buzzTotalCafe} 
-              />
+              buzzTotalNews={this.state.buzzTotalNews}
+              buzzTotalBlog={this.state.buzzTotalBlog}
+              buzzTotalCafe={this.state.buzzTotalCafe}
+            />
             <Relation
               searchValue={this.state.searchValue}
-              relatedWords={this.state.relatedWords} 
+              relatedWords={this.state.relatedWords}
               isLoadingRelated={this.state.isLoadingRelated}
-              />
+            />
             <Article
+              searchValue={this.state.searchValue}
               originTotal={this.state.newsOrigin.total}
               listOrigin={this.state.listOrigin}
               newsCrawler={this.state.newsCrawler}
               newsBlog={this.state.newsBlog}
-              newsCafe={this.state.newsCafe} 
+              newsCafe={this.state.newsCafe}
               isLoadingArticle={this.state.isLoadingArticle}
-              />
+            />
           </div>
         </div>
         <Footer />
       </Fragment>
-    )
+    );
   };
 };
 

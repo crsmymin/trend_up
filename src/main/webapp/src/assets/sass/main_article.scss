@@ -1,19 +1,21 @@
-&#articleOrigin {
-  margin-right: 2%;
-}
-&#articleBlog {
-  margin-right: 2%;
-}
-&.articles {
-  float: left;
-  width: 49%;
+&.article {
+  &.on {
+    display: block;
+  }
+  display: none;
+  .section-sub-title {
+    font-size: 20px;
+    padding: 10px 0;
+    margin: 0 0 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  width: 100%;
   > p {
-    padding: 0 0 12px;
-    border-bottom: 1px solid #ddd;
+    padding: 0 0 15px;
     em {
-      margin: 0 5px 0 0;
+      margin: 0 10px 0 0;
       color: $main-color;
-      font-size: 1rem;
+      font-size: 1.2rem;
       font-weight: 500;
       font-style: normal;
     }
@@ -26,6 +28,25 @@
     height: 500px;
     overflow-y: scroll;
     padding: 0 25px 0 0;
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #aaa;
+      border-radius: 5px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+      -o-border-radius: 5px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: #f1f1f1;
+      border-radius: 5px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+      -o-border-radius: 5px;
+    }
     li {
       padding: 15px 0;
       border-bottom: 1px solid #ddd;
@@ -88,8 +109,9 @@
     width: 24px;
     height: 24px;
     color: #fff;
-    border: 1px solid rgb(138, 138, 138);
-    background-color: rgb(138, 138, 138);
+    border: 1px solid #000;
+    background-color: #fff;
+    color: #000;
     display: inline-block;
     text-align: center;
     line-height: 24px;
@@ -150,8 +172,9 @@
 }
     }
     &.on {
-      background-color: coral;
-      border: 1px solid coral;
+      background-color: #337ab7;
+      border: 1px solid #337ab7;
+      color: #fff;
     }
   }
 }

@@ -6,25 +6,21 @@ class Relation extends Component {
   }
  
   componentDidMount() {
-    
+    var tab = document.querySelector("#relation .section-title");
+    tab.addEventListener("click", function(){
+      this.classList.toggle("open");
+      var tabCont = document.querySelector(".relation-words");
+      tabCont.classList.toggle("open");
+    })
   }
   render() {
     return (
-      <section id="relation" className={this.props.isLoadingRelated === true ? ("is-loading") : ("cf")}>
-        {this.props.isLoadingRelated === true ? (
-          <div className="loading-indicator">
-            <div className="loader"></div>
-          </div>
-        ):(
+      <section id="relation" className="cf">
         <>
         <h3 className="section-title">
-                연관어 순위
-          <span className="tool-tip">
-                  ?
-              <p className="description">
-                ..............
-              </p>
-                </span>
+            연관어 순위
+          <span className="tool-tip">?<p className="description">..............</p></span>
+          <img src="./src/assets/images/accordion_btn.svg" alt="" />  
         </h3>
         <div className="relation-words flex-cont">
           {/* 워드클라우드 */}
@@ -49,7 +45,6 @@ class Relation extends Component {
           {/*연관어 리스트 끝*/}
         </div>
         </>
-        )}
       </section>
     )
   }

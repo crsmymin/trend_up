@@ -4,7 +4,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-class Nav extends Component {
+class SearchTrend extends Component {
   constructor(props) {
     let today = new Date();  
 
@@ -120,25 +120,22 @@ class Nav extends Component {
   render () {
     return (
       <>
-      <div className={this.state.isLoadingAll === true ? ("loading-indicator-all show") : ("loading-indicator-all")}>
-        <div className="loader-all"></div>
-      </div>
-      <header>
-        <div id="headerTop">
-          <div className="wrap flex-cont">
-            <h1 id="topLogo" className="col-2">
-              <a href="/">
-                <img src="./images/logo.png" alt="로고"></img>
-              </a>
-            </h1>
-            <p id="userInf" className="col-2">안녕하세요 <strong>사용자(cside01)</strong> 님</p>
-          </div>
+        <div
+          className={
+            this.state.isLoadingAll === true
+              ? 'loading-indicator-all show'
+              : 'loading-indicator-all'
+          }
+        >
+          <div className="loader-all"></div>
         </div>
         <div id="searchArea">
           <div className="wrap flex-cont">
+            <h4>
+              궁금한 <strong>날짜</strong> 를 검색해보세요
+            </h4>
             <ul id="searchOption">
               <li className="field flex-cont">
-                <h4>순위 집계주기</h4>
                 <div id="periodDate">
                   <DatePicker
                     id="selectedStartDate"
@@ -148,10 +145,19 @@ class Nav extends Component {
                     dateFormat="yyyy.MM.dd"
                     maxDate={new Date()}
                   />
-                  <input type="hidden" id="selectedEndDate" value={this.state.endDate} readOnly></input>
+                  <input
+                    type="hidden"
+                    id="selectedEndDate"
+                    value={this.state.endDate}
+                    readOnly
+                  ></input>
                 </div>
                 <div id="periodTime">
-                  <select id="hoursSelect" value={this.state.hours} onChange={this._onChangeHours}>
+                  <select
+                    id="hoursSelect"
+                    value={this.state.hours}
+                    onChange={this._onChangeHours}
+                  >
                     <option value="00:00:00">00:00</option>
                     <option value="01:00:00">01:00</option>
                     <option value="02:00:00">02:00</option>
@@ -176,37 +182,57 @@ class Nav extends Component {
                     <option value="21:00:00">21:00</option>
                     <option value="22:00:00">22:00</option>
                     <option value="23:00:00">23:00</option>
-                  </select> 
+                  </select>
                 </div>
               </li>
               <li className="field flex-cont">
-                <h4>
-                  키워드 추이기간
-                </h4>
                 <div id="directBtns">
-                  <button className="btn-s week 7 active" onClick={this.directBtnsClick} value="7">1주일</button>
-                  <button className="btn-s 1month 30" onClick={this.directBtnsClick} value="30">1개월</button>
-                  <button className="btn-s 6month 180" onClick={this.directBtnsClick} value="180">6개월</button>
-                  <button className="btn-s 1year 365" onClick={this.directBtnsClick} value="365">1년</button>
+                  <button
+                    className="btn-s week 7 active"
+                    onClick={this.directBtnsClick}
+                    value="7"
+                  >
+                    1주일
+                  </button>
+                  <button
+                    className="btn-s 1month 30"
+                    onClick={this.directBtnsClick}
+                    value="30"
+                  >
+                    1개월
+                  </button>
+                  <button
+                    className="btn-s 6month 180"
+                    onClick={this.directBtnsClick}
+                    value="180"
+                  >
+                    6개월
+                  </button>
+                  <button
+                    className="btn-s 1year 365"
+                    onClick={this.directBtnsClick}
+                    value="365"
+                  >
+                    1년
+                  </button>
                 </div>
               </li>
             </ul>
             <div className="btn-wrap">
-              <button 
-              type="button" 
-              id="btnExecution" 
-              className="btn-s"
-              onClick={this._doAnalyze}
+              <button
+                type="button"
+                id="btnExecution"
+                className="btn-s"
+                onClick={this._doAnalyze}
               >
                 분석실행
               </button>
             </div>
           </div>
         </div>
-    </header>
-    </>
+      </>
     );
   };
 };
 
-export default Nav;
+export default SearchTrend;
