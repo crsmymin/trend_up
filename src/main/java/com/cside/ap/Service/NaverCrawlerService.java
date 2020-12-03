@@ -35,59 +35,62 @@ public class NaverCrawlerService {
 	/**
 	 * 네이버 통합검색 뉴스 URL
 	 */
-	public static final String NAVER_UNIFIED_NEWS_URL = "https://search.naver.com/search.naver?where=news&query=%s&pd=3&ds=%s&de=%s&start=%s&sort=1";
+	//public static final String NAVER_UNIFIED_NEWS_URL = "https://search.naver.com/search.naver?where=news&query=%s&pd=3&ds=%s&de=%s&start=%s&sort=1";
+	public static final String NAVER_UNIFIED_NEWS_URL = "https://search.daum.net/search?w=news&sort=recency&q=%s&cluster=n&DA=STC&dc=STC&pg=1&r=1&rc=1&at=more&ed=%s&sd=%s&period=w&p=%s";
+	
 	/**
 	 * 네이버 통합검색 카페 URL (거래글제외 일반글만)
 	 */
-	public static final String NAVER_UNIFIED_CAFE_URL = "https://search.naver.com/search.naver?where=articleg&query=%s&date_option=6&date_from=%s&date_to=%s&start=%s";
+	//public static final String NAVER_UNIFIED_CAFE_URL = "https://search.naver.com/search.naver?where=articleg&query=%s&date_option=6&date_from=%s&date_to=%s&start=%s";
+	public static final String NAVER_UNIFIED_CAFE_URL = "https://search.daum.net/search?w=cafe&sort=recency&q=%s&cluster=n&DA=STC&dc=STC&pg=1&r=1&rc=1&at=more&ed=%s&sd=%s&period=w&p=%s";
 
 	/**
 	 * 네이버 통합검색 블로그 URL
 	 */
-	public static final String NAVER_UNIFIED_BLOG_URL = "https://search.naver.com/search.naver?where=post&query=%s&date_option=8&date_from=%s&date_to=%s&start=%s";
+	//public static final String NAVER_UNIFIED_BLOG_URL = "https://search.naver.com/search.naver?where=post&query=%s&date_option=8&date_from=%s&date_to=%s";
+	public static final String NAVER_UNIFIED_BLOG_URL = "https://search.daum.net/search?w=blog&sort=recency&q=%s&cluster=n&DA=STC&dc=STC&pg=1&r=1&rc=1&at=more&ed=%s&sd=%s&period=w&p=%s";
+
 
 
 	public String getUnifiedSearchNews(String keyword, String fromDate, String toDate, String start) {
 		JSONObject jsonObject = new JSONObject();
 		try {
-			int start_int=Integer.parseInt(start)-1;
-			fromDate = fromDate.substring(0, fromDate.lastIndexOf("T"));
-			fromDate=fromDate.replace("-", ".");
+			fromDate=fromDate.replace("-", "").replace(".", "")+"235959";
+			toDate=toDate.replace(".", "")+"000000";
 
-			String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,start_int+"1");
+			String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,start);
+
+			//System.out.println("[news URL] "+start +"p;   "+url);
 			
-			//System.out.println(url);
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-			Elements elements_title = doc.select(".title_desc");
-			//System.out.println(doc);
-			//System.out.println(url);
+			Elements elements_title = doc.select(".txt_info");
+			
 			if (elements_title.size() > 0) {
 				// 검색 건수
-				Element ele = doc.select(".title_desc").get(0);
-
+				Element ele = doc.select(".txt_info").get(0);
 				// [Result] 1-10 / 68,360건
 				String[] cntText = ele.text().split("/");
-				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll(" ", "");
+				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 
 				System.out.println("[News 총 건 수] " + cnt);
 				
-				Elements elements = doc.select(".news .type01 li dl");
+				Elements elements = doc.select("#newsColl .coll_cont li");
 
 				List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 				for (Element element : elements) {
 					Map<String, String> val = new HashMap<String, String>();
 					val.put("link", element.getElementsByAttribute("href").attr("href"));
-					val.put("title", element.select("dt a").text());
-					val.put("medium", element.select(".txt_inline ._sp_each_source").text().replaceAll("언론사 선정", ""));
-					val.put("description", element.select("dd").get(1).text());
+					val.put("title", element.select(".mg_tit a").text());
+					
+					val.put("description", element.select(".f_eb").text());
 
-					String str = element.select(".txt_inline").html();
-					String result = str.substring(str.indexOf("<span class=\"bar\"></span>") + 26);
-					if(result.indexOf("<")==1) {
-						result = result.substring(result.indexOf("<span class=\"bar\"></span>") + 26);
-					}
-					val.put("date", result.substring(0, result.indexOf("<")));
-
+					String str = element.select(".date").html();
+					String[] array = str.split("<span class=\"txt_bar\">|</span>");
+					
+					val.put("date", array[0]);
+					val.put("medium", array[2]);
+					
+					
 					list.add(val);
 					//System.out.println("[링크]" + element.getElementsByAttribute("href").attr("href"));
 					//System.out.println("[제목]" + element.select("dt a").text());
@@ -146,7 +149,6 @@ public class NaverCrawlerService {
 				page_val.put("endPage", endPage);
 				page_list.add(page_val);
 
-				//System.out.println(naverNewsDesc);
 				jsonObject.put("naverNewsCnt", cnt);
 				jsonObject.put("naverNews", list);
 				jsonObject.put("naverNewsPage", page_str);
@@ -161,37 +163,38 @@ public class NaverCrawlerService {
 	public String getUnifiedSearchCafe(String keyword, String fromDate, String toDate, String start) {
 		JSONObject jsonObject = new JSONObject();
 		try {
-			int start_int=Integer.parseInt(start)-1;
-			fromDate = fromDate.substring(0, fromDate.lastIndexOf("T"));
-			fromDate=fromDate.replace("-", ".");
+			fromDate=fromDate.replace("-", "").replace(".", "")+"235959";
+			toDate=toDate.replace(".", "")+"000000";
 
-			String url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,start_int+"1");
+			String url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,start);
 
-			//System.out.println(url);
-			System.out.println("[검색URL]" + url);
-
+			//System.out.println("[cafe URL] "+start +"p;   "+url);
+			
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-			Elements elements_title = doc.select(".title_num");
+			Elements elements_title = doc.select(".txt_info");
 
 			if (elements_title.size() > 0) {
 				// 검색 건수
-				Element ele = doc.select(".title_num").get(0);
+				Element ele = doc.select(".txt_info").get(0);
+				
 				// [Result] 1-10 / 68,360건
 				String[] cntText = ele.text().split("/");
-				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll(" ", "");
 
-				System.out.println("[Cafe 총 건 수] " + cnt);
+				System.out.println("[Cafe 총 건 수] " + cntText[1]);
+				
+				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 
-				Elements elements = doc.select(".cafe_article .type01 li dl");
-
+				Elements elements = doc.select("#cafeColl .coll_cont li");
+				
 				List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 				for (Element element : elements) {
 					Map<String, String> val = new HashMap<String, String>();
 					val.put("link", element.getElementsByAttribute("href").attr("href"));
-					val.put("title", element.select("dt a").text());
-					val.put("medium", element.select(".txt_block .inline .txt84").get(0).text());
-					val.put("description", element.select("dd").get(1).text());
-					val.put("date",  element.select(".txt_inline").text());
+					val.put("title", element.select(".mg_tit a").text());
+					val.put("description", element.select(".f_eb").text());
+					val.put("date", element.select(".date").text());
+
+					val.put("medium", element.select("a.f_nb:eq(1)").html());
 
 					list.add(val);
 					//System.out.println("[링크]" + element.getElementsByAttribute("href").attr("href"));
@@ -253,35 +256,37 @@ public class NaverCrawlerService {
 		JSONObject jsonObject = new JSONObject();
 		
 		try {
-			int start_int=Integer.parseInt(start)-1;
-			fromDate = fromDate.substring(0, fromDate.lastIndexOf("T"));
-			fromDate=fromDate.replace("-", ".");
+			fromDate=fromDate.replace("-", "").replace(".", "")+"235959";
 
-			String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate ,start_int+"1");
-			System.out.println(url);
-			System.out.println("[검색URL]" + url);
+			toDate=toDate.replace(".", "")+"000000";
 
+			String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate ,start);
+
+			//System.out.println("[blog URL] "+start +"p;   "+url);
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-			Elements elements_title = doc.select(".title_num");
+			Elements elements_title = doc.select(".txt_info");
 
 			if (elements_title.size() > 0) {
 				// 검색 건수
-				Element ele = doc.select(".title_num").get(0);
+				Element ele = doc.select(".txt_info").get(0);
 				// [Result] 1-10 / 68,360건
 				String[] cntText = ele.text().split("/");
-				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll(" ", "");
+				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 
 				System.out.println("[Blog 총 건 수] " + cnt);
-				Elements elements = doc.select(".blog .type01 li dl");
+				Elements elements = doc.select("#blogColl .coll_cont li");
 
 				List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 				for (Element element : elements) {
 					Map<String, String> val = new HashMap<String, String>();
 					val.put("link", element.getElementsByAttribute("href").attr("href"));
-					val.put("title", element.select("dt a").text());
-					val.put("description", element.select("dd").get(1).text());
-					val.put("medium", element.select(".txt_block .inline .txt84").get(0).text());
-					val.put("date",  element.select(".txt_inline").text());
+					val.put("title", element.select(".mg_tit a").text());
+
+					val.put("description", element.select(".f_eb").text());
+					
+					val.put("date", element.select(".date").html());
+					val.put("medium", element.select("a.f_nb:eq(1)").html());
+					
 					list.add(val);
 					//System.out.println("[링크]" + element.getElementsByAttribute("href").attr("href"));
 					//System.out.println("[제목]" + element.select("dt a").text());
@@ -335,19 +340,19 @@ public class NaverCrawlerService {
 
 		return new Gson().toJson(jsonObject);
 
-	}
+	}/*
 	public String getUnifiedSearchNewsDesc(String keyword, String fromDate, String toDate) {
 		JSONObject jsonObject = new JSONObject();
 		String description="";
 		try {
 			String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,"1");
-			//System.out.println(url);
+			System.out.println(url);
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-			//System.out.println(doc);
-			Elements elements_title = doc.select(".title_desc");
+			System.out.println(doc);
+			Elements elements_title = doc.select(".txt_info");
 			if (elements_title.size() > 0) {
 				// 검색 건수
-				Element ele = doc.select(".title_desc").get(0);
+				Element ele = doc.select(".txt_info").get(0);
 
 				// [Result] 1-10 / 68,360건
 				String[] cntText = ele.text().split("/");
@@ -383,26 +388,81 @@ public class NaverCrawlerService {
 		}
 
 		return new Gson().toJson(jsonObject);
+	}*/
+	public String getUnifiedSearchNewsDesc(String keyword, String fromDate, String toDate) {
+		JSONObject jsonObject = new JSONObject();
+		String description="";
+		try {
+			fromDate=fromDate.replace(".", "")+"235959";
+			toDate=toDate.replace(".", "")+"000000";
+			
+			String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,"1");
+			
+			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
+			//System.out.println(doc);
+			Elements elements_title = doc.select(".txt_info");
+			if (elements_title.size() > 0) {
+				// 검색 건수
+				Element ele = doc.select(".txt_info").get(0);
+
+				// [Result] 1-10 / 68,360건
+				String[] cntText = ele.text().split("/");
+				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
+				int totalPage = Integer.parseInt(cnt) / 10;
+				Elements elements = doc.select("#newsColl .coll_cont li");
+				
+				for (Element element : elements) {
+					description+= element.select(".f_eb").text();
+				}
+				if(totalPage>1) {
+					if(totalPage>9) {
+						totalPage=8;
+					}
+					for(int i=1;i<totalPage+1;i++) {
+						url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,i);
+						doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
+						elements = doc.select("#newsColl .coll_cont li");
+						
+						for (Element element : elements) {
+							description+= element.select(".f_eb").text();
+						}
+					}
+				}
+				//System.out.println("[news] "+totalPage+"   "+description.length());
+			}
+			//System.out.println("description"+description);
+			jsonObject.put("description", description);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return new Gson().toJson(jsonObject);
 	}
 	public String getUnifiedSearchCafeDesc(String keyword, String fromDate, String toDate) {
 		JSONObject jsonObject = new JSONObject();
 		String description="";
 		try {
+			fromDate=fromDate.replace(".", "")+"235959";
+			toDate=toDate.replace(".", "")+"000000";
+			
 			String url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,"1");
 
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-			Elements elements_title = doc.select(".title_num");
+			Elements elements_title = doc.select(".txt_info");
 			
 			if (elements_title.size() > 0) {
 				// 검색 건수
-				Element ele = doc.select(".title_num").get(0);
+				Element ele = doc.select(".txt_info").get(0);
 				// [Result] 1-10 / 68,360건
 				String[] cntText = ele.text().split("/");
 				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll(" ", "");
-				Elements elements = doc.select(".cafe_article .type01 li dl");
+
+				Elements elements = doc.select("#cafeColl .coll_cont li");
 				int totalPage = Integer.parseInt(cnt) / 10;
 				for (Element element : elements) {
-					description+= element.select("dd").get(1).text();
+					description+= element.select(".f_eb").text();
 				}
 				//System.out.println("CafeBuzz totalPage: "+totalPage);
 				if(totalPage>1) { 
@@ -410,11 +470,11 @@ public class NaverCrawlerService {
 						totalPage=8;
 					}
 					for(int i=1;i<totalPage+1;i++) {
-						url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,i+"1");
+						url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,i);
 						doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-						elements = doc.select(".cafe_article .type01 li dl");
+						elements = doc.select("#cafeColl .coll_cont li");
 						for (Element element : elements) {
-							description+= element.select("dd").get(1).text();
+							description+= element.select(".f_eb").text();
 						}
 					}
 				}
@@ -435,22 +495,25 @@ public class NaverCrawlerService {
 		JSONObject jsonObject = new JSONObject();
 		String description="";
 		try {
+			fromDate=fromDate.replace(".", "")+"235959";
+			toDate=toDate.replace(".", "")+"000000";
+			
 			String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate ,"1");
 
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-			Elements elements_title = doc.select(".title_num");
+			Elements elements_title = doc.select(".txt_info");
 
 			if (elements_title.size() > 0) {
 				// 검색 건수
-				Element ele = doc.select(".title_num").get(0);
+				Element ele = doc.select(".txt_info").get(0);
 				// [Result] 1-10 / 68,360건
 				String[] cntText = ele.text().split("/");
-				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll(" ", "");
+				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 
-				Elements elements = doc.select(".blog .type01 li dl");
+				Elements elements = doc.select("#blogColl .coll_cont li");
 				int totalPage = Integer.parseInt(cnt) / 10;
 				for (Element element : elements) {
-					description+=element.select("dd").get(1).text();
+					description+= element.select(".f_eb").text();
 				}
 
 				//System.out.println("BlogBuzz totalPage: "+totalPage);
@@ -461,11 +524,9 @@ public class NaverCrawlerService {
 					for(int i=1;i<totalPage+1;i++) {
 						url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,i+"1");
 						doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-						elements = doc.select(".blog .type01 li dl");
+						elements = doc.select("#blogColl .coll_cont li");
 						for (Element element : elements) {
-							description+= element.select("dd").get(1).text();
-							
-							
+							description+= element.select(".f_eb").text();
 						}
 					}
 				}
@@ -491,10 +552,10 @@ public class NaverCrawlerService {
 				String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,"1");
 				//System.out.println("url: "+url);
 				Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-				Elements elements_title = doc.select(".title_desc");
+				Elements elements_title = doc.select(".txt_info");
 				if (elements_title.size() > 0) {
 					// 검색 건수
-					Element ele = doc.select(".title_desc").get(0);
+					Element ele = doc.select(".txt_info").get(0);
 
 					// [Result] 1-10 / 68,360건
 					String[] cntText = ele.text().split("/");

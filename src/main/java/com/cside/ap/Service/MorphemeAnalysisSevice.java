@@ -24,15 +24,17 @@ import com.google.gson.Gson;
 @Service
 public class MorphemeAnalysisSevice {
 
-	private static final String OPEN_API_URL = "http://aiopen.etri.re.kr:8000/WiseNLU";
+	private static final String OPEN_API_URL = "https://aiopen.etri.re.kr:8443/WiseNLU";
 
-	private static final String OPEN_API_KEY = "e9270d59-d85e-406e-8680-aa7ebc0599a2";
+	private static final String OPEN_API_KEY = "a4f2a359-1c95-4c1f-a493-ae0d19a1d29b";
+
 
 	public String getMorpheme(String str) {
 		return this.wordMorph2(str);
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String wordMorph2(String text) {
+		//text="네 안녕하세요 홍길동 교숩니다";
 		Map<String, Object> request = new HashMap<>();
 		Map<String, String> argument = new HashMap<>();
 
@@ -41,6 +43,8 @@ public class MorphemeAnalysisSevice {
 
 		request.put("access_key", OPEN_API_KEY);
 		request.put("argument", argument);
+		
+		//System.out.println(text.length()+"      "+text);
 		URL url;
 		Integer responseCode = null;
 		String responBodyJson = null;

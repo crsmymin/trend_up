@@ -130,7 +130,7 @@ public class SearchRestController {
           if (naverContents.length() > 10000) {
              naverContents = naverContents.substring(10000);
           }
-
+          //System.out.println(naverContents);
           naverContents_news = this.morphemeAnalysisSevice.getMorpheme(naverContents);
        }
 
@@ -163,8 +163,7 @@ public class SearchRestController {
 
           naverContents_blog = this.morphemeAnalysisSevice.getMorpheme(naverContents);
        }
-
-       String naverContents_total = naverContents_news + naverContents_cafe + naverContents_blog;
+       String naverContents_total = naverContents_news;// + naverContents_cafe + naverContents_blog;
        
        naverContents_total = naverContents_total.replace("[", "");
        naverContents_total = naverContents_total.replace("]", ",");
@@ -225,4 +224,56 @@ public class SearchRestController {
 
 	      return new ResponseEntity(searchModel, httpStatus);
 	   }
+	
+	@RequestMapping( value="/searchCrawlerNews")
+	public ResponseEntity<SearchModel> searchCrawlerNews(SearchModel searchModel,HttpServletRequest request) throws Exception {
+		
+		HttpStatus httpStatus =HttpStatus.OK;
+		
+		HttpSession session = request.getSession();
+		String loginID =(String) session.getAttribute("loginID");
+		
+		Map<String, String> map=new HashMap<String, String>();
+		map.put("login_id", loginID);
+		map.put("action", "searchNaverNews");
+		searchModel.setNaverCrawlerNews( naverCrawlerService.getUnifiedSearchNews(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate(), searchModel.getStart()) );
+		
+		
+		return new ResponseEntity<>(searchModel, httpStatus);
+	}
+	
+	@RequestMapping( value="/searchCrawlerCafe" )
+	public ResponseEntity<SearchModel> searchCrawlerCafe(SearchModel searchModel,HttpServletRequest request) throws Exception {
+		
+		HttpStatus httpStatus =HttpStatus.OK;
+		
+		HttpSession session = request.getSession();
+		String loginID =(String) session.getAttribute("loginID");
+		
+		Map<String, String> map=new HashMap<String, String>();
+		map.put("login_id", loginID);
+		map.put("action", "searchNaverNews");
+		searchModel.setNaverCrawlerCafe( naverCrawlerService.getUnifiedSearchCafe(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate(), searchModel.getStart()) );
+		
+		
+		return new ResponseEntity<>(searchModel, httpStatus);
+	}
+	
+
+	@RequestMapping( value="/searchCrawlerBlog" )
+	public ResponseEntity<SearchModel> searchCrawlerBlog(SearchModel searchModel,HttpServletRequest request) throws Exception {
+		
+		HttpStatus httpStatus =HttpStatus.OK;
+		
+		HttpSession session = request.getSession();
+		String loginID =(String) session.getAttribute("loginID");
+		
+		Map<String, String> map=new HashMap<String, String>();
+		map.put("login_id", loginID);
+		map.put("action", "searchNaverNews");
+		searchModel.setNaverCrawlerBlog( naverCrawlerService.getUnifiedSearchBlog(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate(), searchModel.getStart()) );
+		
+		
+		return new ResponseEntity<>(searchModel, httpStatus);
+	}
 }

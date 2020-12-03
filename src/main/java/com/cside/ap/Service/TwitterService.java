@@ -56,7 +56,6 @@ public class TwitterService {
 		} catch (Exception e) {
 			System.out.println("[트위터 실시간 순위 에러] "+ e);
 		}
-		System.out.println("트위터 실시간 순위 : {} " +jsonObject_result);
 		return jsonObject_result;
 	}
 	

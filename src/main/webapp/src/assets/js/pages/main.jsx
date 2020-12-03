@@ -81,13 +81,20 @@ class App extends Component {
       isLoadingBuzz: true,
       isLoadingRelated: true
     })
+
+    let toDate = new Date(this.state.fromDate);
+    let to_month=1+toDate.getMonth();
+      to_month=to_month>= 10 ? to_month : '0' + to_month;
+    let to_day=toDate.getDate()>= 10 ? toDate.getDate() : '0' + toDate.getDate();
+    let startDate =toDate.getFullYear()+"."+to_month+"."+to_day;
+    
     // 컨텐츠 기간검색
     axios({
       method: 'get',
       url: "/searchNaverNews",
       params: {
         searchValue: keyword,
-        fromDate: this.state.fromDate,
+        fromDate: startDate,
         toDate: this.state.toDate,
         start: 1
       }
