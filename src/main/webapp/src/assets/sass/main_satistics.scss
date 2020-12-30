@@ -1,0 +1,45 @@
+&#statistics {
+  margin: 0 0 120px;
+  padding: 10px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  background-color: #eee;
+  &.is-loading {
+    background-color: #fff;
+  }
+  .statistic {
+    justify-content: space-between;
+    .amount {
+      background-color: #fff;
+      width: 49%;
+      h4 {
+        border-bottom: 2px solid #eee;
+        padding: 10px 12px;
+        font-weight: normal;
+        font-size: 15px;
+      }
+      .sorts {
+        padding: 30px 0;
+        justify-content: space-around;
+        .factor {
+          width: 30%;
+          span {
+            display: block;
+            text-align: center;
+            &.counts {
+              font-size: 22px;
+              margin: 0 0 5px;
+            }
+            &.type {
+              font-size: 14px;
+              color: rgb(138, 138, 138);
+            }
+          }
+        }
+      }
+    }
+  }
+}

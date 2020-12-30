@@ -34,7 +34,6 @@ class Article extends Component {
       <div className="article-wrap">
         <h3 onClick={this._openSection} className={this.state.visible ? "section-title open":"section-title"}>
           원문보기
-          <span className="tool-tip">?<p className="description">..............</p></span>
           <img src="./src/assets/images/accordion_btn.svg" alt="" />  
         </h3>
         <div className={this.state.visible ? "articles open":"articles"}>

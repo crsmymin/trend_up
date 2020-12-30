@@ -23,8 +23,7 @@ class Buzz extends Component {
       <section id="buzz">
         <>  
         <h3 onClick={this._openSection} className={this.state.visible ? "section-title open":"section-title"}>
-          버즈추이
-          <span className="tool-tip">?<p className="description">..............</p></span>
+          버즈추이 : {this.props.searchValue}
           <img src="./src/assets/images/accordion_btn.svg" alt="" />
         </h3>
         <div className={this.state.visible ? "buzz-trasition flex-cont open":"buzz-trasition flex-cont"}>

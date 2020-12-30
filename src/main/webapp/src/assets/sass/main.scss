@@ -9,8 +9,10 @@
       padding: 0 0 35px;
       margin: 0 0 30px;
       @import './main_keyword.scss';
+      @import './main_satistics.scss';
       @import './main_buzz.scss';
       @import './main_relation.scss';
+      @import './main_emotion.scss';
       @import './main_article.scss';
     }
     .section-title {
