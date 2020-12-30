@@ -19,10 +19,10 @@ class Header extends Component {
             <nav>
               <ul className="flex-cont">
                 <li>
-                  <a href="/">트렌드 분석</a>
+                  <a href="/trend">트렌드 분석</a>
                 </li>
                 <li>
-                  <a href="/keyword_analyze">키워드 분석</a>
+                  <a href="/keyword">키워드 분석</a>
                 </li>
               </ul>
             </nav>

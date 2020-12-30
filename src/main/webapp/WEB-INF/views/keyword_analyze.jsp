@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <head>
   <%@include file="./head.jsp"%>
-  <title>C.view Trend</title>
+  <title>C.view Keyword</title>
 
 </head>
 <body>
