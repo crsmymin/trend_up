@@ -23,7 +23,7 @@ class Buzz extends Component {
       <section id="buzz">
         <>  
         <h3 onClick={this._openSection} className={this.state.visible ? "section-title open":"section-title"}>
-          버즈추이 : {this.props.searchValue}
+          언급량추이 : {this.props.searchValue}
           <img src="./src/assets/images/accordion_btn.svg" alt="" />
         </h3>
         <div className={this.state.visible ? "buzz-trasition flex-cont open":"buzz-trasition flex-cont"}>
@@ -50,7 +50,7 @@ class Buzz extends Component {
 
           {/* 차트 그래프 */}
           <div className="chart">
-            <canvas id="buzzChart"></canvas>
+          <canvas id="buzzChart"></canvas>
           </div>
           {/* 차트 그래프 끝*/}
         </div>

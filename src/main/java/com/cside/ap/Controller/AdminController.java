@@ -41,34 +41,17 @@ public class AdminController {
 	public String admin(){
 		return "admin_login";
 	}
-	@RequestMapping(value="/dashboard")
-	public void main() throws GeneralSecurityException{
-		try {
-			Properties properties = PropertiesLoader.fromResource("sample.properties");
-		
-			String baseUrl = properties.getProperty("BASE_URL");
-			String apiKey = properties.getProperty("API_KEY");
-			String secretKey = properties.getProperty("SECRET_KEY");
-			String timestamp = String.valueOf(System.currentTimeMillis());
-			//System.out.println(timestamp);
-			//System.out.println(Signatures.of(timestamp, "GET", "/keywordstool", secretKey));
-			
-			
-			//https://api.naver.com/keywordstool?hintKeywords=애플
-			//X-API-KEY 010000000027c98570374508b9b8fd8e949aba0885e3d0cd37c555a6015cf5462e62aadd4b
-			//X-Signature
-			//X-Customer 2061401
-			//X-Timestamp
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	@RequestMapping(value="/")
 	public String dashboard(){
 		return "dashboard";
+	}
+	@RequestMapping(value="/trend")
+	public String trend(){
+		return "dashboard";
+	}
+	@RequestMapping(value="/keyword")
+	public String keyword(){
+		return "keyword_analyze";
 	}
 	
 	@RequestMapping(value="/login_action" , method = RequestMethod.POST)

@@ -48,7 +48,7 @@ public class NaverCrawlerService {
 	 * 네이버 통합검색 블로그 URL
 	 */
 	//public static final String NAVER_UNIFIED_BLOG_URL = "https://search.naver.com/search.naver?where=post&query=%s&date_option=8&date_from=%s&date_to=%s";
-	public static final String NAVER_UNIFIED_BLOG_URL = "https://search.daum.net/search?w=blog&sort=recency&q=%s&cluster=n&DA=STC&dc=STC&pg=1&r=1&rc=1&at=more&ed=%s&sd=%s&period=w&p=%s";
+	public static final String NAVER_UNIFIED_BLOG_URL = "https://search.daum.net/search?w=blog&sort=timely&q=%s&DA=STC&ed=%s&sd=%s&page=%s&period=w";
 
 
 
@@ -549,6 +549,9 @@ public class NaverCrawlerService {
 			String update_date="[{\"count\":1,";
 			String date="{\"count\":0,";
 			try {
+				fromDate=fromDate.replace(".", "")+"235959";
+				toDate=toDate.replace(".", "")+"000000";
+				
 				String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,"1");
 				//System.out.println("url: "+url);
 				Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
@@ -559,40 +562,33 @@ public class NaverCrawlerService {
 
 					// [Result] 1-10 / 68,360건
 					String[] cntText = ele.text().split("/");
-					String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll(" ", "");
+					String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 					int totalPage = Integer.parseInt(cnt) / 10;
-					Elements elements = doc.select(".news .type01 li dl");
+					Elements elements = doc.select("#newsColl .coll_cont li");
 					//System.out.println("[page] "+totalPage+"/0");
 					for (Element element : elements) {
-						String str = element.select(".txt_inline").html();
-						String result = str.substring(str.indexOf("<span class=\"bar\"></span>") + 26);
-						//System.out.println("result: "+result);
-						if(result.indexOf("<")==1) {
-							result = result.substring(result.indexOf("<span class=\"bar\"></span>") + 26);
-							//System.out.println("result2: "+result.substring(0, result.indexOf("<")).replaceAll("(\\r\\n|\\r|\\n|\\n\\r)", ""));
-						}
-						update_date+="\"date\":\""+result.substring(0, result.indexOf("<")).replaceAll("(\\r\\n|\\r|\\n|\\n\\r)", "")+"\"},{\"count\":1,";
+						String str = element.select(".date").html();
+						String[] array = str.split("<span class=\"txt_bar\">|</span>");
+						
+						String result = array[0];
+						
+						update_date+="\"date\":\""+result+"\"},{\"count\":1,";
 					}
-					//System.out.println("NewsBuzz totalPage: "+totalPage);
+					
 					if(totalPage>1) {
 						for(int i=1;i<totalPage+1;i++) {
 							//System.out.println("[page] "+totalPage+"/"+i);
-							url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,i+"1");
+							url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,i+1);
 							//System.out.println("url: "+url);
 							doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-							elements = doc.select(".news .type01 li dl");
+							elements = doc.select("#newsColl .coll_cont li");
 							
 							for (Element element : elements) {
-								String str = element.select(".txt_inline").html();
+								String str = element.select(".date").html();
+								String[] array = str.split("<span class=\"txt_bar\">|</span>");
 								
-								String result = str.substring(str.indexOf("<span class=\"bar\"></span>") + 26);
-								//System.out.println("result: "+result);
-								if(result.indexOf("<")==1) {
-									result = result.substring(result.indexOf("<span class=\"bar\"></span>") + 26);
-									
-								}
-								//System.out.println("result2: "+result.substring(0, result.indexOf("<")).replaceAll("(\\r\\n|\\r|\\n|\\n\\r)", ""));
-								update_date+="\"date\":\""+result.substring(0, result.indexOf("<")).replaceAll("(\\r\\n|\\r|\\n|\\n\\r)", "")+"\"},{\"count\":1,";
+								String result = array[0];
+								update_date+="\"date\":\""+result+"\"},{\"count\":1,";
 							}
 						}
 					}
@@ -628,8 +624,9 @@ public class NaverCrawlerService {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				
+
 				update_date=getChangeString(update_date.replaceAll(" ", ""));
+				//System.out.println("news update_date : "+update_date);
 				jsonObject.put("update_date", update_date);
 				
 			} catch (IOException e) {
@@ -645,36 +642,41 @@ public class NaverCrawlerService {
 			String update_date="[{\"count\":1,";
 			String date="{\"count\":0,";
 			try {
-				String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,"1");
 
+				fromDate=fromDate.replace(".", "")+"235959";
+				toDate=toDate.replace(".", "")+"000000";
+				String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,"1");
+				System.out.println("url : "+url);
 				Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-				Elements elements_title = doc.select(".title_num");
+				Elements elements_title = doc.select(".txt_info");
 				
 				if (elements_title.size() > 0) {
 					// 검색 건수
-					Element ele = doc.select(".title_num").get(0);
+					Element ele = doc.select(".txt_info").get(0);
 
 					// [Result] 1-10 / 68,360건
 					String[] cntText = ele.text().split("/");
-					String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll(" ", "");
+					String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 					int totalPage = Integer.parseInt(cnt) / 10;
-					Elements elements = doc.select(".blog .type01 li dl");
+					Elements elements = doc.select("#blogColl .coll_cont li");
+					System.out.println(totalPage);
 					for (Element element : elements) {
-						String str = element.select(".txt_inline").text();
+						String str = element.select(".date").html();
 						
 						update_date+="\"date\":\""+str+"\"},{\"count\":1,";
 					}
+
 					
 					if(totalPage>1) {
 						for(int i=1;i<totalPage+1;i++) {
-							url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,i+"1");
-							
+							url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,i+1);
+							//System.out.println("url : "+url);
 							doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-							elements = doc.select(".blog .type01 li dl");
+							elements = doc.select("#blogColl .coll_cont li");
 							
 							for (Element element : elements) {
-								String str = element.select(".txt_inline").text();
-								
+
+								String str = element.select(".date").html();
 								update_date+="\"date\":\""+str+"\"},{\"count\":1,";
 							}
 						}
@@ -711,9 +713,9 @@ public class NaverCrawlerService {
 						e.printStackTrace();
 					}
 				
-				update_date=getChangeString(update_date.replaceAll(" ", ""));
-				//System.out.println(update_date);
-				
+					update_date=getChangeString(update_date.replaceAll(" ", ""));
+					//System.out.println("blog update_date : "+update_date);
+					
 				jsonObject.put("update_date", update_date);
 				
 			} catch (IOException e) {
@@ -729,35 +731,38 @@ public class NaverCrawlerService {
 			String update_date="[{\"count\":1,";
 			String date="{\"count\":0,";
 			try {
+
+				fromDate=fromDate.replace(".", "")+"235959";
+				toDate=toDate.replace(".", "")+"000000";
 				String url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,"1");
 
 				Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-				Elements elements_title = doc.select(".title_num");
+				Elements elements_title = doc.select(".txt_info");
 				
 				if (elements_title.size() > 0) {
 					// 검색 건수
-					Element ele = doc.select(".title_num").get(0);
+					Element ele = doc.select(".txt_info").get(0);
 
 					// [Result] 1-10 / 68,360건
 					String[] cntText = ele.text().split("/");
-					String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll(" ", "");
+					String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 					int totalPage = Integer.parseInt(cnt) / 10;
-					Elements elements = doc.select(".cafe_article .type01 li dl");
+					Elements elements = doc.select("#cafeColl .coll_cont li");
 					for (Element element : elements) {
-						String str = element.select(".txt_inline").text();
+						String str = element.select(".date").text();
 						
 						update_date+="\"date\":\""+str+"\"},{\"count\":1,";
 					}
 					
 					if(totalPage>1) {
 						for(int i=1;i<totalPage+1;i++) {
-							url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,i+"1");
+							url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,i+1);
 							
 							doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
-							elements = doc.select(".cafe_article .type01 li dl");
+							elements = doc.select("#cafeColl .coll_cont li");
 							
 							for (Element element : elements) {
-								String str = element.select(".txt_inline").text();
+								String str = element.select(".date").text();
 								
 								update_date+="\"date\":\""+str+"\"},{\"count\":1,";
 							}
@@ -811,7 +816,7 @@ public class NaverCrawlerService {
 		public String getChangeString(String buzzContents) {
 			Calendar c1 = new GregorianCalendar();
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd."); // 날짜 포맷 
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd"); // 날짜 포맷 
 			JSONArray jsonArr=new JSONArray() ;
 			try {
 				jsonArr = (JSONArray) new JSONParser().parse( buzzContents );
@@ -848,8 +853,8 @@ public class NaverCrawlerService {
 		    		jsonObj.put("date", sdf.format(cal.getTime()));
 		    		
 		    		jsonArr.set(i, jsonObj);
-			    }else if(jsonObj.get("date").toString().indexOf("전")!=-1){
-			    	String add_str=jsonObj.get("date").toString().substring(0,jsonObj.get("date").toString().indexOf("분전"));
+			    }else if(jsonObj.get("date").toString().indexOf("초전")!=-1){
+			    	String add_str=jsonObj.get("date").toString().substring(0,jsonObj.get("date").toString().indexOf("초전"));
 			    	cal.add(Calendar.SECOND, Integer.parseInt("-"+add_str));
 		    		jsonObj.put("date", sdf.format(cal.getTime()));
 		    		
