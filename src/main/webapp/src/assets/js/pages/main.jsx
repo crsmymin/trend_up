@@ -5,8 +5,8 @@ import axios from 'axios'
 
 // components
 import Header from '../layouts/header.jsx'
-import SearchTrend from '../layouts/searchTrend.jsx'
 import Footer from '../layouts/footer.jsx'
+import SearchTrend from '../layouts/searchTrend.jsx'
 import Keywords from '../components/keywords.jsx'
 import Buzz from '../components/buzz.jsx'
 import Relation from '../components/relation.jsx'
@@ -70,8 +70,6 @@ class App extends Component {
    
     // 컨텐츠 기간검색 초기실행
     this._getSearchResultByKeywords(searchResult.naver.naverRank[0]);
-    //console.log(searchResult.twitter.twitterRank);
-    //console.log(searchResult.naver.naverRank);
   }
 
   // get search result by keywords
@@ -379,7 +377,6 @@ class App extends Component {
       <Fragment>
         <Header />
         <SearchTrend
-          isLoading={this.state.isLoading}
           getSearchResultByPeriod={this._getSearchResultByPeriod}
         />
         <div id="mainPage" className="container cf">

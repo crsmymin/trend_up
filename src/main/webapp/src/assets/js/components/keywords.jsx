@@ -59,17 +59,9 @@ class Keywords extends Component {
             <ul className="scrollbar-inner">
               {this.props.naver.map(
                 (naver, index) =>
-                  <li 
-                  key={index}
-                  className="keywords-lis naver" 
-                  // className={this.state.isSelected === index ? ("keywords-lis naver is-selected") : ("keywords-lis naver")} 
-                  // onClick={this._handleClickClass.bind(this,index)}
-                  >
+                  <li key={index} className="keywords-lis naver">
                     <span className="rank">{index + 1}.</span>
-                    <span className="word"
-                    data-tag={naver}
-                    onClick={this._getSearchResultByKeywords}
-                    >
+                    <span className="word" data-tag={naver} onClick={this._getSearchResultByKeywords}>
                       {naver}
                     </span>
                     <span className="media-title"></span>
@@ -86,18 +78,14 @@ class Keywords extends Component {
             <ul className="scrollbar-inner">
               {this.props.twitter.map(
                 (twitter, index) =>
-                  <li 
-                    className="keywords-lis twitter"
-                    key={index} 
-                    // className={this.state.isSelected === index ? ("keywords-lis twitter is-selected") : ("keywords-lis twitter")}
-                    // onClick={this._handleClickClass.bind(this, index)}
-                  >
+                  <li className="keywords-lis twitter" key={index}>
                     <span className="rank">{index + 1}.</span>
-                    <span className="word"
-                    data-tag={twitter.rank}
-                    onClick={this._getSearchResultByKeywords}
-                    >{twitter.rank}</span>
-                    <span className="media-title">{twitter.rank2}</span>
+                    <span className="word" data-tag={twitter.rank} onClick={this._getSearchResultByKeywords}>
+                      {twitter.rank}
+                    </span>
+                    <span className="media-title">
+                      {twitter.rank2}
+                    </span>
                   </li>
               )}
             </ul>
@@ -106,6 +94,9 @@ class Keywords extends Component {
         </div>
         </>
         )}
+        <div className="search-amount">
+          
+        </div>
       </section>
     )
   }

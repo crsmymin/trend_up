@@ -11,7 +11,8 @@ module.exports = {
       'react',
       'react-dom'
     ],
-    index: './src/main/webapp/src/app.js',
+    index: './src/main/webapp/src/index.js',
+    keyword_analyze: "./src/main/webapp/src/keyword_analyze.js",
   },
   output: {
     filename: '[name].bundle.js',

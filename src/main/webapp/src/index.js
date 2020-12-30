@@ -3,7 +3,11 @@ import $ from "jquery";
 window.jQuery = $;
 window.$ = $;
 
-import './assets/js/main.js'
+// // import lib
+import Chart from 'chart.js/dist/Chart.bundle.min'
+
+// jsx
+import './assets/js/pages/main.jsx'
 
 // import css
 import './assets/sass/app.scss'
