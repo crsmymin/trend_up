@@ -37,7 +37,7 @@ public class NaverService {
 		//searchValue="2020-10-01T00:00:00";
 		
 		try {
-			Document doc = Jsoup.connect("https://datalab.naver.com/keyword/realtimeList.naver?datetime="+searchValue)
+			Document doc = Jsoup.connect("https://datalab.naver.com/keyword/realtimeList.naver?datetime="+searchValue+"&where=main")
 					.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36")
 					.get();
 
