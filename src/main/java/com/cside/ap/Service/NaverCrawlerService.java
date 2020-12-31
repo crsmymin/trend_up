@@ -567,6 +567,8 @@ public class NaverCrawlerService {
 					Elements elements = doc.select("#newsColl .coll_cont li");
 					//System.out.println("[page] "+totalPage+"/0");
 					for (Element element : elements) {
+						
+						
 						String str = element.select(".date").html();
 						String[] array = str.split("<span class=\"txt_bar\">|</span>");
 						
@@ -609,16 +611,15 @@ public class NaverCrawlerService {
 				        Calendar c1 = Calendar.getInstance();
 				        Calendar c2 = Calendar.getInstance();
 				        
-				        c1.setTime(eDate);
-				        c2.setTime(sDate);
+				        c1.setTime(sDate);
+				        c2.setTime(eDate);
 				        update_date+=date;
-				        
 				        while(c1.compareTo(c2) != 1) {
 				        	update_date+="\"date\":\""+sdf.format(c1.getTime())+"\"},{\"count\":0,";
 				            c1.add(Calendar.DATE, 1);
 				        }
 				        update_date=update_date.substring(0,update_date.lastIndexOf(",{\"count\":0,"))+"]";
-				        
+				       
 
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
@@ -627,6 +628,7 @@ public class NaverCrawlerService {
 
 				update_date=getChangeString(update_date.replaceAll(" ", ""));
 				//System.out.println("news update_date : "+update_date);
+				
 				jsonObject.put("update_date", update_date);
 				
 			} catch (IOException e) {
@@ -646,7 +648,7 @@ public class NaverCrawlerService {
 				fromDate=fromDate.replace(".", "")+"235959";
 				toDate=toDate.replace(".", "")+"000000";
 				String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,"1");
-				System.out.println("url : "+url);
+				//System.out.println("url : "+url);
 				Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
 				Elements elements_title = doc.select(".txt_info");
 				
@@ -698,8 +700,8 @@ public class NaverCrawlerService {
 				        Calendar c1 = Calendar.getInstance();
 				        Calendar c2 = Calendar.getInstance();
 				        
-				        c1.setTime(eDate);
-				        c2.setTime(sDate);
+				        c1.setTime(sDate);
+				        c2.setTime(eDate);
 				        update_date+=date;
 				        while(c1.compareTo(c2) != 1) {
 				        	update_date+="\"date\":\""+sdf.format(c1.getTime())+"\"},{\"count\":0,";
@@ -785,8 +787,8 @@ public class NaverCrawlerService {
 				        Calendar c1 = Calendar.getInstance();
 				        Calendar c2 = Calendar.getInstance();
 				        
-				        c1.setTime(eDate);
-				        c2.setTime(sDate);
+				        c1.setTime(sDate);
+				        c2.setTime(eDate);
 				        update_date+=date;
 				        while(c1.compareTo(c2) != 1) {
 				        	update_date+="\"date\":\""+sdf.format(c1.getTime())+"\"},{\"count\":0,";

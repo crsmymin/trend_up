@@ -47,7 +47,7 @@
 
      
      <!-- rolling file에는 debug, console에는 info 분리하여 처리 가능하다. -->
-     <logger name="com.cc.ap" additivity="false" >
+     <logger name="com.cside.ap" additivity="false" >
       <AppenderRef ref="console" level="info" />
       <AppenderRef ref="file" level="debug" />
      </logger>
