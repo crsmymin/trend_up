@@ -31,7 +31,7 @@ class Buzz extends Component {
           <div className="info">
             <h4>{this.props.searchValue}</h4>
             <div className="buzz-quantity">
-              <span>전체버즈량</span>
+              <span>전체 언급량</span>
               <strong>
                 {this.props.buzzTotal}
               </strong>

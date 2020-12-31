@@ -122,9 +122,6 @@ class App extends Component {
        listOrigin,
        isLoadingArticle: false
      })
-
-  
-
       this.draw_d3();
     })
     .catch(error => {
