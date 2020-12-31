@@ -42,15 +42,6 @@ class Keywords extends Component {
         </div>
         ) : (
         <>
-        <h3 className="section-title">
-          미디어별 주요 키워드
-          <span className="tool-tip">
-            ?
-            <p className="description">
-              뉴스 자료를 통해 더 자세한 내용을 살펴보겠습니다. ▶용인 우리제일교회 집단 감염 관련 기사
-            </p>
-          </span>
-        </h3>
         <div className="keywords flex-cont">
           {/* 매스미디어 */}
           <div className="list mass-media">

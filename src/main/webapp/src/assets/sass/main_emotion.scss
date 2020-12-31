@@ -1,0 +1,100 @@
+&#emotion {
+  .section-title {
+    margin: 15px 0 35px;
+    font-size: 1.4rem;
+    padding: 0 0 15px 35px;
+    border-bottom: 2px solid #ccc;
+    cursor: pointer;
+  }
+
+  .emotional-words {
+    display: none;
+    &.open {
+      display: flex;
+    }
+    #bubbleChart {
+      width: 70%;
+    }
+    .words {
+      width: 30%;
+      h4 {
+        margin: 22px 0;
+        font-size: 1.2rem;
+        font-weight: normal;
+        text-align: center;
+        strong {
+          color: $main-color;
+          font-size: 1.2rem;
+          font-weight: bold;
+        }
+      }
+      table {
+        width: 100%;
+        border-spacing: 0;
+        th {
+          padding: 4px 7px 3px;
+          border-top: 1px solid #707070;
+          border-bottom: 1px solid #707070;
+          font-size: 15px;
+          text-align: center;
+          &:nth-child(1) {
+            width: 12%;
+          }
+          &:nth-child(2) {
+            width: 23%;
+          }
+          &:nth-child(3) {
+            width: 45%;
+            text-align: left;
+          }
+          &:nth-child(4) {
+            width: 20%;
+          }
+        }
+        td {
+          padding: 8px 7px 7px;
+          font-size: 14px;
+          text-align: center;
+          &:nth-child(1) {
+            width: 12%;
+          }
+          &:nth-child(2) {
+            width: 23%;
+            span {
+              font-size: 14px;
+              text-align: center;
+              display: block;
+              width: 85%;
+              margin: 0 auto;
+              padding: 2px 0;
+              border-radius: 25px;
+              -webkit-border-radius: 25px;
+              -moz-border-radius: 25px;
+              -ms-border-radius: 25px;
+              -o-border-radius: 25px;
+              &.pos {
+                border: 1px solid #5d9cec;
+                color: #5d9cec;
+              }
+              &.neg {
+                border: 1px solid #ef6674;
+                color: #ef6674;
+              }
+              &.neu {
+                border: 1px solid #7cbf4c;
+                color: #7cbf4c;
+              }
+            }
+          }
+          &:nth-child(3) {
+            width: 45%;
+            text-align: left;
+          }
+          &:nth-child(4) {
+            width: 20%;
+          }
+        }
+      }
+    }
+  }
+}

@@ -8,8 +8,10 @@ import Header from '../layouts/header.jsx'
 import Footer from '../layouts/footer.jsx'
 import SearchTrend from '../layouts/searchTrend.jsx'
 import Keywords from '../components/keywords.jsx'
+import Statistics from '../components/statistics.jsx'
 import Buzz from '../components/buzz.jsx'
 import Relation from '../components/relation.jsx'
+import Emotion from '../components/emotion.jsx'
 import Article from '../components/article.jsx'
 
 class App extends Component {
@@ -389,6 +391,9 @@ class App extends Component {
               getSearchResultByKeywords={this._getSearchResultByKeywords}
               selectedDate={this.state.selectedDate}
             />
+            <Statistics 
+              isLoadingKeyword={this.state.isLoadingKeyword}
+            />
             <Buzz
               searchValue={this.state.searchValue}
               buzzTotal={this.state.buzzTotal}
@@ -401,6 +406,9 @@ class App extends Component {
               searchValue={this.state.searchValue}
               relatedWords={this.state.relatedWords}
               isLoadingRelated={this.state.isLoadingRelated}
+            />
+            <Emotion 
+              searchValue={this.state.searchValue}
             />
             <Article
               searchValue={this.state.searchValue}

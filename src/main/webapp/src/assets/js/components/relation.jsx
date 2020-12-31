@@ -18,8 +18,7 @@ class Relation extends Component {
       <section id="relation" className="cf">
         <>
         <h3 className="section-title">
-            연관어 순위
-          <span className="tool-tip">?<p className="description">..............</p></span>
+            연관어 순위 : {this.props.searchValue}
           <img src="./src/assets/images/accordion_btn.svg" alt="" />  
         </h3>
         <div className="relation-words flex-cont">
