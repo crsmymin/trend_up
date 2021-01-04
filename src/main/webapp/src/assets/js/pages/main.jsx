@@ -18,6 +18,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      page : "trend",
       fromDate : "",
       toDate : "",
       searchValue : "",
@@ -150,7 +151,6 @@ class App extends Component {
     .then(res => {
       const data = res.data;
       let relatedWords = JSON.parse(data.morpheme);
-      
       const arrayList =new Array();
 		
       for(let i=0; i<relatedWords.length; i++){
@@ -225,6 +225,11 @@ class App extends Component {
     })
   }
 
+  draw_emotion = () => {
+    // 감성어 변화 그래프
+    
+  }
+
   draw_buz = () => {
     //버즈추이 그래프
     let toDate = new Date(this.state.fromDate);
@@ -297,7 +302,7 @@ class App extends Component {
       buzzTotalCafe: total_c
     })
 
-  let ctx = document.getElementById("buzzChart");
+    let ctx = document.getElementById("buzzChart");
     $('#buzzChart').removeData();
     var myChart = new Chart(ctx, {
           type: 'line',
@@ -368,13 +373,15 @@ class App extends Component {
   }
 
   componentDidMount() {
-    
+    this.draw_emotion();
   }
 
   render(){
     return (
       <Fragment>
-        <Header />
+        <Header 
+          page={this.state.page}
+        />
         <SearchTrend
           getSearchResultByPeriod={this._getSearchResultByPeriod}
         />

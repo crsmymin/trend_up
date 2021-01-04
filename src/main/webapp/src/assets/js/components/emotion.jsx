@@ -24,7 +24,9 @@ class Emotion extends Component {
         </h3>
         <div className="emotional-words flex-cont">
           {/* 감성어 버블차트 */}
-          <div id="bubbleChart"></div>
+          <div className="chart">
+            <canvas id="bubbleChart"></canvas>
+          </div>
           {/* 감성어 버블차트 끝*/}
 
           {/* 감성어 리스트}*/}

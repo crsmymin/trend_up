@@ -7,7 +7,6 @@ import "react-datepicker/dist/react-datepicker.css";
 class SearchTrend extends Component {
   constructor(props) {
     let today = new Date();  
-
     let fromDate = new Date(today);
     let hours =fromDate.getHours();
     fromDate.setDate(fromDate.getDate()-7);
