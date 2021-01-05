@@ -95,7 +95,8 @@ public class SearchRestController {
 		map.put("action", "searchNaverNews");
 		
 
-		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		//String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		String searchValue ="발레파킹";
 		searchModel.setSearchValue(searchValue);
 		searchModel.setNaverNews( naverService.getNaverNews(searchModel.getSearchValue()) );
 
@@ -117,7 +118,8 @@ public class SearchRestController {
 	      Map<String, String> map = new HashMap();
 	      map.put("login_id", loginID);
 	      map.put("action", "drawWordCloud");
-	      String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+	      //String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		  String searchValue ="발레파킹";
 			searchModel.setSearchValue(searchValue);
 	      String naverContents = this.naverCrawlerService.getUnifiedSearchNewsDesc(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate());
 
@@ -135,9 +137,11 @@ public class SearchRestController {
        }
 
        naverContents = this.naverCrawlerService.getUnifiedSearchCafeDesc(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate());
-       
+       //System.out.println("naverContents_news"+naverContents);
        String naverContents_cafe = "";
-       if (!naverContents.equals("") && naverContents != null) {
+       
+     
+       if (!naverContents.equals("") && naverContents != null && !naverContents.equals("{\"description\":\"\"}")) {
           JSONParser parser = new JSONParser();
           Object obj = parser.parse(naverContents);
           JSONObject jsonObj = (JSONObject)obj;
@@ -150,9 +154,9 @@ public class SearchRestController {
        }
 
        naverContents = this.naverCrawlerService.getUnifiedSearchBlogDesc(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate());
-      
+       //System.out.println("naverContents_cafe"+naverContents);
        String naverContents_blog = "";
-       if (!naverContents.equals("") && naverContents != null) {
+       if (!naverContents.equals("") && naverContents != null && !naverContents.equals("{\"description\":\"\"}")) {
           JSONParser parser = new JSONParser();
           Object obj = parser.parse(naverContents);
           JSONObject jsonObj = (JSONObject)obj;
@@ -162,8 +166,9 @@ public class SearchRestController {
           }
 
           naverContents_blog = this.morphemeAnalysisSevice.getMorpheme(naverContents);
+          //System.out.println("naverContents_cafe"+naverContents);
        }
-       String naverContents_total = naverContents_news;// + naverContents_cafe + naverContents_blog;
+       String naverContents_total = naverContents_news + naverContents_cafe + naverContents_blog;
        
        naverContents_total = naverContents_total.replace("[", "");
        naverContents_total = naverContents_total.replace("]", ",");
@@ -188,8 +193,9 @@ public class SearchRestController {
 	      map.put("login_id", loginID);
 	      map.put("action", "drawBuzzChart");
 
-	      String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
-			searchModel.setSearchValue(searchValue);
+	      //String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+			String searchValue ="발레파킹";
+				searchModel.setSearchValue(searchValue);
 			
 	      String naverContents_news = this.naverCrawlerService.getSearchNewsBuzz(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate());
 			//System.out.println(naverContents_news);
@@ -220,8 +226,10 @@ public class SearchRestController {
 			}
 
 			searchModel.setUploadDateCafe(naverContents_cafe);
-		
 
+			 //System.out.println(naverContents_news);
+			 //System.out.println(naverContents_blog);
+			 //System.out.println(naverContents_cafe);
 	      return new ResponseEntity(searchModel, httpStatus);
 	   }
 	

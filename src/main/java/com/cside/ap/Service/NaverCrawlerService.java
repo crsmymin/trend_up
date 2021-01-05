@@ -416,7 +416,7 @@ public class NaverCrawlerService {
 
 				//System.out.println("[Cafe 총 건 수] " + cntText[1]);
 				
-				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll(" ", "");
+				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 
 				Elements elements = doc.select("#cafeColl .coll_cont li");
 				int totalPage = Integer.parseInt(cnt) / 10;
@@ -673,18 +673,16 @@ public class NaverCrawlerService {
 				        	update_date+="\"date\":\""+sdf.format(c1.getTime())+"\"},{\"count\":0,";
 				            c1.add(Calendar.DATE, 1);
 				        }
-				        update_date=update_date.substring(0,update_date.lastIndexOf(",{\"count\":0,"))+"]";
-				        //System.out.println(update_date.replaceAll(" ", ""));
-
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				
-					update_date=getChangeString(update_date.replaceAll(" ", ""));
-					//System.out.println("blog update_date : "+update_date);
-					
-				jsonObject.put("update_date", update_date);
+					if(!update_date.equals("[{\"count\":0,")) {
+				        update_date=update_date.substring(0,update_date.lastIndexOf(",{\"count\":0,"))+"]";
+				        //System.out.println(update_date.replaceAll(" ", ""));
+				        update_date=getChangeString(update_date.replaceAll(" ", ""));
+					}
+					jsonObject.put("update_date", update_date);
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -762,17 +760,17 @@ public class NaverCrawlerService {
 				        	update_date+="\"date\":\""+sdf.format(c1.getTime())+"\"},{\"count\":0,";
 				            c1.add(Calendar.DATE, 1);
 				        }
-				        update_date=update_date.substring(0,update_date.lastIndexOf(",{\"count\":0,"))+"]";
-				        //System.out.println(update_date.replaceAll(" ", ""));
+				        
 
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				
-				update_date=getChangeString(update_date.replaceAll(" ", ""));
-				//System.out.println(update_date);
-				
+				if(!update_date.equals("[{\"count\":0,")) {
+			        update_date=update_date.substring(0,update_date.lastIndexOf(",{\"count\":0,"))+"]";
+			        //System.out.println(update_date.replaceAll(" ", ""));
+			        update_date=getChangeString(update_date.replaceAll(" ", ""));
+				}
 				jsonObject.put("update_date", update_date);
 				
 			} catch (IOException e) {
