@@ -143,60 +143,60 @@ class App extends Component {
   }
   
   draw_emotion = () => {
-      let resData = this.state.emotionWords;
-      let width = 600;
-      let height = 400;
-      let fill = d3.scale.category20c();
-      let wordScale = d3.scale.linear().range([30, 70]);
+    // 감성어 순위
+    let resData = this.state.emotionWords;
+    let width = 600;
+    let height = 400;
+    let fill = d3.scale.category20c();
+    let wordScale = d3.scale.linear().range([30, 70]);
 
-      let subjects = resData
-        .map(function (d) { return { text: d.word, size: +d.count, type: d.emotion } })
-        .sort(function (a, b) { return d3.descending(a.size, b.size); })
-        .slice(0, 100);
+    let subjects = resData
+      .map(function (d) { return { text: d.word, size: +d.count, type: d.emotion } })
+      .sort(function (a, b) { return d3.descending(a.size, b.size); })
+      .slice(0, 100);
 
-      wordScale.domain([
-        d3.min(subjects, function (d) { return d.size; }),
-        d3.max(subjects, function (d) { return d.size; }),
-      ]);
+    wordScale.domain([
+      d3.min(subjects, function (d) { return d.size; }),
+      d3.max(subjects, function (d) { return d.size; }),
+    ]);
 
-      d3.layout.cloud().size([width, height])
-        .words(subjects)
-        .padding(1)
-        .rotate(function () { return ~~(Math.random() * 2) * 0; })
-        .font("Impact")
-        .fontSize(function (d) { return wordScale(d.size); })
-        .on("end", draw)
-        .start();
+    d3.layout.cloud().size([width, height])
+      .words(subjects)
+      .padding(1)
+      .rotate(function () { return ~~(Math.random() * 2) * 0; })
+      .font("Impact")
+      .fontSize(function (d) { return wordScale(d.size); })
+      .on("end", draw)
+      .start();
 
-      function draw(words) {
-        let wordCloudWrap = document.getElementById("wordCloud2");
-        
-			  $('#wordCloud2').html("");
-        d3.select(wordCloudWrap).append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          .append("g")
-          .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")")
-          .selectAll("text")
-          .data(words)
-          .enter().append("text")
-          .style("font-size", function (d) { 
-            return d.size + "px"; 
-          })
-          .style("font-family", "Impact")
-          .style("fill", function(d,i) { 
-            console.log(d.type);
-            return d.type === "pos" ? "#5d9cec" : d.type === "neg" ? "#ef6674" : "#7cbf4c";
-          })
-          .attr("text-anchor", "middle")
-          .attr("transform", function (d) {
-            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-          })
-          .text(function (d) { 
-            return d.text; 
-          });
-          console.log(subjects[1]);
-      }
+    function draw(words) {
+      let wordCloudWrap = document.getElementById("wordCloud2");
+      
+      $('#wordCloud2').html("");
+      d3.select(wordCloudWrap).append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")")
+        .selectAll("text")
+        .data(words)
+        .enter().append("text")
+        .style("font-size", function (d) { 
+          return d.size + "px"; 
+        })
+        .style("font-family", "Impact")
+        .style("fill", function(d,i) { 
+          console.log(d.type);
+          return d.type === "pos" ? "#5d9cec" : d.type === "neg" ? "#ef6674" : "#7cbf4c";
+        })
+        .attr("text-anchor", "middle")
+        .attr("transform", function (d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        })
+        .text(function (d) { 
+          return d.text; 
+        });
+    }
   }
 
   draw_related = () =>{
