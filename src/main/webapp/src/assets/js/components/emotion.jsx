@@ -24,9 +24,7 @@ class Emotion extends Component {
         </h3>
         <div className="emotional-words flex-cont">
           {/* 감성어 버블차트 */}
-          <div className="chart">
-            <canvas id="bubbleChart"></canvas>
-          </div>
+          <div id="wordCloud2"></div>
           {/* 감성어 버블차트 끝*/}
 
           {/* 감성어 리스트}*/}
@@ -42,24 +40,18 @@ class Emotion extends Component {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td><span className="pos">긍정</span></td>
-                  <td>즐겁다</td>
-                  <td>18</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td><span className="neg">부정</span></td>
-                  <td>싫다</td>
-                  <td>12</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td><span className="neu">중립</span></td>
-                  <td>상관없다</td>
-                  <td>8</td>
-                </tr>
+                {this.props.emotionWords
+                .sort((a, b) => b.count - a.count)
+                .map((emotionWords, index) =>
+                  <tr key={index + 1}>
+                    <td>{index + 1}</td>
+                    {emotionWords.emotion === "pos" ? (<td><span className="pos">긍정</span></td>) : null}
+                    {emotionWords.emotion === "neg" ? (<td><span className="neg">부정</span></td>) : null}
+                    {emotionWords.emotion === "neu" ? (<td><span className="neu">중립</span></td>) : null}
+                    <td>{emotionWords.word}</td>
+                    <td>{emotionWords.count}</td>
+                  </tr>
+                )} 
               </tbody>
             </table>
           </div>

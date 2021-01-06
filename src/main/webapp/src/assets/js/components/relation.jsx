@@ -30,7 +30,7 @@ class Relation extends Component {
           <div className="words">
             <h4><strong>{this.props.searchValue}</strong> 연관어</h4>
             <ul>
-            {this.props.relatedWords
+              {this.props.relatedWords
               .sort((a, b) => b.count - a.count)
               .map((relatedWords, index) =>
                 <li key={index + 1} className="flex-cont">

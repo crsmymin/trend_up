@@ -1,7 +1,7 @@
 // import react modules
 import React, { Component, Fragment } from "react";
 import ReactDom from "react-dom";
-import axios from 'axios'
+import axios from 'axios';
 
 // components
 import Header from '../layouts/header.jsx'
@@ -26,7 +26,18 @@ class App extends Component {
       zum: [],
       twitter: [],
       buzzTotal: "",
-      relatedWords: [], 
+      relatedWords: [],
+      emotionWords: [
+        {emotion: "pos", count: 100, word: "흥미롭다"},
+        {emotion: "pos", count: 55, word: "행복하다"},
+        {emotion: "pos", count: 18, word: "즐겁다"},
+        {emotion: "neg", count: 12, word: "싫다"},
+        {emotion: "neg", count: 8, word: "별로다"},
+        {emotion: "neu", count: 20, word: "모르겠다"},
+        {emotion: "neu", count: 8, word: "상관없다"},
+        {emotion: "neg", count: 32, word: "나쁘다"},
+        {emotion: "neu", count: 1, word: "관심없다"},
+      ], 
       newsOrigin: "",
       newsCrawler: [],
       newsBlog: [],
@@ -122,15 +133,64 @@ class App extends Component {
        newsCafe,
        listOrigin,
        isLoadingArticle: false
-     })
-      this.draw_d3();
+      })
+      this.draw_related();
     })
     .catch(error => {
       console.log(error)
     })
   }
+  
+  draw_emotion = () => {
+      let resData = this.state.emotionWords;
+      let width = 600;
+      let height = 400;
+      let fill = d3.scale.category20c();
+      let wordScale = d3.scale.linear().range([30, 70]);
 
-  draw_d3 = () =>{
+      let subjects = resData
+        .map(function (d) { return { text: d.word, size: +d.count } })
+        .sort(function (a, b) { return d3.descending(a.size, b.size); })
+        .slice(0, 100);
+
+      wordScale.domain([
+        d3.min(subjects, function (d) { return d.size; }),
+        d3.max(subjects, function (d) { return d.size; }),
+      ]);
+
+      d3.layout.cloud().size([width, height])
+        .words(subjects)
+        .padding(1)
+        .rotate(function () { return ~~(Math.random() * 2) * 0; })
+        .font("Impact")
+        .fontSize(function (d) { return wordScale(d.size); })
+        .on("end", draw)
+        .start();
+
+      function draw(words) {
+        let wordCloudWrap = document.getElementById("wordCloud2");
+        
+			  $('#wordCloud2').html("");
+        d3.select(wordCloudWrap).append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .append("g")
+          .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")")
+          .selectAll("text")
+          .data(words)
+          .enter().append("text")
+          .style("font-size", function (d) { return d.size + "px"; })
+          .style("font-family", "Impact")
+          .style("fill", function (d, i) { return fill(d.size) })
+          .attr("text-anchor", "middle")
+          .attr("transform", function (d) {
+            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+          .text(function (d) { return d.text; });
+      }
+  }
+
+  draw_related = () =>{
     // 연관어 순위 
     let toDate = new Date(this.state.fromDate);
     let to_month=1+toDate.getMonth();
@@ -223,11 +283,6 @@ class App extends Component {
     .catch(error => {
       console.log(error)
     })
-  }
-
-  draw_emotion = () => {
-    // 감성어 변화 그래프
-    
   }
 
   draw_buz = () => {
@@ -413,6 +468,7 @@ class App extends Component {
             />
             <Emotion 
               searchValue={this.state.searchValue}
+              emotionWords={this.state.emotionWords}
             />
             <Article
               searchValue={this.state.searchValue}
