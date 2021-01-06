@@ -178,7 +178,7 @@ class SearchTrend extends Component {
           </ul>
           <div className="btn-wrap">
             <button type="button" id="btnExecution" className="btn-s" onClick={this._doAnalyze}>
-              분석실행
+              트렌드 순위 조회
             </button>
           </div>
         </div>

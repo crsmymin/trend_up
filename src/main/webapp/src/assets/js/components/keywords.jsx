@@ -46,7 +46,7 @@ class Keywords extends Component {
           {/* 매스미디어 */}
           <div className="list mass-media">
             <figure className="sns-icon"></figure>
-            <h4><strong>매스미디어</strong>순위</h4>
+            <h4><strong>매스미디어 </strong>순위</h4>
             <ul className="scrollbar-inner">
               {this.props.naver.map(
                 (naver, index) =>
@@ -65,7 +65,7 @@ class Keywords extends Component {
           {/* 트위터 */}
           <div className="list twitter">
             <figure className="sns-icon"></figure>
-            <h4><strong>트위터</strong>순위</h4>
+            <h4><strong>트위터 </strong>순위</h4>
             <ul className="scrollbar-inner">
               {this.props.twitter.map(
                 (twitter, index) =>
