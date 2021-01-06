@@ -27,6 +27,7 @@ class App extends Component {
       twitter: [],
       buzzTotal: "",
       relatedWords: [],
+      // 예시 데이터
       emotionWords: [
         {emotion: "pos", count: 100, word: "흥미롭다"},
         {emotion: "pos", count: 55, word: "행복하다"},
@@ -149,7 +150,7 @@ class App extends Component {
       let wordScale = d3.scale.linear().range([30, 70]);
 
       let subjects = resData
-        .map(function (d) { return { text: d.word, size: +d.count } })
+        .map(function (d) { return { text: d.word, size: +d.count, type: d.emotion } })
         .sort(function (a, b) { return d3.descending(a.size, b.size); })
         .slice(0, 100);
 
@@ -179,14 +180,22 @@ class App extends Component {
           .selectAll("text")
           .data(words)
           .enter().append("text")
-          .style("font-size", function (d) { return d.size + "px"; })
+          .style("font-size", function (d) { 
+            return d.size + "px"; 
+          })
           .style("font-family", "Impact")
-          .style("fill", function (d, i) { return fill(d.size) })
+          .style("fill", function(d,i) { 
+            console.log(d.type);
+            return d.type === "pos" ? "#5d9cec" : d.type === "neg" ? "#ef6674" : "#7cbf4c";
+          })
           .attr("text-anchor", "middle")
           .attr("transform", function (d) {
             return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
           })
-          .text(function (d) { return d.text; });
+          .text(function (d) { 
+            return d.text; 
+          });
+          console.log(subjects[1]);
       }
   }
 
