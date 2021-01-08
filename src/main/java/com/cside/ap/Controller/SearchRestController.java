@@ -1,6 +1,7 @@
 package com.cside.ap.Controller;
 
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cside.ap.Service.MorphemeAnalysisSevice;
@@ -42,10 +44,7 @@ public class SearchRestController {
 
 	@RequestMapping( value="/searchRank" )
 	public void searchRank(SearchModel searchModel,HttpServletRequest request,HttpServletResponse response) throws Exception {
-		response.setHeader("Content-Type", "application/xml");
-		response.setContentType("text/xml;charset=UTF-8");
-		response.setCharacterEncoding("utf-8"); 
-
+		response.setHeader("Content-Type", "text/html;charset=utf-8");
 		JSONObject jsonObject = new JSONObject(); 
 		
 		HttpSession session = request.getSession();
@@ -82,8 +81,9 @@ public class SearchRestController {
 		response.getWriter().print(jsonObject);
 	}
 	
-	@RequestMapping( value="/searchNaverNews")
-	public ResponseEntity<SearchModel> searchNaverNews(SearchModel searchModel,HttpServletRequest request) throws Exception {
+	@RequestMapping( value="/searchNaverNews" , method = RequestMethod.POST )
+	public ResponseEntity<SearchModel> searchNaverNews(SearchModel searchModel,HttpServletRequest request,HttpServletResponse response) throws Exception {
+		//System.out.println(searchModel.getSearchValue());
 		
 		HttpStatus httpStatus =HttpStatus.OK;
 		
@@ -95,11 +95,11 @@ public class SearchRestController {
 		map.put("action", "searchNaverNews");
 		
 
-		//String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
-		String searchValue ="발레파킹";
+		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
 		searchModel.setSearchValue(searchValue);
 		searchModel.setNaverNews( naverService.getNaverNews(searchModel.getSearchValue()) );
 
+		//System.out.println("1"+searchModel.getSearchValue());
 		//Twitter API
 		//searchModel.setTwitter( twitterService.getTwitterSearch(searchModel.getSearchValue()) );
 		
@@ -112,19 +112,24 @@ public class SearchRestController {
 	}
 	@RequestMapping( value="/drawWordCloud")
 	public ResponseEntity<SearchModel> drawWordCloud(SearchModel searchModel, HttpServletRequest request) throws Exception {
-	      HttpStatus httpStatus = HttpStatus.OK;
+
+		HttpStatus httpStatus = HttpStatus.OK;
 	      HttpSession session = request.getSession();
 	      String loginID = (String)session.getAttribute("loginID");
 	      Map<String, String> map = new HashMap();
 	      map.put("login_id", loginID);
 	      map.put("action", "drawWordCloud");
-	      //String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
-		  String searchValue ="발레파킹";
+		  
+	      String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
 			searchModel.setSearchValue(searchValue);
+			
+			//System.out.println("2"+searchModel.getSearchValue());
 	      String naverContents = this.naverCrawlerService.getUnifiedSearchNewsDesc(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate());
 
 		 String naverContents_news = "";
-       if (!naverContents.equals("") && naverContents != null) {
+		 
+		 //System.out.println(naverContents);
+       if (!naverContents.equals("") && naverContents != null && !naverContents.equals("{\"description\":\"\"}")) {
           JSONParser parser = new JSONParser();
           Object obj = parser.parse(naverContents);
           JSONObject jsonObj = (JSONObject)obj;
@@ -180,52 +185,36 @@ public class SearchRestController {
           JSONArray jsonObj2 = (JSONArray)obj2;
           searchModel.setMorpheme(jsonObj2.toString());
        }
-       //System.out.println(naverContents_total);
+       System.out.println(naverContents_total);
 	      
 	      return new ResponseEntity(searchModel, httpStatus);
 	   }
 	@RequestMapping( value="/drawBuzzChart")
 	public ResponseEntity<SearchModel> drawBuzzChart(SearchModel searchModel, HttpServletRequest request) throws Exception {
+		
+		
 	      HttpStatus httpStatus = HttpStatus.OK;
 	      HttpSession session = request.getSession();
 	      String loginID = (String)session.getAttribute("loginID");
 	      Map<String, String> map = new HashMap();
 	      map.put("login_id", loginID);
 	      map.put("action", "drawBuzzChart");
-
-	      //String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
-			String searchValue ="발레파킹";
-				searchModel.setSearchValue(searchValue);
 			
-	      String naverContents_news = this.naverCrawlerService.getSearchNewsBuzz(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate());
-			//System.out.println(naverContents_news);
-			if (!naverContents_news.equals("")) {
-			JSONParser parser = new JSONParser();
-			Object obj = parser.parse(naverContents_news);
-			JSONObject jsonObj = (JSONObject)obj;
-			naverContents_news = (String)jsonObj.get("update_date");
-			}
-
-			searchModel.setUploadDateNews(naverContents_news);
-			String naverContents_blog = this.naverCrawlerService.getSearchBlogBuzz(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate());
-			if (!naverContents_blog.equals("")) {
-			JSONParser parser = new JSONParser();
-			Object obj = parser.parse(naverContents_blog);
-			JSONObject jsonObj = (JSONObject)obj;
-			naverContents_blog = (String)jsonObj.get("update_date");
-			}
-
-			searchModel.setUploadDateBlog(naverContents_blog);
-			String naverContents_cafe = this.naverCrawlerService.getSearchCafeBuzz(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate());
+	      String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+			searchModel.setSearchValue(searchValue);
+			System.out.println("3"+searchModel.getSearchValue());
+	      JSONArray naverContents_news = new JSONArray(); 
+			naverContents_news = this.naverCrawlerService.getSearchBuzz(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate(), "news");
+			searchModel.setUploadDateNews(naverContents_news.toJSONString());
 			
-			if (!naverContents_cafe.equals("")) {
-			JSONParser parser = new JSONParser();
-			Object obj = parser.parse(naverContents_cafe);
-			JSONObject jsonObj = (JSONObject)obj;
-			naverContents_cafe = (String)jsonObj.get("update_date");
-			}
-
-			searchModel.setUploadDateCafe(naverContents_cafe);
+			JSONArray naverContents_blog = new JSONArray(); 
+			naverContents_blog = this.naverCrawlerService.getSearchBuzz(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate(),"blog");
+			searchModel.setUploadDateBlog(naverContents_blog.toJSONString());
+			
+			//JSONArray naverContents_cafe = new JSONArray(); 
+			//naverContents_cafe = this.naverCrawlerService.getSearchBuzz(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate(),"twitter");
+			//searchModel.setUploadDateCafe(naverContents_cafe.toJSONString());
+			
 
 			 //System.out.println(naverContents_news);
 			 //System.out.println(naverContents_blog);
@@ -244,6 +233,7 @@ public class SearchRestController {
 		Map<String, String> map=new HashMap<String, String>();
 		map.put("login_id", loginID);
 		map.put("action", "searchNaverNews");
+		
 		searchModel.setNaverCrawlerNews( naverCrawlerService.getUnifiedSearchNews(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate(), searchModel.getStart()) );
 		
 		

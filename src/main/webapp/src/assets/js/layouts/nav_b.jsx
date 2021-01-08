@@ -93,8 +93,8 @@ class Nav extends Component {
       return false;
     } else {
       axios({
-        method: 'get',
-        url: "/searchRank",
+        method: 'post',
+        url: "/searchRank", 
         params: {
           searchValue: selectedDate + "T" + this.state.hours
         }

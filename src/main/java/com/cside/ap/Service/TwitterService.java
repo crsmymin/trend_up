@@ -14,12 +14,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import twitter4j.Query;
-import twitter4j.QueryResult;
-import twitter4j.Twitter;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
-
 @Service
 public class TwitterService {
 	
@@ -58,7 +52,7 @@ public class TwitterService {
 		}
 		return jsonObject_result;
 	}
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public String getTwitterSearch(String searchValue) {
 		JSONObject jsonObject = new JSONObject();
@@ -83,5 +77,5 @@ public class TwitterService {
 		}
 		System.out.println("트위터 검색 순위 : {} "+jsonObject);
 		return new Gson().toJson(jsonObject);
-	}
+	}*/
 }

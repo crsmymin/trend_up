@@ -82,7 +82,7 @@ class App extends Component {
         this.classList.add("is-selected");
       })
     }
-   
+    
     // 컨텐츠 기간검색 초기실행
     this._getSearchResultByKeywords(searchResult.naver.naverRank[0]);
   }
@@ -103,7 +103,7 @@ class App extends Component {
     
     // 컨텐츠 기간검색
     axios({
-      method: 'get',
+      method: 'post',
       url: "/searchNaverNews",
       params: {
         searchValue: keyword,
@@ -127,7 +127,6 @@ class App extends Component {
       var toDate= this.state.toDate;
       this.setState({
        searchValue,
-       buzzTotal,
        newsOrigin,
        newsCrawler,
        newsBlog,
@@ -221,19 +220,20 @@ class App extends Component {
       const data = res.data;
       let relatedWords = JSON.parse(data.morpheme);
       const arrayList =new Array();
-		
-      for(let i=0; i<relatedWords.length; i++){
-        let unique = true;
-        for(let j=0;j<arrayList.length;j++)
-          if ((relatedWords[i].word === arrayList[j].word)) {
-            arrayList[j].count=arrayList[j].count+relatedWords[i].count;
-                  unique = false;
-              }
-        if (unique) {
-          arrayList.push(relatedWords[i]);
-          }
-      }
 
+      if (relatedWords != null && relatedWords.length > 1) {
+        for(let i=0; i<relatedWords.length; i++){
+          let unique = true;
+          for(let j=0;j<arrayList.length;j++)
+            if ((relatedWords[i].word === arrayList[j].word)) {
+              arrayList[j].count=arrayList[j].count+relatedWords[i].count;
+                    unique = false;
+                }
+          if (unique) {
+            arrayList.push(relatedWords[i]);
+            }
+        }
+     }
       this.setState({
         isLoadingRelated: false,
         relatedWords :arrayList
@@ -326,7 +326,7 @@ class App extends Component {
     let total_n =0;
     let total_b =0;
     let total_c =0;
-  
+
     if(data.uploadDateNews!=null){
       var arrayList_news =this.string_to_array(data.uploadDateNews);
       var array_count_news =[];

@@ -111,22 +111,22 @@ class Statistics extends Component {
               </div>
             </div>
             <div className="amount contents">
-              <h4>월간 콘텐츠 발행량</h4>
+              <h4>콘텐츠 발행량</h4>
               <div className="sorts flex-cont">
                 <div className="factor">
                   <span className="img"></span>
                   <span className="counts">12,222</span>
-                  <span className="type">블로그</span>
+                  <span className="type">뉴스</span>
                 </div>
                 <div className="factor">
                   <span className="img"></span>
                   <span className="counts">34,123</span>
-                  <span className="type">카페</span>
+                  <span className="type">블로그</span>
                 </div>
                 <div className="factor">
                   <span className="img"></span>
                   <span className="counts">43,333</span>
-                  <span className="type">웹 사이트</span>
+                  <span className="type">카페</span>
                 </div>
               </div>
             </div>
