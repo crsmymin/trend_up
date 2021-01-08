@@ -57,11 +57,8 @@ public class NaverCrawlerService {
 		try {
 			fromDate=fromDate.replace("-", "").replace(".", "")+"235959";
 			toDate=toDate.replace(".", "")+"000000";
-			
-		System.out.println(keyword);
 
 			String url = String.format(NAVER_UNIFIED_NEWS_URL,keyword, fromDate, toDate,start);
-			
 			
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
 			Elements elements_title = doc.select(".sub_expander .txt_info");
@@ -506,12 +503,12 @@ public class NaverCrawlerService {
 	}
 	
 	// 버즈 분석 
-		public JSONArray  getSearchBuzz(String keyword, String fromDate, String toDate,String target) {
+		public JSONArray  getSearchBuzz(String keyword, String fromDate_str, String toDate,String target) {
 			
-			fromDate=fromDate.replace(".", "");
+			Integer fromDate=Integer.parseInt(fromDate_str.replace(".", ""))+1;
 			toDate=toDate.replace(".", "");
+		System.out.println(keyword);
 			
-			System.out.println(keyword);
 			URL url = null;
 	        URLConnection connection = null;
 	        StringBuilder responseBody = new StringBuilder();
@@ -535,7 +532,7 @@ public class NaverCrawlerService {
 	            argument.put("target",target);
 	            argument.put("keyword",keyword);
 	            argument.put("from",toDate);
-	            argument.put("to",fromDate);
+	            argument.put("to",fromDate.toString());
 	            argument.put("interval","day");
 	 
 	            jsonBody.put("argument", argument);
@@ -560,7 +557,7 @@ public class NaverCrawlerService {
 				JSONObject jsonObj = (JSONObject) obj;
 				JSONObject jsonObj2 = (JSONObject) jsonObj.get("return_object");
 
-				System.out.println(jsonObj2);
+				//System.out.println(jsonObj2);
 				JSONObject retrieve = (JSONObject) jsonObj2.get("retrieve");
 				
 				String a=retrieve.toString();
