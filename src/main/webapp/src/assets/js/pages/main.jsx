@@ -57,18 +57,65 @@ class App extends Component {
     }
   }
 
-  // get search result by period
-  _getSearchResultByPeriod = (searchResult,startdate,enddate) => {
-  // 키워드 순위 세팅
+  // get data by period
+  _getDataByPeriod = (fromDate,toDate) => {
+    this.setState({
+      fromDate: fromDate,
+      toDate: toDate
+    })
+
+    //기간 설정을 통한 컨텐츠 조회
+    axios({
+      method: 'post',
+      url: "/searchNaverNews",
+      params: {
+        searchValue: this.state.searchValue,
+        fromDate: this.state.fromDate,
+        toDate: this.state.toDate,
+        start: 1
+      }
+    })
+    .then(res => {
+      const data = res.data;
+      console.log(data)
+      // let searchValue = data.searchValue;
+      let parseData = JSON.parse(data.naverNews);
+      let buzzTotal = parseData.total;
+      let newsOrigin = JSON.parse(data.naverNews);
+      let newsCrawler = JSON.parse(data.naverCrawlerNews);
+      let newsBlog = JSON.parse(data.naverCrawlerBlog);
+      let newsCafe = JSON.parse(data.naverCrawlerCafe);
+      let listOrigin = newsOrigin.items;
+     
+      // var fromDate= this.state.fromDate;
+      // var toDate= this.state.toDate;
+      this.setState({
+       searchValue,
+       newsOrigin,
+       newsCrawler,
+       newsBlog,
+       newsCafe,
+       listOrigin,
+       isLoadingArticle: false
+      })
+      this.draw_related();
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
+  
+  // get keywords by data
+  _getKeywordsByDate = (searchResult,startdate,endDate) => {
+  // 일자별 키워드 순위 세팅
     this.setState({
       searchResult: searchResult,
       twitter: searchResult.twitter.twitterRank,
       naver: searchResult.naver.naverRank,
       fromDate: startdate,
-      toDate: enddate,
+      toDate: endDate,
       isLoadingKeyword: false,
       selectedDate: $('#selectedStartDate').val() +" "+$('#hoursSelect option:selected').text()
-
     })
     let keyword = document.querySelectorAll(".keywords-lis");
     let firstKeyword = keyword[0];
@@ -101,7 +148,7 @@ class App extends Component {
     let to_day=toDate.getDate()>= 10 ? toDate.getDate() : '0' + toDate.getDate();
     let startDate =toDate.getFullYear()+"."+to_month+"."+to_day;
     
-    // 컨텐츠 기간검색
+    //키워드를 통한 컨텐츠 조회
     axios({
       method: 'post',
       url: "/searchNaverNews",
@@ -447,7 +494,7 @@ class App extends Component {
           page={this.state.page}
         />
         <SearchTrend
-          getSearchResultByPeriod={this._getSearchResultByPeriod}
+          getKeywordsByDate={this._getKeywordsByDate}
         />
         <div id="mainPage" className="container cf">
           <div className="wrap">
@@ -460,6 +507,8 @@ class App extends Component {
               selectedDate={this.state.selectedDate}
             />
             <Statistics 
+              searchValue={this.state.searchValue}
+              getDataByPeriod={this._getDataByPeriod}
               isLoadingKeyword={this.state.isLoadingKeyword}
             />
             <Buzz

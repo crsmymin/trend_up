@@ -8,21 +8,20 @@ class SearchTrend extends Component {
   constructor(props) {
     let today = new Date();  
     let fromDate = new Date(today);
-    let hours =fromDate.getHours();
+    let hours = fromDate.getHours();
     fromDate.setDate(fromDate.getDate()-7);
 
     let month=1+fromDate.getMonth();
       month=month>= 10 ? month : '0' + month;
-    let day=fromDate.getDate()>= 10 ? fromDate.getDate() : '0' + fromDate.getDate();
-    let endDate =fromDate.getFullYear()+"."+month+"."+day;
+    let day = fromDate.getDate()>= 10 ? fromDate.getDate() : '0' + fromDate.getDate();
+    let endDate = fromDate.getFullYear()+"."+month+"."+day;
   
     super(props) 
     this.state = {
-      startDate : today,
-      hours : hours+":00:00",
       searchResult : [],
+      hours : hours+":00:00",
+      startDate : today,
       endDate : endDate,
-      isLoadingKeyword: false,
     };
   }
 
@@ -32,46 +31,19 @@ class SearchTrend extends Component {
 
   _onChangeDate = date => {
     this.setState({ startDate: date });
-    
-    let setDate = $('#directBtns .active').val();
+
     let toDate = new Date(date);
-    if(setDate==='180'){
-      toDate.setMonth(toDate.getMonth() - 6);
-      toDate.setDate(toDate.getDate() + 1);
-    }else{
-      toDate.setDate(toDate.getDate() - setDate);
-    }
+    toDate.setDate(toDate.getDate()-7);
+
     let month=1+toDate.getMonth();
       month=month>= 10 ? month : '0' + month;
     let day=toDate.getDate()>= 10 ? toDate.getDate() : '0' + toDate.getDate();
-    let endDate =toDate.getFullYear()+"."+month+"."+day;
-
+    let endDate = toDate.getFullYear() + "." + month + "." + day;
+    
     this.setState({ endDate: endDate });
   }
 
-  // directBtnsClick = e =>{
-  //   const { target: {value}} = e;
-    
-	// 	$('#directBtns .btn-s').removeClass('active');
-	// 	$('#directBtns .'+value).addClass('active');
-
-  //   let toDate = new Date(this.state.startDate);
-  //   if(value==='180'){
-  //     toDate.setMonth(toDate.getMonth() - 6);
-  //     toDate.setDate(toDate.getDate() + 1);
-  //   }else{
-  //     toDate.setDate(toDate.getDate() - value);
-  //   }
-  //   let month=1+toDate.getMonth();
-  //     month=month>= 10 ? month : '0' + month;
-  //   let day=toDate.getDate()>= 10 ? toDate.getDate() : '0' + toDate.getDate();
-  //   let endDate =toDate.getFullYear()+"."+month+"."+day;
-
-  //   this.setState({ endDate: endDate });
-  // }
-
   _doAnalyze = () => {
-    this.setState({isLoadingKeyword : true})
     let year = new Date().getFullYear();              
     let month = (1 + new Date().getMonth());          
         month = month >= 10 ? month : '0' + month;  
@@ -103,9 +75,8 @@ class SearchTrend extends Component {
         const data = res.data;
         this.setState({ 
           searchResult: data,
-          isLoadingKeyword : false 
         });
-        this.props.getSearchResultByPeriod(this.state.searchResult,this.state.startDate,this.state.endDate);
+        this.props.getKeywordsByDate(this.state.searchResult,this.state.startDate,this.state.endDate);
       })
       .catch(error => {
         console.log(error)
@@ -135,12 +106,6 @@ class SearchTrend extends Component {
                   dateFormat="yyyy.MM.dd"
                   maxDate={new Date()}
                 />
-                <input
-                  type="hidden"
-                  id="selectedEndDate"
-                  value={this.state.endDate}
-                  readOnly
-                ></input>
               </div>
               <div id="periodTime">
                 <select
