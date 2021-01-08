@@ -82,7 +82,7 @@ class App extends Component {
         this.classList.add("is-selected");
       })
     }
-    
+
     // 컨텐츠 기간검색 초기실행
     this._getSearchResultByKeywords(searchResult.naver.naverRank[0]);
   }
@@ -134,6 +134,7 @@ class App extends Component {
        listOrigin,
        isLoadingArticle: false
       })
+      this.draw_buz();
       this.draw_related();
     })
     .catch(error => {
@@ -287,7 +288,6 @@ class App extends Component {
           })
           .text(function (d) { return d.text; });
       }
-      this.draw_buz();
     })
     .catch(error => {
       console.log(error)
@@ -482,6 +482,9 @@ class App extends Component {
             <Article
               searchValue={this.state.searchValue}
               originTotal={this.state.newsOrigin.total}
+              searchMobile={this.state.newsOrigin.searchMobile}
+              searchPC={this.state.newsOrigin.searchPc}
+              searchTotal={this.state.newsOrigin.searchTotal}
               listOrigin={this.state.listOrigin}
               newsCrawler={this.state.newsCrawler}
               newsBlog={this.state.newsBlog}
