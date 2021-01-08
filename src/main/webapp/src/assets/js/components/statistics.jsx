@@ -114,17 +114,17 @@ class Statistics extends Component {
               <div className="sorts flex-cont">
                 <div className="factor">
                   <span className="img"></span>
-                  <span className="counts">12,222</span>
+                  <span className="counts">{this.props.searchPC}</span>
                   <span className="type">PC</span>
                 </div>
                 <div className="factor">
                   <span className="img"></span>
-                  <span className="counts">34,123</span>
+                  <span className="counts">{this.props.searchMobile}</span>
                   <span className="type">Mobile</span>
                 </div>
                 <div className="factor">
                   <span className="img"></span>
-                  <span className="counts">43,333</span>
+                  <span className="counts">{this.props.searchTotal}</span>
                   <span className="type">Total</span>
                 </div>
               </div>

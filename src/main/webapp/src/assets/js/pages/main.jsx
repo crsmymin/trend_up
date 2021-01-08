@@ -86,11 +86,8 @@ class App extends Component {
       let newsBlog = JSON.parse(data.naverCrawlerBlog);
       let newsCafe = JSON.parse(data.naverCrawlerCafe);
       let listOrigin = newsOrigin.items;
-     
-      // var fromDate= this.state.fromDate;
-      // var toDate= this.state.toDate;
+
       this.setState({
-       searchValue,
        newsOrigin,
        newsCrawler,
        newsBlog,
@@ -98,6 +95,7 @@ class App extends Component {
        listOrigin,
        isLoadingArticle: false
       })
+      this.draw_buz();
       this.draw_related();
     })
     .catch(error => {
@@ -508,6 +506,9 @@ class App extends Component {
             />
             <Statistics 
               searchValue={this.state.searchValue}
+              searchMobile={this.state.newsOrigin.searchMobile}
+              searchPC={this.state.newsOrigin.searchPc}
+              searchTotal={this.state.newsOrigin.searchTotal}
               getDataByPeriod={this._getDataByPeriod}
               isLoadingKeyword={this.state.isLoadingKeyword}
             />
