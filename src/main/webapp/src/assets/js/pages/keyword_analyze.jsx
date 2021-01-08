@@ -92,7 +92,7 @@ class App extends Component {
     
     // 컨텐츠 기간검색
     axios({
-      method: 'get',
+      method: 'post',
       url: "/searchNaverNews",
       params: {
         searchValue: keyword,

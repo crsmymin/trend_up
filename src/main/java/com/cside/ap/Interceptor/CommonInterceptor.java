@@ -22,8 +22,8 @@ public class CommonInterceptor extends HandlerInterceptorAdapter{
         HttpSession session = request.getSession();
  		if( session.getAttribute("loginID") == null) {
  			// 로그인 화면으로 이동
- 			response.sendRedirect(request.getContextPath() + "/login");
- 			return false;
+ 			//response.sendRedirect(request.getContextPath() + "/login");
+ 			//return false;
  		}
  		
         
