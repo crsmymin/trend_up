@@ -65,7 +65,7 @@ class SearchTrend extends Component {
       return false;
     } else {
       axios({
-        method: 'post',
+        method: 'get',
         url: "/searchRank",
         params: {
           searchValue: selectedDate + "T" + this.state.hours

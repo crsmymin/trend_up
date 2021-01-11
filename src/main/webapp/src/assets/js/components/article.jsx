@@ -49,7 +49,7 @@ class Article extends Component {
               className={this.state.activeTab === 2 ? "tab on":"tab"}>블로그</li>
             <li 
               onClick={()=> this._clickHandler(3)} 
-              className={this.state.activeTab === 3 ? "tab on":"tab"}>카페</li>
+              className={this.state.activeTab === 3 ? "tab on":"tab"}>게시판</li>
           </ul>
           {/* 원문 */}
           <section id="articleOrigin" className={this.state.activeTab === 0 ? "article on":"article"}>   
@@ -68,7 +68,7 @@ class Article extends Component {
                   <li key={index + 1}>
                     <h5>
                       <a href={listOrigin.link} target="_blank">
-                        <strong>네이버뉴스</strong>
+                        <strong>뉴스</strong>
                         <span
                           dangerouslySetInnerHTML={{
                             __html: listOrigin.title,
@@ -89,7 +89,7 @@ class Article extends Component {
           {/* 네이버 뉴스 */}
           <section id="articleNews" className={this.state.activeTab === 1 ? "article on":"article"}>
             <h4 className="section-sub-title">
-              기간검색 - 네이버뉴스 : {this.props.searchValue}
+              기간검색 - 뉴스 : {this.props.searchValue}
             </h4>
             <p>
               <em>전체 포스트</em>
@@ -125,7 +125,7 @@ class Article extends Component {
           {/* 네이버 블로그 */}
           <section id="articleBlog" className={this.state.activeTab === 2 ? "article on":"article"}>
             <h4 className="section-sub-title">
-              기간검색 - 네이버블로그 : {this.props.searchValue}
+              기간검색 - 블로그 : {this.props.searchValue}
             </h4>
             <p>
               <em>전체 포스트</em>
@@ -140,14 +140,14 @@ class Article extends Component {
                 {this.props.newsBlog.naverBlog.map((naverBlog, index) => (
                   <li key={index + 1}>
                     <h5>
-                      <a href={naverBlog.link} target="_blank">
+                      <a href={naverBlog.url} target="_blank">
                         {naverBlog.title}
                       </a>
                     </h5>
                     <p className="source">
-                      {naverBlog.medium} | {naverBlog.date}
+                      {naverBlog.writerName} | {naverBlog.documentDate}
                     </p>
-                    <p className="content">{naverBlog.description}</p>
+                    <p className="content">{naverBlog.content}</p>
                   </li>
                 ))}
               </ul>
@@ -161,7 +161,7 @@ class Article extends Component {
           {/* 네이버 카페 */}
           <section id="articleCafe" className={this.state.activeTab === 3 ? "article on":"article"}>
             <h4 className="section-sub-title">
-              기간검색 - 네이버카페 : {this.props.searchValue}
+              기간검색 - 게시판 : {this.props.searchValue}
             </h4>
             <p>
               <em>전체 포스트</em>

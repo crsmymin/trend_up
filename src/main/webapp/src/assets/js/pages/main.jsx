@@ -66,7 +66,7 @@ class App extends Component {
 
     //기간 설정을 통한 컨텐츠 조회
     axios({
-      method: 'post',
+      method: 'get',
       url: "/searchNaverNews",
       params: {
         searchValue: this.state.searchValue,
@@ -148,7 +148,7 @@ class App extends Component {
     
     //키워드를 통한 컨텐츠 조회
     axios({
-      method: 'post',
+      method: 'get',
       url: "/searchNaverNews",
       params: {
         searchValue: keyword,

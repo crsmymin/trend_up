@@ -134,17 +134,17 @@ class Statistics extends Component {
               <div className="sorts flex-cont">
                 <div className="factor">
                   <span className="img"></span>
-                  <span className="counts">12,222</span>
+                  <span className="counts">0</span>
                   <span className="type">뉴스</span>
                 </div>
                 <div className="factor">
                   <span className="img"></span>
-                  <span className="counts">34,123</span>
+                  <span className="counts">0</span>
                   <span className="type">블로그</span>
                 </div>
                 <div className="factor">
                   <span className="img"></span>
-                  <span className="counts">43,333</span>
+                  <span className="counts">0</span>
                   <span className="type">카페</span>
                 </div>
               </div>

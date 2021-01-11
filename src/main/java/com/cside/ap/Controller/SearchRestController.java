@@ -81,9 +81,9 @@ public class SearchRestController {
 		response.getWriter().print(jsonObject);
 	}
 	
-	@RequestMapping( value="/searchNaverNews" , method = RequestMethod.POST )
+	@RequestMapping( value="/searchNaverNews")
 	public ResponseEntity<SearchModel> searchNaverNews(SearchModel searchModel,HttpServletRequest request,HttpServletResponse response) throws Exception {
-		//System.out.println(searchModel.getSearchValue());
+		
 		
 		HttpStatus httpStatus =HttpStatus.OK;
 		
@@ -159,8 +159,9 @@ public class SearchRestController {
        }
 
        naverContents = this.naverCrawlerService.getUnifiedSearchBlogDesc(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate());
-       //System.out.println("naverContents_cafe"+naverContents);
+      
        String naverContents_blog = "";
+       
        if (!naverContents.equals("") && naverContents != null && !naverContents.equals("{\"description\":\"\"}")) {
           JSONParser parser = new JSONParser();
           Object obj = parser.parse(naverContents);
@@ -185,9 +186,9 @@ public class SearchRestController {
           JSONArray jsonObj2 = (JSONArray)obj2;
           searchModel.setMorpheme(jsonObj2.toString());
        }
-       System.out.println(naverContents_total);
 	      
 	      return new ResponseEntity(searchModel, httpStatus);
+	      
 	   }
 	@RequestMapping( value="/drawBuzzChart")
 	public ResponseEntity<SearchModel> drawBuzzChart(SearchModel searchModel, HttpServletRequest request) throws Exception {
@@ -202,7 +203,6 @@ public class SearchRestController {
 			
 	      String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
 			searchModel.setSearchValue(searchValue);
-			System.out.println("3"+searchModel.getSearchValue());
 	      JSONArray naverContents_news = new JSONArray(); 
 			naverContents_news = this.naverCrawlerService.getSearchBuzz(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate(), "news");
 			searchModel.setUploadDateNews(naverContents_news.toJSONString());
@@ -233,8 +233,9 @@ public class SearchRestController {
 		Map<String, String> map=new HashMap<String, String>();
 		map.put("login_id", loginID);
 		map.put("action", "searchNaverNews");
-		
-		searchModel.setNaverCrawlerNews( naverCrawlerService.getUnifiedSearchNews(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate(), searchModel.getStart()) );
+		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		searchModel.setSearchValue(searchValue);
+		searchModel.setNaverCrawlerNews( naverCrawlerService.getUnifiedSearchNews(searchModel.getSearchValue(), searchModel.getToDate(), searchModel.getFromDate(), searchModel.getStart()) );
 		
 		
 		return new ResponseEntity<>(searchModel, httpStatus);
@@ -251,7 +252,9 @@ public class SearchRestController {
 		Map<String, String> map=new HashMap<String, String>();
 		map.put("login_id", loginID);
 		map.put("action", "searchNaverNews");
-		searchModel.setNaverCrawlerCafe( naverCrawlerService.getUnifiedSearchCafe(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate(), searchModel.getStart()) );
+		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		searchModel.setSearchValue(searchValue);
+		searchModel.setNaverCrawlerCafe( naverCrawlerService.getUnifiedSearchCafe(searchModel.getSearchValue(), searchModel.getToDate(), searchModel.getFromDate(), searchModel.getStart()) );
 		
 		
 		return new ResponseEntity<>(searchModel, httpStatus);
@@ -269,7 +272,9 @@ public class SearchRestController {
 		Map<String, String> map=new HashMap<String, String>();
 		map.put("login_id", loginID);
 		map.put("action", "searchNaverNews");
-		searchModel.setNaverCrawlerBlog( naverCrawlerService.getUnifiedSearchBlog(searchModel.getSearchValue(), searchModel.getFromDate(), searchModel.getToDate(), searchModel.getStart()) );
+		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		searchModel.setSearchValue(searchValue);
+		searchModel.setNaverCrawlerBlog( naverCrawlerService.getUnifiedSearchBlog(searchModel.getSearchValue(), searchModel.getToDate(),searchModel.getFromDate(),  searchModel.getStart()) );
 		
 		
 		return new ResponseEntity<>(searchModel, httpStatus);

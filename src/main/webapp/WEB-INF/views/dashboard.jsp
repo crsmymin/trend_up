@@ -19,10 +19,10 @@
   function news_page(page){
     $.ajax({
       url: "/searchCrawlerNews",
-      type: 'POST',
+      type: 'get',
       data: {
         "searchValue": $('#keyword .is-selected .word').text(),
-        "fromDate": $('#selectedStartDate').val(),
+        "fromDate": $('#mainPage #selectedStartDate').val(),
         "toDate":$('#selectedEndDate').val(),
         "start": page
       },
@@ -43,10 +43,10 @@
   function blog_page(page){
     $.ajax({
       url: "/searchCrawlerBlog",
-      type: 'POST',
+      type: 'get',
       data: {
         "searchValue": $('#keyword .is-selected .word').text(),
-        "fromDate": $('#selectedStartDate').val(),
+        "fromDate": $('#mainPage #selectedStartDate').val(),
         "toDate":$('#selectedEndDate').val(),
         "start": page
       },
@@ -67,10 +67,10 @@
   function cafe_page(page){
     $.ajax({
       url: "/searchCrawlerCafe",
-      type: 'POST',
+      type: 'get',
       data: {
         "searchValue": $('#keyword .is-selected .word').text(),
-        "fromDate": $('#selectedStartDate').val(),
+        "fromDate": $('#mainPage #selectedStartDate').val(),
         "toDate":$('#selectedEndDate').val(),
         "start": page
       },
