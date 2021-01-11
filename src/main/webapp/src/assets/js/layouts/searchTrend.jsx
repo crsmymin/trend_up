@@ -8,7 +8,7 @@ class SearchTrend extends Component {
   constructor(props) {
     let today = new Date();  
     let fromDate = new Date(today);
-    let hours = fromDate.getHours();
+    let hours = fromDate.getHours()>= 10 ? fromDate.getHours() : '0'+fromDate.getHours();
     fromDate.setDate(fromDate.getDate()-7);
 
     let month=1+fromDate.getMonth();
