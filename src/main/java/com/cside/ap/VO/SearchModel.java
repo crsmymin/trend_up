@@ -30,6 +30,16 @@ public class SearchModel {
 	private String uploadDateNews;
 	private String uploadDateBlog;
 	private String uploadDateCafe;
+	
+	private String emotionAnalysis;
+
+	public String getEmotionAnalysis() {
+		return emotionAnalysis;
+	}
+
+	public void setEmotionAnalysis(String emotionAnalysis) {
+		this.emotionAnalysis = emotionAnalysis;
+	}
 
 	public String getSearchValue() {
 		return searchValue;

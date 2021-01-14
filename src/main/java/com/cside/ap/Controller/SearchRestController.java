@@ -25,6 +25,7 @@ import com.cside.ap.Service.MorphemeAnalysisSevice;
 import com.cside.ap.Service.NaverCrawlerService;
 import com.cside.ap.Service.NaverService;
 import com.cside.ap.Service.TwitterService;
+import com.cside.ap.Service.EmotionAnalysisService;
 import com.cside.ap.VO.SearchModel;
 
 @RestController
@@ -41,6 +42,9 @@ public class SearchRestController {
 
 	@Autowired
 	MorphemeAnalysisSevice morphemeAnalysisSevice;
+
+	@Autowired
+	EmotionAnalysisService emotionAnalysisService;
 
 	@RequestMapping( value="/searchRank" )
 	public void searchRank(SearchModel searchModel,HttpServletRequest request,HttpServletResponse response) throws Exception {
@@ -172,7 +176,7 @@ public class SearchRestController {
           }
 
           naverContents_blog = this.morphemeAnalysisSevice.getMorpheme(naverContents);
-          //System.out.println("naverContents_cafe"+naverContents);
+         
        }
        String naverContents_total = naverContents_news + naverContents_cafe + naverContents_blog;
        
@@ -276,6 +280,26 @@ public class SearchRestController {
 		searchModel.setSearchValue(searchValue);
 		searchModel.setNaverCrawlerBlog( naverCrawlerService.getUnifiedSearchBlog(searchModel.getSearchValue(), searchModel.getToDate(),searchModel.getFromDate(),  searchModel.getStart()) );
 		
+		
+		return new ResponseEntity<>(searchModel, httpStatus);
+	}
+	
+	@RequestMapping( value="/emotionAnalysis" )
+	public ResponseEntity<SearchModel> emotionAnalysis(SearchModel searchModel,HttpServletRequest request) throws Exception {
+		
+		HttpStatus httpStatus =HttpStatus.OK;
+		
+		HttpSession session = request.getSession();
+		String loginID =(String) session.getAttribute("loginID");
+		
+		Map<String, String> map=new HashMap<String, String>();
+		map.put("login_id", loginID);
+		map.put("action", "emotionAnalysis");
+		
+		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		searchModel.setSearchValue(searchValue);
+		
+		searchModel.setEmotionAnalysis( emotionAnalysisService.getEmotionAnalysis(searchModel.getSearchValue(), searchModel.getToDate(),searchModel.getFromDate()) );
 		
 		return new ResponseEntity<>(searchModel, httpStatus);
 	}

@@ -53,7 +53,10 @@ class App extends Component {
       buzzTotalNews: 0,
       buzzTotalBlog: 0,
       buzzTotalCafe: 0,
-      selectedDate:""
+      selectedDate:"",
+      keywordNegative: 0,
+      keywordNeutral: 0,
+      keywordPositive: 0,
     }
   }
 
@@ -77,7 +80,7 @@ class App extends Component {
     })
     .then(res => {
       const data = res.data;
-      console.log(data)
+      //console.log(data)
       // let searchValue = data.searchValue;
       let parseData = JSON.parse(data.naverNews);
       let buzzTotal = parseData.total;
@@ -181,6 +184,7 @@ class App extends Component {
       })
       this.draw_buz();
       this.draw_related();
+      this.draw_emotion();
     })
     .catch(error => {
       console.log(error)
@@ -188,6 +192,37 @@ class App extends Component {
   }
   
   draw_emotion = () => {
+     // 연관어 순위 
+     let toDate = new Date(this.state.fromDate);
+     let to_month=1+toDate.getMonth();
+       to_month=to_month>= 10 ? to_month : '0' + to_month;
+     let to_day=toDate.getDate()>= 10 ? toDate.getDate() : '0' + toDate.getDate();
+     let startDate =toDate.getFullYear()+"."+to_month+"."+to_day;
+     
+     axios({
+       method: 'get',
+       url: "/emotionAnalysis",
+       params: {
+         searchValue: this.state.searchValue,
+         fromDate: startDate,
+         toDate: this.state.toDate
+       }
+     })
+     .then(res => {
+       const data = res.data;
+       let emotionAnalysis = JSON.parse(data.emotionAnalysis);
+
+      this.setState({
+        emotionWords:emotionAnalysis.data,
+        keywordNegative: emotionAnalysis.keywordMap.negative,
+        keywordNeutral :emotionAnalysis.keywordMap.neutral,
+        keywordPositive :emotionAnalysis.keywordMap.positive
+      })
+
+     })
+     .catch(error => {
+       console.log(error)
+     })
     // 감성어 순위
     let resData = this.state.emotionWords;
     let width = 600;
@@ -231,7 +266,7 @@ class App extends Component {
         })
         .style("font-family", "Impact")
         .style("fill", function(d,i) { 
-          console.log(d.type);
+          //console.log(d.type);
           return d.type === "pos" ? "#5d9cec" : d.type === "neg" ? "#ef6674" : "#7cbf4c";
         })
         .attr("text-anchor", "middle")
@@ -482,7 +517,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.draw_emotion();
+    
   }
 
   render(){
@@ -527,6 +562,9 @@ class App extends Component {
             />
             <Emotion 
               searchValue={this.state.searchValue}
+              keywordNegative={this.state.keywordNegative}
+              keywordNeutral={this.state.keywordNeutral}
+              keywordPositive={this.state.keywordPositive}
               emotionWords={this.state.emotionWords}
             />
             <Article
