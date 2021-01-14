@@ -57,6 +57,7 @@ class App extends Component {
       keywordNegative: 0,
       keywordNeutral: 0,
       keywordPositive: 0,
+      keywordEtc: 0,
     }
   }
 
@@ -216,7 +217,8 @@ class App extends Component {
         emotionWords:emotionAnalysis.data,
         keywordNegative: emotionAnalysis.keywordMap.negative,
         keywordNeutral :emotionAnalysis.keywordMap.neutral,
-        keywordPositive :emotionAnalysis.keywordMap.positive
+        keywordPositive :emotionAnalysis.keywordMap.positive,
+        keywordEtc :emotionAnalysis.keywordMap.other
       })
 
      })
@@ -565,6 +567,7 @@ class App extends Component {
               keywordNegative={this.state.keywordNegative}
               keywordNeutral={this.state.keywordNeutral}
               keywordPositive={this.state.keywordPositive}
+              keywordEtc={this.state.keywordEtc}
               emotionWords={this.state.emotionWords}
             />
             <Article
