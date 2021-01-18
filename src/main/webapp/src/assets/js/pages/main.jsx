@@ -63,8 +63,8 @@ class App extends Component {
       url: "/searchNaverNews",
       params: {
         searchValue: this.state.searchValue,
-        fromDate: this.state.fromDate,
-        toDate: this.state.toDate,
+        fromDate: fromDate,
+        toDate: toDate,
         start: 1
       }
     })

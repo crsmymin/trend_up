@@ -146,7 +146,7 @@ class Statistics extends Component {
               <div className="sorts flex-cont">
                 <div className="factor">
                   <span className="img"></span>
-                  {this.props.newsCrawler === undefined ? (
+                  {this.props.newsCrawler === null ? (
                   <span className="counts">0</span>
                   ) : (
                   <span className="counts">{this.props.newsCrawler.naverNewsCnt}</span>
@@ -155,7 +155,7 @@ class Statistics extends Component {
                 </div>
                 <div className="factor">
                   <span className="img"></span>
-                  {this.props.newsBlog === undefined ? (
+                  {this.props.newsBlog === null ? (
                   <span className="counts">0</span>
                   ):(
                   <span className="counts">{this.props.newsBlog.naverBlogCnt}</span>

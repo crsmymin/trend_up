@@ -7,6 +7,7 @@ import axios from 'axios'
 // components
 import Header from '../layouts/header.jsx'
 import Footer from '../layouts/footer.jsx'
+import SearchKeyword from '../layouts/searchKeyword.jsx'
 import Statistics from '../components/statistics.jsx'
 import Buzz from '../components/buzz.jsx'
 import Relation from '../components/relation.jsx'
@@ -26,18 +27,7 @@ class App extends Component {
       twitter: [],
       buzzTotal: "",
       relatedWords: [], 
-      // 예시 데이터
-      emotionWords: [
-        {emotion: "pos", count: 100, word: "흥미롭다"},
-        {emotion: "pos", count: 55, word: "행복하다"},
-        {emotion: "pos", count: 18, word: "즐겁다"},
-        {emotion: "neg", count: 12, word: "싫다"},
-        {emotion: "neg", count: 8, word: "별로다"},
-        {emotion: "neu", count: 20, word: "모르겠다"},
-        {emotion: "neu", count: 8, word: "상관없다"},
-        {emotion: "neg", count: 32, word: "나쁘다"},
-        {emotion: "neu", count: 1, word: "관심없다"},
-      ], 
+      emotionWords: [], 
       newsOrigin: "",
       newsCrawler: [],
       newsBlog: [],
@@ -456,7 +446,8 @@ class App extends Component {
         />
         <div id="mainPage" className="container cf">
           <div className="wrap">
-            
+            <SearchKeyword 
+            />
             <Statistics 
               searchValue={this.state.searchValue}
               searchMobile={this.state.newsOrigin.searchMobile}
