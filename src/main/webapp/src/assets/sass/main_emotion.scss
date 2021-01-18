@@ -12,8 +12,77 @@
     &.open {
       display: flex;
     }
-    #wordCloud2 {
+    .inner-box {
       width: 70%;
+      position: relative;
+      #wordCloud2 {
+        width: 100%;
+        h5 {
+          width: 100%;
+          height: 400px;
+          font-size: 30px;
+          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: grey;
+        }
+      }
+      .ratio {
+        h5 {
+          position: absolute;
+          top: 0;
+          width: 100%;
+          text-align: center;
+          font-size: 26px;
+          left: 50%;
+          transform: translateX(-50%);
+          -webkit-transform: translateX(-50%);
+          -moz-transform: translateX(-50%);
+          -ms-transform: translateX(-50%);
+          -o-transform: translateX(-50%);
+        }
+        ul {
+          position: absolute;
+          bottom: 0;
+          display: flex;
+          left: 50%;
+          transform: translateX(-50%);
+          -webkit-transform: translateX(-50%);
+          -moz-transform: translateX(-50%);
+          -ms-transform: translateX(-50%);
+          -o-transform: translateX(-50%);
+          li {
+            width: 90px;
+            margin: 0 5px;
+            font-size: 16px;
+            text-align: center;
+            display: block;
+            padding: 8px 0 6px;
+            border-radius: 25px;
+            -webkit-border-radius: 25px;
+            -moz-border-radius: 25px;
+            -ms-border-radius: 25px;
+            -o-border-radius: 25px;
+            &.pos {
+              border: 1px solid #5d9cec;
+              color: #5d9cec;
+            }
+            &.neg {
+              border: 1px solid #ef6674;
+              color: #ef6674;
+            }
+            &.neu {
+              border: 1px solid #7cbf4c;
+              color: #7cbf4c;
+            }
+            &.etc {
+              border: 1px solid grey;
+              color: grey;
+            }
+          }
+        }
+      }
     }
     .words {
       width: 30%;
@@ -82,6 +151,10 @@
               &.neu {
                 border: 1px solid #7cbf4c;
                 color: #7cbf4c;
+              }
+              &.oth {
+                border: 1px solid grey;
+                color: grey;
               }
             }
           }

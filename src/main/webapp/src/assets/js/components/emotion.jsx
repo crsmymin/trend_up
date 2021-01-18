@@ -24,10 +24,25 @@ class Emotion extends Component {
         </h3>
         <div className="emotional-words flex-cont">
           {/* 감성어 버블차트 */}
-          <div id="wordCloud2"></div>
+          <div className="inner-box">
+            <div id="wordCloud2">
+            </div>
+            <div className="ratio">
+              <h5>"{this.props.searchValue}" 감성 연관어 TOP 10</h5>
+              {this.props.emotionWords.length === 0 ? "" : (
+              <ul>
+                <li className="type pos">긍정 {this.props.keywordPositive}%</li>
+                <li className="type neg">부정 {this.props.keywordNegative}%</li>
+                <li className="type neu">중립 {this.props.keywordNeutral}%</li>
+                <li className="type etc">기타 {this.props.keywordEtc}%</li>
+              </ul>
+              )}
+            </div>
+          </div>
           {/* 감성어 버블차트 끝*/}
 
           {/* 감성어 리스트}*/}
+          {this.props.emotionWords.length === 0 ? "" : (
           <div className="words">
             <h4>감성어 랭킹</h4>
             <table>
@@ -45,16 +60,18 @@ class Emotion extends Component {
                 .map((emotionWords, index) =>
                   <tr key={index + 1}>
                     <td>{index + 1}</td>
-                    {emotionWords.emotion === "pos" ? (<td><span className="pos">긍정</span></td>) : null}
-                    {emotionWords.emotion === "neg" ? (<td><span className="neg">부정</span></td>) : null}
-                    {emotionWords.emotion === "neu" ? (<td><span className="neu">중립</span></td>) : null}
-                    <td>{emotionWords.word}</td>
-                    <td>{emotionWords.count}</td>
+                    {emotionWords.polarity === "positive" ? (<td><span className="pos">긍정</span></td>) : null}
+                    {emotionWords.polarity === "negative" ? (<td><span className="neg">부정</span></td>) : null}
+                    {emotionWords.polarity === "neutral" ? (<td><span className="neu">중립</span></td>) : null}
+                    {emotionWords.polarity === "other" ? (<td><span className="oth">기타</span></td>) : null}
+                    <td>{emotionWords.name}</td>
+                    <td>{emotionWords.frequency}</td>
                   </tr>
                 )} 
               </tbody>
             </table>
           </div>
+          )}
           {/*감성어 리스트 끝*/}
         </div>
         </>

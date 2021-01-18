@@ -114,17 +114,29 @@ class Statistics extends Component {
               <div className="sorts flex-cont">
                 <div className="factor">
                   <span className="img"></span>
+                  {this.props.searchPC === undefined ? (
+                  <span className="counts">0</span>
+                  ):(
                   <span className="counts">{this.props.searchPC}</span>
+                  )}
                   <span className="type">PC</span>
                 </div>
                 <div className="factor">
                   <span className="img"></span>
+                  {this.props.searchMobile === undefined ? (
+                  <span className="counts">0</span>
+                  ):(
                   <span className="counts">{this.props.searchMobile}</span>
+                  )}
                   <span className="type">Mobile</span>
                 </div>
                 <div className="factor">
                   <span className="img"></span>
+                  {this.props.searchTotal === undefined ? (
+                  <span className="counts">0</span>
+                  ):(
                   <span className="counts">{this.props.searchTotal}</span>
+                  )}
                   <span className="type">Total</span>
                 </div>
               </div>
@@ -134,17 +146,29 @@ class Statistics extends Component {
               <div className="sorts flex-cont">
                 <div className="factor">
                   <span className="img"></span>
+                  {this.props.newsCrawler === undefined ? (
                   <span className="counts">0</span>
+                  ) : (
+                  <span className="counts">{this.props.newsCrawler.naverNewsCnt}</span>
+                  )}
                   <span className="type">뉴스</span>
                 </div>
                 <div className="factor">
                   <span className="img"></span>
+                  {this.props.newsBlog === undefined ? (
                   <span className="counts">0</span>
+                  ):(
+                  <span className="counts">{this.props.newsBlog.naverBlogCnt}</span>
+                  )}
                   <span className="type">블로그</span>
                 </div>
                 <div className="factor">
                   <span className="img"></span>
+                  {this.props.newsCafe === undefined ? (
                   <span className="counts">0</span>
+                  ):(
+                  <span className="counts">{this.props.newsCafe.naverCafeCnt}</span>
+                  )}
                   <span className="type">카페</span>
                 </div>
               </div>

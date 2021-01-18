@@ -27,18 +27,7 @@ class App extends Component {
       twitter: [],
       buzzTotal: "",
       relatedWords: [],
-      // 예시 데이터
-      emotionWords: [
-        {emotion: "pos", count: 100, word: "흥미롭다"},
-        {emotion: "pos", count: 55, word: "행복하다"},
-        {emotion: "pos", count: 18, word: "즐겁다"},
-        {emotion: "neg", count: 12, word: "싫다"},
-        {emotion: "neg", count: 8, word: "별로다"},
-        {emotion: "neu", count: 20, word: "모르겠다"},
-        {emotion: "neu", count: 8, word: "상관없다"},
-        {emotion: "neg", count: 32, word: "나쁘다"},
-        {emotion: "neu", count: 1, word: "관심없다"},
-      ], 
+      emotionWords: [], 
       newsOrigin: "",
       newsCrawler: [],
       newsBlog: [],
@@ -81,8 +70,6 @@ class App extends Component {
     })
     .then(res => {
       const data = res.data;
-      //console.log(data)
-      // let searchValue = data.searchValue;
       let parseData = JSON.parse(data.naverNews);
       let buzzTotal = parseData.total;
       let newsOrigin = JSON.parse(data.naverNews);
@@ -99,8 +86,10 @@ class App extends Component {
        listOrigin,
        isLoadingArticle: false
       })
+      console.log(newsBlog);
       this.draw_buz();
       this.draw_related();
+      this.draw_emotion();
     })
     .catch(error => {
       console.log(error)
@@ -183,6 +172,7 @@ class App extends Component {
        listOrigin,
        isLoadingArticle: false
       })
+      console.log(newsCrawler)
       this.draw_buz();
       this.draw_related();
       this.draw_emotion();
@@ -193,7 +183,7 @@ class App extends Component {
   }
   
   draw_emotion = () => {
-     // 연관어 순위 
+     // 감성어 순위 
      let toDate = new Date(this.state.fromDate);
      let to_month=1+toDate.getMonth();
        to_month=to_month>= 10 ? to_month : '0' + to_month;
@@ -204,15 +194,14 @@ class App extends Component {
        method: 'get',
        url: "/emotionAnalysis",
        params: {
-         searchValue: this.state.searchValue,
+         searchValue: this.state.searchValue.replace(/(\s*)/g, ""),
          fromDate: startDate,
          toDate: this.state.toDate
        }
      })
-     .then(res => {
-       const data = res.data;
-       let emotionAnalysis = JSON.parse(data.emotionAnalysis);
-
+    .then(res => {
+      const data = res.data;
+      let emotionAnalysis = JSON.parse(data.emotionAnalysis);
       this.setState({
         emotionWords:emotionAnalysis.data,
         keywordNegative: emotionAnalysis.keywordMap.negative,
@@ -220,65 +209,70 @@ class App extends Component {
         keywordPositive :emotionAnalysis.keywordMap.positive,
         keywordEtc :emotionAnalysis.keywordMap.other
       })
+      // set word cloud
+      let resData = this.state.emotionWords;
+      let width = 600;
+      let height = 475;
+      let fill = d3.scale.category20c();
+      let wordScale = d3.scale.linear().range([30, 70]);
+      if(resData.length === 0) {
+        console.log("조회된 감성어 데이터없음");
+        document.querySelector(".emotional-words .inner-box").style.width = "100%";
+        document.getElementById("wordCloud2").innerHTML="<h5>조회된 감성어 데이터가 없습니다.</h5>"
+      } else {
+        document.querySelector(".emotional-words .inner-box").style.width = "70%";
+        let subjects = resData
+        .map(function (d) { return { text: d.name, size: +d.frequency, type: d.polarity } })
+        .sort(function (a, b) { return d3.descending(a.size, b.size); })
+        .slice(0, 100);
 
-     })
-     .catch(error => {
-       console.log(error)
-     })
-    // 감성어 순위
-    let resData = this.state.emotionWords;
-    let width = 600;
-    let height = 400;
-    let fill = d3.scale.category20c();
-    let wordScale = d3.scale.linear().range([30, 70]);
+      wordScale.domain([
+        d3.min(subjects, function (d) { return d.size; }),
+        d3.max(subjects, function (d) { return d.size; }),
+      ]);
 
-    let subjects = resData
-      .map(function (d) { return { text: d.word, size: +d.count, type: d.emotion } })
-      .sort(function (a, b) { return d3.descending(a.size, b.size); })
-      .slice(0, 100);
+      d3.layout.cloud().size([width, height])
+        .words(subjects)
+        .padding(1)
+        .rotate(function () { return ~~(Math.random() * 2) * 0; })
+        .font("Impact")
+        .fontSize(function (d) { return wordScale(d.size); })
+        .on("end", draw)
+        .start();
 
-    wordScale.domain([
-      d3.min(subjects, function (d) { return d.size; }),
-      d3.max(subjects, function (d) { return d.size; }),
-    ]);
-
-    d3.layout.cloud().size([width, height])
-      .words(subjects)
-      .padding(1)
-      .rotate(function () { return ~~(Math.random() * 2) * 0; })
-      .font("Impact")
-      .fontSize(function (d) { return wordScale(d.size); })
-      .on("end", draw)
-      .start();
-
-    function draw(words) {
-      let wordCloudWrap = document.getElementById("wordCloud2");
-      
-      $('#wordCloud2').html("");
-      d3.select(wordCloudWrap).append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g")
-        .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")")
-        .selectAll("text")
-        .data(words)
-        .enter().append("text")
-        .style("font-size", function (d) { 
-          return d.size + "px"; 
-        })
-        .style("font-family", "Impact")
-        .style("fill", function(d,i) { 
-          //console.log(d.type);
-          return d.type === "pos" ? "#5d9cec" : d.type === "neg" ? "#ef6674" : "#7cbf4c";
-        })
-        .attr("text-anchor", "middle")
-        .attr("transform", function (d) {
-          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-        })
-        .text(function (d) { 
-          return d.text; 
-        });
-    }
+      function draw(words) {
+        let wordCloudWrap = document.getElementById("wordCloud2");
+        
+        $('#wordCloud2').html("");
+        d3.select(wordCloudWrap).append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .append("g")
+          .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")")
+          .selectAll("text")
+          .data(words)
+          .enter().append("text")
+          .style("font-size", function (d) { 
+            return d.size + "px"; 
+          })
+          .style("font-family", "Impact")
+          .style("fill", function(d,i) { 
+            //console.log(d.type);
+            return d.type === "positive" ? "#5d9cec" : d.type === "negative" ? "#ef6674" : d.type === "neutral" ? "#7cbf4c" : "grey";
+          })
+          .attr("text-anchor", "middle")
+          .attr("transform", function (d) {
+            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+          .text(function (d) { 
+            return d.text; 
+          });
+        }
+      }
+    })
+    .catch(error => {
+      console.log(error)
+    })  
   }
 
   draw_related = () =>{
@@ -546,6 +540,9 @@ class App extends Component {
               searchMobile={this.state.newsOrigin.searchMobile}
               searchPC={this.state.newsOrigin.searchPc}
               searchTotal={this.state.newsOrigin.searchTotal}
+              newsCrawler={this.state.newsCrawler}
+              newsBlog={this.state.newsBlog}
+              newsCafe={this.state.newsCafe}
               getDataByPeriod={this._getDataByPeriod}
               isLoadingKeyword={this.state.isLoadingKeyword}
             />
