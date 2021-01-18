@@ -8,6 +8,7 @@ import Header from '../layouts/header.jsx'
 import Footer from '../layouts/footer.jsx'
 import SearchTrend from '../layouts/searchTrend.jsx'
 import Keywords from '../components/keywords.jsx'
+import SearchByPeriod from "../components/search-by-period.jsx";
 import Statistics from '../components/statistics.jsx'
 import Buzz from '../components/buzz.jsx'
 import Relation from '../components/relation.jsx'
@@ -57,6 +58,7 @@ class App extends Component {
       toDate: toDate
     })
 
+    console.log(fromDate)
     //기간 설정을 통한 컨텐츠 조회
     axios({
       method: 'get',
@@ -96,7 +98,7 @@ class App extends Component {
     })
   }
   
-  // get keywords by data
+  // get keywords by date
   _getKeywordsByDate = (searchResult,startdate,endDate) => {
   // 일자별 키워드 순위 세팅
     this.setState({
@@ -535,6 +537,9 @@ class App extends Component {
               getSearchResultByKeywords={this._getSearchResultByKeywords}
               selectedDate={this.state.selectedDate}
             />
+            <SearchByPeriod 
+              getDataByPeriod={this._getDataByPeriod}
+            />
             <Statistics 
               searchValue={this.state.searchValue}
               searchMobile={this.state.newsOrigin.searchMobile}
@@ -543,8 +548,6 @@ class App extends Component {
               newsCrawler={this.state.newsCrawler}
               newsBlog={this.state.newsBlog}
               newsCafe={this.state.newsCafe}
-              getDataByPeriod={this._getDataByPeriod}
-              isLoadingKeyword={this.state.isLoadingKeyword}
             />
             <Buzz
               searchValue={this.state.searchValue}
@@ -557,7 +560,6 @@ class App extends Component {
             <Relation
               searchValue={this.state.searchValue}
               relatedWords={this.state.relatedWords}
-              isLoadingRelated={this.state.isLoadingRelated}
             />
             <Emotion 
               searchValue={this.state.searchValue}
@@ -577,7 +579,6 @@ class App extends Component {
               newsCrawler={this.state.newsCrawler}
               newsBlog={this.state.newsBlog}
               newsCafe={this.state.newsCafe}
-              isLoadingArticle={this.state.isLoadingArticle}
             />
           </div>
         </div>

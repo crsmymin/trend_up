@@ -20,7 +20,7 @@ class SearchKeyword extends Component {
           <h4>
             궁금한 <strong>키워드</strong> 를 검색해보세요
           </h4>
-          <input id="searchField" type="text"/>
+          <input id="searchField" type="text" placeholder="궁금한 검색어를 입력해주세요"/>
           <ul id="searchOption2" className="flex-cont">
             <li className="flex-cont period">
               <div id="periodDate">

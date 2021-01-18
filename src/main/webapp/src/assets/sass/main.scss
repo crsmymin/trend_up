@@ -82,10 +82,13 @@
 }
 
 #searchField {
-  width: 350px;
+  width: 864px;
+  height: 56px;
   border: 2px solid #ccc;
-  padding: 12px 15px 12px;
+  padding: 8px 15px 8px 45asdpx;
+  margin: 0 auto 0 12px;
   display: block;
+  font-size: 18px;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -94,12 +97,119 @@
   box-sizing: border-box;
 }
 
-#searchOption2 {
+// search area
+#searchArea {
+  margin: -95px 0 0;
+  .wrap {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 35px 22px 0;
+    justify-content: space-between;
+    border: 2px solid #ccc;
+    border-bottom: 0;
+    background-color: #fff;
+    border-radius: 10px 10px 0 0;
+    -webkit-border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 10px 0 0;
+    -ms-border-radius: 10px 10px 0 0;
+    -o-border-radius: 10px 10px 0 0;
+    h4 {
+      margin: 0 0 25px;
+      width: 100%;
+      font-size: 26px;
+      font-weight: normal;
+      strong {
+        font-size: 26px;
+        font-weight: 700;
+      }
+    }
+    #optionByDate {
+      width: 80%;
+      li {
+        padding: 0 0 15px;
+        h4 {
+          margin: 0 35px 0 0;
+          font-size: 18px;
+          line-height: 35px;
+        }
+        #periodDate {
+          margin: 0 8px 0 0;
+          input {
+            width: 200px;
+            border: 2px solid #ccc;
+            text-align: center;
+            padding: 12px 15px 12px;
+            font-size: 18px;
+            color: #000;
+            outline: none;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -ms-border-radius: 5px;
+            -o-border-radius: 5px;
+          }
+        }
+        #periodTime {
+          select {
+            width: 180px;
+            outline: none;
+            border: 2px solid #ccc;
+            padding: 12px 15px 12px;
+            font-size: 18px;
+            color: #1f496d;
+            border-radius:5px;
+            -webkit-border-radius:5px;
+            -moz-border-radius:5px;
+            -ms-border-radius:5px;
+            -o-border-radius:5px;
+          }
+        }
+        #directBtns {
+          button {
+            width: 130px;
+            padding: 10px 12px;
+            font-size: 1.1rem;
+            background-color: #fff;
+            margin: 0;
+            color: #000;
+            border: 1px solid #ccc;
+            box-shadow: 1px 1px 1px 1px #eee;
+            border-radius: 0;
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            -ms-border-radius: 0;
+            -o-border-radius: 0;
+            &.active {
+              background-color: #3379b7e8;
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+    .btn-wrap {
+      width: 20%;
+      #btnExecution {
+        background-color: #030303;
+        width: 100%;
+        height: 56px;
+        margin: 0;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+      }
+    }
+  }
+}
+
+#optionByPeriod {
   background-color: #fff;
   margin: 0 0 10px;
   padding: 10px 12px;
   justify-content: space-between;
-
   #periodDate {
     width: 350px;
     border: 2px solid #ccc;
@@ -110,7 +220,6 @@
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
     box-sizing: border-box;
-
     input {
       width: 150px;
       text-align: center;
@@ -121,7 +230,6 @@
       box-sizing: border-box;
     }
   }
-
   .direct-btns {
     button {
       width: 95px;
@@ -138,21 +246,17 @@
       -moz-border-radius: 0;
       -ms-border-radius: 0;
       -o-border-radius: 0;
-
       &:last-child {
         border-right: 1px solid #ccc;
       }
-
       &.active {
         background-color: #3379b7e8;
         color: #fff;
       }
     }
   }
-
   .btn-wrap {
     width: 230px;
-
     #btnExecution2 {
       background-color: #030303;
       width: 100%;

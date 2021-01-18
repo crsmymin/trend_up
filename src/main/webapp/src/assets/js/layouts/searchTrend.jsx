@@ -95,7 +95,7 @@ class SearchTrend extends Component {
           <h4>
             궁금한 <strong>날짜</strong> 를 검색해보세요
           </h4>
-          <ul id="searchOption">
+          <ul id="optionByDate">
             <li className="field flex-cont">
               <div id="periodDate">
                 <DatePicker
