@@ -34,10 +34,11 @@ public class EmotionAnalysisService {
 		try {
 			fromDate = fromDate.replace("-", "").replace(".", "");
 			toDate = toDate.replace(".", "");
+			keyword = keyword.replace(",", "").replace(" ", "");
 
 			String url = "https://some.co.kr/sometrend/analysis/trend/sentiment-transition?sources=13&categories=2046&period=1&endDate="
 					+ toDate + "&startDate=" + fromDate + "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
-			
+			//System.out.println(url);
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).header("Content-Type", "application/json")
 					.method(Connection.Method.GET).ignoreContentType(true).get();
 			JSONParser parser = new JSONParser();
