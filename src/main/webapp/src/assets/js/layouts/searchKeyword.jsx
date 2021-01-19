@@ -6,7 +6,22 @@ import "react-datepicker/dist/react-datepicker.css";
 
 class SearchKeyword extends Component {
   constructor(props) {
-    super(props)
+    super(props) 
+    this.state = {
+      searchKeyword : ""
+    };
+  }
+
+  _handleChange = (e) => {
+    this.setState({
+      searchKeyword: e.target.value
+    })
+  }
+
+  _onKeyPress = (e) => {
+    if(e.key === 'Enter') {
+      console.log(this.state.searchKeyword)
+    }
   }
 
   componentDidMount() {
@@ -20,42 +35,14 @@ class SearchKeyword extends Component {
           <h4>
             궁금한 <strong>키워드</strong> 를 검색해보세요
           </h4>
-          <input id="searchField" type="text" placeholder="궁금한 검색어를 입력해주세요"/>
-          <ul id="searchOption2" className="flex-cont">
-            <li className="flex-cont period">
-              <div id="periodDate">
-                <DatePicker
-                  id="selectedStartDate"
-                  // value={this.state.startDate}
-                  // selected={this.state.startDate}
-                  // onChange={this._onChangeDateStart}
-                  dateFormat="yyyy.MM.dd"
-                  maxDate={new Date()}
-                />
-                ~
-                <DatePicker
-                  id="selectedEndDate"
-                  // value={this.state.endDate}
-                  // selected={this.state.endDate}
-                  // onChange={this._onChangeDateEnd}
-                  dateFormat="yyyy.MM.dd"
-                  maxDate={new Date()}
-                />
-              </div>
-            </li>
-            <li className="flex-cont direct-btns">
-              <button className="btn-s week 7 active" onClick={this._directBtnsClick} value="7">1주일</button>
-              <button className="btn-s 1month 30" onClick={this._directBtnsClick} value="30">1개월</button>
-              <button className="btn-s 3month 90" onClick={this._directBtnsClick} value="90">3개월</button>
-              <button className="btn-s 6month 180" onClick={this._directBtnsClick} value="180">6개월</button>
-              <button className="btn-s 1year 365" onClick={this._directBtnsClick} value="365">1년</button>
-            </li>
-            <li className="btn-wrap">
-              <button onClick={this._doAnalyze}type="button" id="btnExecution2" className="btn-s">
-                분석실행
-              </button>
-            </li>
-          </ul>
+          <input 
+            id="searchField" 
+            type="text" 
+            placeholder="궁금한 검색어를 입력해주세요"
+            value={this.state.searchKeyword}
+            onChange={this._handleChange}
+            onKeyPress={this._onKeyPress}
+            />
         </div>
       </div>
     )

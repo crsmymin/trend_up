@@ -525,8 +525,11 @@ class App extends Component {
         />
         <div id="mainPage" className="container cf">
           <div className="wrap">
+            <SearchKeyword 
+            />
             <SearchByPeriod 
               getDataByPeriod={this._getDataByPeriod}
+              page={this.state.page}
             />
             <Statistics 
               searchValue={this.state.searchValue}

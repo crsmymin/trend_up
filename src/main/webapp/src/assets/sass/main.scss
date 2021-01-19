@@ -82,11 +82,11 @@
 }
 
 #searchField {
-  width: 864px;
-  height: 56px;
+  width: 873px;
+  height: 58px;
   border: 2px solid #ccc;
-  padding: 8px 15px 8px 45asdpx;
-  margin: 0 auto 0 12px;
+  padding: 8px 15px 8px 45px;
+  margin: 0;
   display: block;
   font-size: 18px;
   border-radius: 5px;
@@ -208,8 +208,17 @@
 #optionByPeriod {
   background-color: #fff;
   margin: 0 0 10px;
-  padding: 10px 12px;
+  padding: 10px 22px;
   justify-content: space-between;
+  &.keyword {
+    border: 2px solid #ccc;
+    border-top: 0;
+    border-radius: 0px 0px 10px 10px;
+    -webkit-border-radius: 0px 0px 10px 10px;
+    -moz-border-radius: 0px 0px 10px 10px;
+    -ms-border-radius: 0px 0px 10px 10px;
+    -o-border-radius: 0px 0px 10px 10px;
+}
   #periodDate {
     width: 350px;
     border: 2px solid #ccc;
