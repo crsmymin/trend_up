@@ -9,7 +9,7 @@ class Statistics extends Component {
   }
 
   componentDidMount() {  
-    
+  
   }
 
   render() {
@@ -53,7 +53,7 @@ class Statistics extends Component {
             <div className="sorts flex-cont">
               <div className="factor">
                 <span className="img"></span>
-                {this.props.newsCrawler === null ? (
+                {this.props.newsCrawler.length === 0 ? (
                 <span className="counts">0</span>
                 ) : (
                 <span className="counts">{this.props.newsCrawler.naverNewsCnt}</span>
@@ -62,7 +62,7 @@ class Statistics extends Component {
               </div>
               <div className="factor">
                 <span className="img"></span>
-                {this.props.newsBlog === null ? (
+                {this.props.newsBlog.length === 0 ? (
                 <span className="counts">0</span>
                 ):(
                 <span className="counts">{this.props.newsBlog.naverBlogCnt}</span>
@@ -71,12 +71,12 @@ class Statistics extends Component {
               </div>
               <div className="factor">
                 <span className="img"></span>
-                {this.props.newsCafe === undefined ? (
+                {this.props.newsCafe.length === 0 ? (
                 <span className="counts">0</span>
                 ):(
                 <span className="counts">{this.props.newsCafe.naverCafeCnt}</span>
                 )}
-                <span className="type">카페</span>
+                <span className="type">게시판</span>
               </div>
             </div>
           </div>

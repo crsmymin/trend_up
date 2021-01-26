@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 
+import net.sf.json.JSON;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +14,15 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,31 +48,33 @@ public class NaverCrawlerService {
 	 */
 	// public static final String NAVER_UNIFIED_NEWS_URL =
 	// "https://search.naver.com/search.naver?where=news&query=%s&pd=3&ds=%s&de=%s&start=%s&sort=1";
-	public static final String NAVER_UNIFIED_NEWS_URL = "https://search.zum.com/search.zum?method=news&cluster=no&option=date&query=%s&rd=1&scp=0&enddate=%s&startdate=%s&datetype=input&period=w&page=%s";
+	public static final String NAVER_UNIFIED_NEWS_URL = "https://search.zum.com/search.zum?method=news&cluster=no&option=date&query=%s&rd=1&scp=0&startdate=%s&enddate=%s&datetype=input&period=w&page=%s";
 
 	/**
 	 * 네이버 통합검색 카페 URL (거래글제외 일반글만)
 	 */
 	// public static final String NAVER_UNIFIED_CAFE_URL =
 	// "https://search.naver.com/search.naver?where=articleg&query=%s&date_option=6&date_from=%s&date_to=%s&start=%s";
-	public static final String NAVER_UNIFIED_CAFE_URL = "https://search.zum.com/search.zum?method=board&option=date&query=%s&rd=1&scp=0&enddate=%s&startdate=%s&datetype=input&period=w&page=%s";
+	public static final String NAVER_UNIFIED_CAFE_URL = "https://search.zum.com/search.zum?method=board&option=date&query=%s&rd=1&scp=0&startdate=%s&enddate=%s&datetype=input&period=w&page=%s";
 
 	/**
 	 * 네이버 통합검색 블로그 URL
 	 */
 	// public static final String NAVER_UNIFIED_BLOG_URL =
 	// "https://search.naver.com/search.naver?where=post&query=%s&date_option=8&date_from=%s&date_to=%s";
-	public static final String NAVER_UNIFIED_BLOG_URL = "https://search.daum.net/search?w=blog&sort=timely&q=%s&DA=STC&ed=%s&sd=%s&page=%s&period=w";
+	public static final String NAVER_UNIFIED_BLOG_URL = "https://search.daum.net/search?w=blog&sort=timely&q=%s&DA=STC&sd=%s&ed=%s&page=%s&period=w";
 
-	public String getUnifiedSearchNews(String keyword, String fromDate, String toDate, String start) {
+	public String getUnifiedSearchNews(String keyword, String startDate, String endDate, String start) {
 		// 뉴스 원문 검색
 		JSONObject jsonObject = new JSONObject();
+		String cnt = "0";
 		try {
-			fromDate = fromDate.replace("-", "").replace(".", "");
-			toDate = toDate.replace(".", "");
+			startDate = startDate.replace(".", "");
+			endDate = endDate.replace(".", "");
 
-			String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,
+			String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					start);
+			// System.out.println("getUnifiedSearchNews : " + url);
 
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT)
 					.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
@@ -75,7 +87,7 @@ public class NaverCrawlerService {
 				Element ele = doc.select(".section_head .title_num").get(0);
 				// [Result] 1-10 / 68,360건
 				String[] cntText = ele.text().split("/");
-				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
+				cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 
 				System.out.println("[News 총 건 수] " + cnt);
 
@@ -157,10 +169,10 @@ public class NaverCrawlerService {
 				page_val.put("endPage", endPage);
 				page_list.add(page_val);
 
-				jsonObject.put("naverNewsCnt", cnt);
 				jsonObject.put("naverNews", list);
 				jsonObject.put("naverNewsPage", page_str);
 			}
+			jsonObject.put("naverNewsCnt", cnt);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -169,18 +181,19 @@ public class NaverCrawlerService {
 		return new Gson().toJson(jsonObject);
 	}
 
-	public String getUnifiedSearchCafe(String keyword, String fromDate, String toDate, String start) {
+	public String getUnifiedSearchCafe(String keyword, String startDate, String endDate, String start) {
 		// 카페 원문 검색
 		JSONObject jsonObject = new JSONObject();
+		String cnt = "0";
 		try {
-			fromDate = fromDate.replace("-", "").replace(".", "");
+			startDate = startDate.replace(".", "");
 
-			toDate = toDate.replace(".", "");
+			endDate = endDate.replace(".", "");
 
-			String url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,
+			String url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					start);
+			// System.out.println("getUnifiedSearchCafe: "+url);
 
-			// System.out.println("[Cafe URL] "+start +"p; "+url);
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT)
 					.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
 					.ignoreContentType(true).get();
@@ -191,7 +204,7 @@ public class NaverCrawlerService {
 				Element ele = doc.select(".section_head .title_num").get(0);
 				// [Result] 1-10 / 68,360건
 				String[] cntText = ele.text().split("/");
-				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
+				cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 
 				System.out.println("[Cafe 총 건 수] " + cnt);
 				Elements elements = doc.select(".board_list_wrap .report-item-wrap");
@@ -254,10 +267,10 @@ public class NaverCrawlerService {
 					page_str += "<a onclick=\"cafe_page(" + (page + 1) + ")\" class=\"btn xi-angle-right\"></a>";
 				}
 
-				jsonObject.put("naverCafeCnt", cnt);
 				jsonObject.put("naverCafe", list);
 				jsonObject.put("naverCafePage", page_str);
 			}
+			jsonObject.put("naverCafeCnt", cnt);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -266,19 +279,18 @@ public class NaverCrawlerService {
 		return new Gson().toJson(jsonObject);
 	}
 
-	public String getUnifiedSearchBlog(String keyword, String fromDate, String toDate, String start) {
+	public String getUnifiedSearchBlog(String keyword, String startDate, String endDate, String start) {
 		// 블로그 원문 검색
 		JSONObject jsonObject = new JSONObject();
-
+		String cnt = "0";
 		try {
-			fromDate = fromDate.replace("-", "").replace(".", "") + "235959";
+			startDate = startDate.replace(".", "") + "000000";
+			endDate = endDate.replace(".", "") + "235959";
 
-			toDate = toDate.replace(".", "") + "000000";
-
-			String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,
+			String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					start);
+			// System.out.println("getUnifiedSearchBlog: "+url);
 
-			// System.out.println("[blog URL] "+start +"p; "+url);
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
 			Elements elements_title = doc.select(".sub_expander .txt_info");
 
@@ -287,7 +299,7 @@ public class NaverCrawlerService {
 				Element ele = doc.select(".sub_expander .txt_info").get(0);
 				// [Result] 1-10 / 68,360건
 				String[] cntText = ele.text().split("/");
-				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
+				cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 
 				System.out.println("[Blog 총 건 수] " + cnt);
 				Elements elements = doc.select("#blogColl .coll_cont li");
@@ -345,10 +357,10 @@ public class NaverCrawlerService {
 					page_str += "<a onclick=\"blog_page(" + (page + 1) + ")\" class=\"btn xi-angle-right\"></a>";
 				}
 
-				jsonObject.put("naverBlogCnt", cnt);
 				jsonObject.put("naverBlog", list);
 				jsonObject.put("naverBlogPage", page_str);
 			}
+			jsonObject.put("naverBlogCnt", cnt);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -358,16 +370,18 @@ public class NaverCrawlerService {
 
 	}
 
-	public String getUnifiedSearchNewsDesc(String keyword, String fromDate, String toDate) {
+	public String getUnifiedSearchNewsDesc(String keyword, String startDate, String endDate) {
 		// 뉴스 전체페이지 원문조회 (연관어 순위 분석용)
 		JSONObject jsonObject = new JSONObject();
 		String description = "";
 		try {
-			fromDate = fromDate.replace("-", "").replace(".", "");
-			toDate = toDate.replace(".", "");
-			String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,
+
+			startDate = startDate.replace(".", "");
+			endDate = endDate.replace(".", "");
+			String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					"1");
 
+			// System.out.println("getUnifiedSearchNewsDesc: "+url);
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT)
 					.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
 					.ignoreContentType(true).get();
@@ -391,8 +405,8 @@ public class NaverCrawlerService {
 						totalPage = 8;
 					}
 					for (int i = 1; i < totalPage + 1; i++) {
-						url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate,
-								toDate, i);
+						url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), startDate,
+								endDate, i);
 						doc = Jsoup.connect(url).userAgent(USER_AGENT)
 								.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
 								.ignoreContentType(true).get();
@@ -416,18 +430,19 @@ public class NaverCrawlerService {
 		return new Gson().toJson(jsonObject);
 	}
 
-	public String getUnifiedSearchCafeDesc(String keyword, String fromDate, String toDate) {
+	public String getUnifiedSearchCafeDesc(String keyword, String startDate, String endDate) {
 		// 카페 전체페이지 원문조회 (연관어 순위 분석용)
 		JSONObject jsonObject = new JSONObject();
 		String description = "";
 		try {
-			fromDate = fromDate.replace("-", "").replace(".", "");
+			startDate = startDate.replace(".", "");
 
-			toDate = toDate.replace(".", "");
+			endDate = endDate.replace(".", "");
 
-			String url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,
+			String url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					"1");
 
+			// System.out.println("getUnifiedSearchCafeDesc: "+url);
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT)
 					.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
 					.ignoreContentType(true).get();
@@ -455,8 +470,8 @@ public class NaverCrawlerService {
 						totalPage = 8;
 					}
 					for (int i = 1; i < totalPage + 1; i++) {
-						url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate,
-								toDate, i);
+						url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), startDate,
+								endDate, i);
 						doc = Jsoup.connect(url).userAgent(USER_AGENT)
 								.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
 								.ignoreContentType(true).get();
@@ -480,16 +495,17 @@ public class NaverCrawlerService {
 		return new Gson().toJson(jsonObject);
 	}
 
-	public String getUnifiedSearchBlogDesc(String keyword, String fromDate, String toDate) {
-		//블로그 전체페이지 원문조회 (연관어 순위 분석용)
+	public String getUnifiedSearchBlogDesc(String keyword, String startDate, String endDate) {
+		// 블로그 전체페이지 원문조회 (연관어 순위 분석용)
 		JSONObject jsonObject = new JSONObject();
 		String description = "";
 		try {
-			fromDate = fromDate.replace(".", "") + "235959";
-			toDate = toDate.replace(".", "") + "000000";
+			startDate = startDate.replace(".", "") + "000000";
+			endDate = endDate.replace(".", "") + "235959";
 
-			String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate, toDate,
+			String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					"1");
+			// System.out.println("getUnifiedSearchBlogDesc: "+url);
 
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
 			Elements elements_title = doc.select(".sub_expander .txt_info");
@@ -514,8 +530,8 @@ public class NaverCrawlerService {
 						totalPage = 8;
 					}
 					for (int i = 1; i < totalPage + 1; i++) {
-						url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), fromDate,
-								toDate, i + "1");
+						url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), startDate,
+								endDate, i + "1");
 						doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
 						elements = doc.select("#blogColl .coll_cont li");
 						for (Element element : elements) {
@@ -537,10 +553,10 @@ public class NaverCrawlerService {
 	}
 
 	// 버즈 분석
-	public JSONArray getSearchBuzz(String keyword, String fromDate_str, String toDate, String target) {
+	public JSONArray getSearchBuzz(String keyword, String startDate, String endDate, String target) {
 
-		Integer fromDate = Integer.parseInt(fromDate_str.replace(".", "")) + 1;
-		toDate = toDate.replace(".", "");
+		Integer fromDate = Integer.parseInt(endDate.replace(".", "")) + 1;
+		startDate = startDate.replace(".", "");
 
 		URL url = null;
 		URLConnection connection = null;
@@ -550,11 +566,12 @@ public class NaverCrawlerService {
 			url = new URL("http://svc.saltlux.ai:31781");
 			connection = url.openConnection();
 			// Header 정보 지정
-			connection.addRequestProperty("Content-Type", "application/json");
+			connection.addRequestProperty("Content-Type", "application/json;charset=UTF-8");
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 
 			JSONObject jsonBody = new JSONObject();
+
 			// 사용자 키
 			jsonBody.put("key", "bca2fa31-efd9-43b4-8e7c-9ba3fd749eea");
 			// 서비스 ID
@@ -564,12 +581,12 @@ public class NaverCrawlerService {
 			JSONObject argument = new JSONObject();
 			argument.put("target", target);
 			argument.put("keyword", keyword);
-			argument.put("from", toDate);
+			argument.put("from", startDate);
 			argument.put("to", fromDate.toString());
 			argument.put("interval", "day");
 
 			jsonBody.put("argument", argument);
-
+			
 			BufferedOutputStream bos = new BufferedOutputStream(connection.getOutputStream());
 
 			bos.write(jsonBody.toJSONString().getBytes(StandardCharsets.UTF_8));
@@ -583,7 +600,7 @@ public class NaverCrawlerService {
 				responseBody.append(line);
 			}
 			br.close();
-
+			
 			JSONParser parser = new JSONParser();
 			Object obj = parser.parse(responseBody.toString());
 			JSONObject jsonObj = (JSONObject) obj;
@@ -612,4 +629,214 @@ public class NaverCrawlerService {
 		return buzzContents;
 	}
 
+	public String getSearchCafeBuzz(String keyword, String startDate, String endDate) throws org.json.simple.parser.ParseException {
+		JSONObject jsonObject = new JSONObject();
+		String update_date = "[{\"count\":1,";
+		String date = "{\"count\":0,";
+		try {
+
+			startDate = startDate.replace(".", "");
+			endDate = endDate.replace(".", "");
+			String url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
+					"1");
+			Document doc = Jsoup.connect(url).userAgent(USER_AGENT)
+					.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
+					.ignoreContentType(true).get();
+			Elements elements_title = doc.select(".section_head .title_num");
+
+			if (elements_title.size() > 0) {
+				// 검색 건수
+				Element ele = doc.select(".section_head .title_num").get(0);
+				String[] cntText = ele.text().split("/");
+				
+				// [Result] 1-10 / 68,360건
+				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
+
+				int totalPage = Integer.parseInt(cnt) / 10;
+				Elements elements = doc.select(".board_list_wrap .report-item-wrap");
+
+				for (Element element : elements) {
+					String str = element.select(".date").text();
+
+					update_date += "\"date\":\"" + str + "\"},{\"count\":1,";
+				}
+				if(totalPage>98) {
+					totalPage=99;
+				}
+				if (totalPage > 1) {
+					for (int i = 2; i < totalPage + 1; i++) {
+						url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), startDate,
+								endDate, i); 
+						
+						doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
+						elements = doc.select(".board_list_wrap .report-item-wrap");
+
+						for (Element element : elements) {
+							String str = element.select(".date").text();
+
+							update_date += "\"date\":\"" + str + "\"},{\"count\":1,";
+						}
+					}
+				}
+
+			}
+			update_date = update_date.substring(0, update_date.lastIndexOf("{\"count\":1,"));
+
+			// 날짜 포맷 지정
+			DateFormat df = new SimpleDateFormat("yyyyMMdd");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd"); // 날짜 포맷
+
+			// Date 타입으로 파싱
+			Date sDate;
+			try {
+				sDate = df.parse(startDate.replace(".", ""));
+
+				Date eDate = df.parse(endDate.replace(".", ""));
+
+				Calendar c1 = Calendar.getInstance();
+				Calendar c2 = Calendar.getInstance();
+
+				c1.setTime(sDate);
+				c2.setTime(eDate);
+				update_date += date;
+				
+				while (c1.compareTo(c2) != 1) {
+					
+					update_date += "\"date\":\"" + sdf.format(c1.getTime()) + "\"},{\"count\":0,";
+					c1.add(Calendar.DATE, 1);
+				}
+
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (!update_date.equals("[{\"count\":0,")) {
+				update_date = update_date.substring(0, update_date.lastIndexOf(",{\"count\":0,")) + "]";
+				// System.out.println(update_date.replaceAll(" ", ""));
+				update_date = getChangeString(update_date.replaceAll(" ", ""));
+			}
+			jsonObject.put("update_date", getStringtoArray(update_date));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return new Gson().toJson(jsonObject);
+	}
+
+	public String getChangeString(String buzzContents) {
+		Calendar c1 = new GregorianCalendar();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd"); // 날짜 포맷
+		JSONArray jsonArr = new JSONArray();
+		try {
+			jsonArr = (JSONArray) new JSONParser().parse(buzzContents);
+
+			// System.out.println(jsonArr.size());
+			for (int i = 0; i < jsonArr.size(); i++) {
+				JSONObject jsonObj = (JSONObject) jsonArr.get(i);
+				Date date = new Date();
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(date);
+				// System.out.println(jsonObj.get("date"));
+				if (jsonObj.get("date").toString().indexOf("일전") != -1) {
+					String add_str = jsonObj.get("date").toString().substring(0,
+							jsonObj.get("date").toString().indexOf("일전"));
+
+					cal.add(Calendar.DATE, Integer.parseInt("-" + add_str));
+					jsonObj.put("date", sdf.format(cal.getTime()));
+
+					jsonArr.set(i, jsonObj);
+
+				} else if (jsonObj.get("date").toString().indexOf("어제") != -1) {
+					cal.add(Calendar.DATE, -1);
+					jsonObj.put("date", sdf.format(cal.getTime()));
+
+					jsonArr.set(i, jsonObj);
+				} else if (jsonObj.get("date").toString().indexOf("시간전") != -1) {
+					String add_str = jsonObj.get("date").toString().substring(0,
+							jsonObj.get("date").toString().indexOf("시간전"));
+					cal.add(Calendar.HOUR, Integer.parseInt("-" + add_str));
+					jsonObj.put("date", sdf.format(cal.getTime()));
+
+					jsonArr.set(i, jsonObj);
+				} else if (jsonObj.get("date").toString().indexOf("분전") != -1) {
+					String add_str = jsonObj.get("date").toString().substring(0,
+							jsonObj.get("date").toString().indexOf("분전"));
+					cal.add(Calendar.MINUTE, Integer.parseInt("-" + add_str));
+					jsonObj.put("date", sdf.format(cal.getTime()));
+
+					jsonArr.set(i, jsonObj);
+				} else if (jsonObj.get("date").toString().indexOf("초전") != -1) {
+					String add_str = jsonObj.get("date").toString().substring(0,
+							jsonObj.get("date").toString().indexOf("초전"));
+					cal.add(Calendar.SECOND, Integer.parseInt("-" + add_str));
+					jsonObj.put("date", sdf.format(cal.getTime()));
+
+					jsonArr.set(i, jsonObj);
+				}
+			}
+		} catch (org.json.simple.parser.ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// System.out.println(jsonArr);
+
+		return jsonArr.toJSONString();
+
+	}
+	
+	public String getStringtoArray(String data_str) throws org.json.simple.parser.ParseException {
+		JSONArray arrayList = new JSONArray();
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(data_str);
+		JSONArray data = (JSONArray) obj;
+		
+		for (int k = 0; k < data.size(); k++) {
+			Boolean unique = true;
+			JSONObject dataobj_ = (JSONObject) data.get(k);
+			
+			for (int h = 0; h < arrayList.size(); h++) {
+
+				JSONObject dataobj_2 =(JSONObject) arrayList.get(h);
+				
+				if ((dataobj_.get("date").equals(dataobj_2.get("date")))) {
+					Integer a = Integer.parseInt(dataobj_.get("count").toString())+Integer.parseInt(dataobj_2.get("count").toString());
+				
+					dataobj_2.put("count",a);
+					
+					unique = false;
+					arrayList.remove(h);
+					arrayList.add(dataobj_2);
+					h+=1;
+					
+					break;
+				}
+			}
+			if (unique) {
+				arrayList.add(dataobj_);
+			}
+		}
+		JSONArray sortedJsonArray = new JSONArray();
+
+	    List<JSONObject> jsonValues = new ArrayList<JSONObject>();
+	    for (int i = 0; i < arrayList.size(); i++) {
+	        jsonValues.add((JSONObject) arrayList.get(i));
+	    }
+	    Collections.sort( jsonValues, new Comparator<JSONObject>() {
+	        @Override
+	        public int compare(JSONObject a, JSONObject b) {
+	            Long valA = new Long(Integer.parseInt(a.get("count").toString())); 
+	            Long valB = new Long(Integer.parseInt(b.get("count").toString())); 
+
+	            return -valA.compareTo(valB);
+	        }
+	    });
+	    
+		return arrayList.toJSONString();
+
+	}
 }

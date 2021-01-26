@@ -7,21 +7,13 @@ import "react-datepicker/dist/react-datepicker.css";
 class SearchTrend extends Component {
   constructor(props) {
     let today = new Date();  
-    let fromDate = new Date(today);
-    let hours = fromDate.getHours()>= 10 ? fromDate.getHours() : '0'+fromDate.getHours();
-    fromDate.setDate(fromDate.getDate()-7);
+    let hours = today.getHours()>= 10 ? today.getHours() : '0'+today.getHours();
 
-    let month=1+fromDate.getMonth();
-      month=month>= 10 ? month : '0' + month;
-    let day = fromDate.getDate()>= 10 ? fromDate.getDate() : '0' + fromDate.getDate();
-    let endDate = fromDate.getFullYear()+"."+month+"."+day;
-  
     super(props) 
     this.state = {
       searchResult : [],
       hours : hours+":00:00",
-      startDate : today,
-      endDate : endDate,
+      selectedDate : today
     };
   }
 
@@ -30,17 +22,7 @@ class SearchTrend extends Component {
   }
 
   _onChangeDate = date => {
-    this.setState({ startDate: date });
-
-    let toDate = new Date(date);
-    toDate.setDate(toDate.getDate()-7);
-
-    let month=1+toDate.getMonth();
-      month=month>= 10 ? month : '0' + month;
-    let day=toDate.getDate()>= 10 ? toDate.getDate() : '0' + toDate.getDate();
-    let endDate = toDate.getFullYear() + "." + month + "." + day;
-    
-    this.setState({ endDate: endDate });
+    this.setState({ selectedDate: date });
   }
 
   _doAnalyze = () => {
@@ -57,7 +39,7 @@ class SearchTrend extends Component {
     let limit = new Date('2017-03-29');
     limit.setHours(0);
     
-    if(this.state.startDate<limit){
+    if(this.state.selectedDate<limit){
       alert("2017년 03월 29일 이후로만 가능합니다.");
       return false;
     } else if (selectedDate === toDay && numberOfHours > currentHours) {
@@ -76,7 +58,7 @@ class SearchTrend extends Component {
         this.setState({ 
           searchResult: data,
         });
-        this.props.getKeywordsByDate(this.state.searchResult,this.state.startDate,this.state.endDate);
+        this.props.getKeywordsByDate(this.state.searchResult);
       })
       .catch(error => {
         console.log(error)
@@ -100,8 +82,8 @@ class SearchTrend extends Component {
               <div id="periodDate">
                 <DatePicker
                   id="selectedStartDate"
-                  value={this.state.startDate}
-                  selected={this.state.startDate}
+                  value={this.state.selectedDate}
+                  selected={this.state.selectedDate}
                   onChange={this._onChangeDate}
                   dateFormat="yyyy.MM.dd"
                   maxDate={new Date()}

@@ -1,10 +1,16 @@
 package com.cside.ap.Service;
 
 import java.net.URI;
+import java.security.GeneralSecurityException;
+import java.security.SignatureException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -41,6 +47,7 @@ public class NaverService {
 			Document doc = Jsoup.connect("https://datalab.naver.com/keyword/realtimeList.naver?datetime="+searchValue+"&where=main")
 					.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36")
 					.get();
+			//System.out.println("getNaverRank :  "  + "https://datalab.naver.com/keyword/realtimeList.naver?datetime="+searchValue+"&where=main");
 
 			Elements elements = doc.select(".ranking_item").select(".item_title");
 
@@ -95,6 +102,7 @@ public class NaverService {
 			HttpResponse response = httpClient.execute(get);
 
 			int responseCode = response.getStatusLine().getStatusCode();
+			
 			if(200 == responseCode) {
 				ResponseHandler<String> handler = new BasicResponseHandler();
 				result = handler.handleResponse(response);
@@ -112,6 +120,7 @@ public class NaverService {
 				HttpResponse response2 = httpClient2.execute(get2);
 
 				int responseCode2 = response2.getStatusLine().getStatusCode();
+				
 				if(200 == responseCode2) {
 					ResponseHandler<String> handler2 = new BasicResponseHandler();
 					String result2 = handler2.handleResponse(response2);
@@ -126,9 +135,12 @@ public class NaverService {
 					jsonObject.put("searchMobile",Integer.parseInt(search_mobile));
 					jsonObject.put("searchTotal",Integer.parseInt(search_pc)+ Integer.parseInt(search_mobile));
 							
-					//System.out.println(jsonObject);
 				} else {
-					throw new Exception( "Response Status Error : ErrorCode = " + responseCode2);
+					jsonObject.put("searchPc",0);
+					jsonObject.put("searchMobile",0);
+					jsonObject.put("searchTotal",0);
+					
+					//throw new Exception( "Response Status Error : ErrorCode = " + responseCode2);
 				}
 				
 			} else {

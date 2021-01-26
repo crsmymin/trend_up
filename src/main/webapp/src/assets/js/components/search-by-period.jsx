@@ -29,6 +29,7 @@ class SearchByPeriod extends Component {
 		$('.direct-btns .btn-s').removeClass('active');
 		$('.direct-btns .'+value).addClass('active');
 
+    let end_date = new Date(this.state.endDate);
     let start_date = new Date(this.state.endDate);
     if(value==='180'){
       start_date.setMonth(start_date.getMonth() - 6);
@@ -36,30 +37,32 @@ class SearchByPeriod extends Component {
     }else{
       start_date.setDate(start_date.getDate() - value);
     }
+    let yearOfstartDate = start_date.getFullYear();
+    let yearOfendDate = end_date.getFullYear();
+    let monthOfstartDate = (1 + start_date.getMonth());
+        monthOfstartDate = monthOfstartDate >= 10 ? monthOfstartDate : '0' + monthOfstartDate;
+    let monthOfendDate = (1 + end_date.getMonth());
+        monthOfendDate = monthOfendDate >= 10 ? monthOfendDate : '0' + monthOfendDate;
+    let dayOfstartDate = start_date.getDate();
+        dayOfstartDate = dayOfstartDate >= 10 ? dayOfstartDate : '0' + dayOfstartDate;
+    let dayOfendDate = end_date.getDate();
+        dayOfendDate = dayOfendDate >= 10 ? dayOfendDate : '0' + dayOfendDate;
+    let startDate = yearOfstartDate + '.' + monthOfstartDate + '.' + dayOfstartDate;
+    let endDate = yearOfendDate + '.' + monthOfendDate + '.' + dayOfendDate;
+
+    console.log("SearchByPeriod: "+startDate+"~"+endDate);
+    
     this.setState({ startDate: start_date });
+    this.props.getDataByPeriod(startDate,endDate);
   }
 
   _doAnalyze = () => {
-    let yearOftoDate = this.state.startDate.getFullYear();
-    let yearOfFromDate = this.state.endDate.getFullYear();
-    let monthOftoDate = (1 + this.state.startDate.getMonth());
-        monthOftoDate = monthOftoDate >= 10 ? monthOftoDate : '0' + monthOftoDate;
-    let monthOfFromDate = (1 + this.state.endDate.getMonth());
-        monthOfFromDate = monthOfFromDate >= 10 ? monthOfFromDate : '0' + monthOfFromDate;
-    let dayOftoDate = this.state.startDate.getDate();
-        dayOftoDate = dayOftoDate >= 10 ? dayOftoDate : '0' + dayOftoDate;
-    let dayOfFromDate = this.state.endDate.getDate();
-        dayOfFromDate = dayOfFromDate >= 10 ? dayOfFromDate : '0' + dayOfFromDate;
-    let toDate = yearOftoDate + '.' + monthOftoDate + '.' + dayOftoDate;
-    let fromDate = yearOfFromDate + '.' + monthOfFromDate + '.' + dayOfFromDate;
-
-    console.log(toDate);
-    console.log(fromDate);
-    this.props.getDataByPeriod(fromDate,toDate);
+    console.log($('#keyword .is-selected .word').text());
+    this.props.getSearchResultByKeywords($('#keyword .is-selected .word').text());
   }
 
   componentDidMount(){
-
+    //this._doAnalyze();
   }
   render(){
     return (

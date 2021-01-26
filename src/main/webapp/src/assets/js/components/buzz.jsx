@@ -42,7 +42,7 @@ class Buzz extends Component {
               <span className="title">BLOG : {this.props.buzzTotalBlog}</span>
             </div>
             <div className="keyword-sort">
-              <span className="title">CAFE : {this.props.buzzTotalCafe}</span>
+              <span className="title">BOARD : {this.props.buzzTotalCafe}</span>
             </div>
             </div>
           </div>

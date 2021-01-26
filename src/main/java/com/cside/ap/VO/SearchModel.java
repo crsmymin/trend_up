@@ -2,8 +2,8 @@ package com.cside.ap.VO;
 
 public class SearchModel {
 	private String searchValue;
-	private String fromDate;
-	private String toDate;
+	private String startDate;
+	private String endDate;
 	private String start;
 
 	private String naverWeb;
@@ -49,20 +49,20 @@ public class SearchModel {
 		this.searchValue = searchValue;
 	}
 
-	public String getFromDate() {
-		return fromDate;
+	public String getStartDate() {
+		return startDate;
 	}
 
-	public void setFromDate(String fromDate) {
-		this.fromDate = fromDate;
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
 
-	public String getToDate() {
-		return toDate;
+	public String getEndDate() {
+		return endDate;
 	}
 
-	public void setToDate(String toDate) {
-		this.toDate = toDate;
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 	public String getStart() {

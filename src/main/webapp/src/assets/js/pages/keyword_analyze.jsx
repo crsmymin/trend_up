@@ -466,7 +466,7 @@ class App extends Component {
               borderWidth: 0.5
             },
             {
-              label: ['cafe'],
+              label: ['board'],
               data: array_count_cafe,
               borderColor:  '#6C3483',
               fill: false,

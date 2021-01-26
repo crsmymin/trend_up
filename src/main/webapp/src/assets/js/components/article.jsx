@@ -97,7 +97,7 @@ class Article extends Component {
                 {this.props.newsCrawler.naverNewsCnt}
               </span>
             </p>
-            {this.props.newsCrawler.naverNewsCnt === undefined ? (
+            {this.props.newsCrawler.naverNews === undefined ? (
               <div className="not-found-result">검색된 결과가 없습니다.</div>
             ) : (
               <ul>
@@ -133,7 +133,7 @@ class Article extends Component {
                 {this.props.newsBlog.naverBlogCnt}
               </span>
             </p>
-            {this.props.newsBlog.naverBlogCnt === undefined ? (
+            {this.props.newsBlog.naverBlog === undefined ? (
               <div className="not-found-result">검색된 결과가 없습니다.</div>
             ) : (
               <ul>
@@ -169,7 +169,7 @@ class Article extends Component {
                 {this.props.newsCafe.naverCafeCnt}
               </span>
             </p>
-            {this.props.newsCafe.naverCafeCnt === undefined ? (
+            {this.props.newsCafe.naverCafe === undefined ? (
               <div className="not-found-result">검색된 결과가 없습니다.</div>
             ) : (
               <ul>
