@@ -1,5 +1,6 @@
 package com.cside.ap.Controller;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -119,7 +120,7 @@ public class SearchRestController {
 		map.put("login_id", loginID);
 		map.put("action", "searchNaverNews");
 
-		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		String searchValue = encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 		searchModel.setNaverNews(naverService.getNaverNews(searchModel.getSearchValue()));
 
@@ -149,7 +150,7 @@ public class SearchRestController {
 		map.put("login_id", loginID);
 		map.put("action", "drawWordCloud");
 
-		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		String searchValue = encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 
 		// System.out.println("2"+searchModel.getSearchValue());
@@ -224,7 +225,7 @@ public class SearchRestController {
 	@RequestMapping(value = "/drawBuzzChart")
 	public ResponseEntity<SearchModel> drawBuzzChart(SearchModel searchModel, HttpServletRequest request)
 			throws Exception {
-		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		String searchValue = encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 		
 		HttpStatus httpStatus = HttpStatus.OK;
@@ -276,7 +277,7 @@ public class SearchRestController {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("login_id", loginID);
 		map.put("action", "searchNaverNews");
-		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		String searchValue = encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 		searchModel.setNaverCrawlerNews(naverCrawlerService.getUnifiedSearchNews(searchModel.getSearchValue(),
 				searchModel.getStartDate(), searchModel.getEndDate(), searchModel.getStart()));
@@ -296,7 +297,7 @@ public class SearchRestController {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("login_id", loginID);
 		map.put("action", "searchNaverNews");
-		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		String searchValue = encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 		searchModel.setNaverCrawlerCafe(naverCrawlerService.getUnifiedSearchCafe(searchModel.getSearchValue(),
 				searchModel.getStartDate(), searchModel.getEndDate(), searchModel.getStart()));
@@ -316,7 +317,7 @@ public class SearchRestController {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("login_id", loginID);
 		map.put("action", "searchNaverNews");
-		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		String searchValue = encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 		searchModel.setNaverCrawlerBlog(naverCrawlerService.getUnifiedSearchBlog(searchModel.getSearchValue(),
 				searchModel.getStartDate(), searchModel.getEndDate(), searchModel.getStart()));
@@ -337,12 +338,25 @@ public class SearchRestController {
 		map.put("login_id", loginID);
 		map.put("action", "emotionAnalysis");
 
-		String searchValue = new String(searchModel.getSearchValue().getBytes("iso-8859-1"), "utf-8");
+		String searchValue = encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 
 		searchModel.setEmotionAnalysis(emotionAnalysisService.getEmotionAnalysis(searchModel.getSearchValue(),
 				searchModel.getStartDate(), searchModel.getEndDate()));
 
 		return new ResponseEntity<>(searchModel, httpStatus);
+	}
+	
+	public String encodingString(String searchValue){
+
+		try {
+			searchValue = new String(searchValue.getBytes("iso-8859-1"), "utf-8");
+			//searchValue =searchValue; // 운영서버에 반영할 때!
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return searchValue;
 	}
 }

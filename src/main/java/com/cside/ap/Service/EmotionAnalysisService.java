@@ -38,7 +38,7 @@ public class EmotionAnalysisService {
 
 			String url = "https://some.co.kr/sometrend/analysis/trend/sentiment-transition?sources=13&categories=2046&period=1&endDate="
 					+ toDate + "&startDate=" + fromDate + "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
-			//System.out.println(url);
+			
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).header("Content-Type", "application/json")
 					.method(Connection.Method.GET).ignoreContentType(true).get();
 			JSONParser parser = new JSONParser();
@@ -70,7 +70,9 @@ public class EmotionAnalysisService {
 					other = other + Integer.parseInt(polarities_.get("etc").toString());
 
 					JSONArray dataArray = (JSONArray) rows_item.get("data");
-					for (int j = 0; j < 10; j++) {
+					
+					for (int j = 0; j < dataArray.size(); j++) {
+						
 						JSONObject dataArray_ = (JSONObject) dataArray.get(j);
 						JSONObject new_dataArray = new JSONObject();
 						new_dataArray.put("name", dataArray_.get("name"));
@@ -79,6 +81,7 @@ public class EmotionAnalysisService {
 
 
 						data.add(new_dataArray);
+						if(j==9) break;
 					}
 				}
 				Double total=(double) (negative+neutral+positive+other);
