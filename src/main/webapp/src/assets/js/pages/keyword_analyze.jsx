@@ -86,7 +86,7 @@ class App extends Component {
   _getKeywordsByDate = () => {
     axios({
       method: 'get',
-      url: "/searchRank",
+      url: "/searchRankAuto",
       params: {
         searchValue: this.state.selectedDate + "T" + this.state.hours
       }
@@ -494,10 +494,13 @@ class App extends Component {
           <div className="wrap">
             <SearchKeyword 
               searchValue={this.state.searchValue}
+              getSearchResultByKeywords={this._getSearchResultByKeywords}
             />
             <SearchByPeriod 
-              getDataByPeriod={this._getDataByPeriod}
               page={this.state.page}
+              searchValue={this.state.searchValue}
+              getDataByPeriod={this._getDataByPeriod}
+              getSearchResultByKeywords={this._getSearchResultByKeywords}
             />
             <Statistics 
               searchValue={this.state.searchValue}

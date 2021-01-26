@@ -57,8 +57,7 @@ class SearchByPeriod extends Component {
   }
 
   _doAnalyze = () => {
-    console.log($('#keyword .is-selected .word').text());
-    this.props.getSearchResultByKeywords($('#keyword .is-selected .word').text());
+    this.props.getSearchResultByKeywords(this.props.searchValue);
   }
 
   componentDidMount(){

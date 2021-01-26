@@ -86,6 +86,25 @@ public class SearchRestController {
 		jsonObject.put("twitter", jsonObject_twitter);
 		response.getWriter().print(jsonObject);
 	}
+	@RequestMapping(value = "/searchRankAuto")
+	public void searchRankAuto(SearchModel searchModel, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		response.setHeader("Content-Type", "text/html;charset=utf-8");
+		JSONObject jsonObject = new JSONObject();
+
+		HttpSession session = request.getSession();
+		String loginID = (String) session.getAttribute("loginID");
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("login_id", loginID);
+		map.put("action", "searchRankAuto");
+
+		JSONObject jsonObject_naver = new JSONObject();
+		jsonObject_naver = naverService.getNaverRank(searchModel.getSearchValue().replace(".", "-"));
+		jsonObject.put("naver", jsonObject_naver);
+
+		response.getWriter().print(jsonObject);
+	}
 
 	@RequestMapping(value = "/searchNaverNews")
 	public ResponseEntity<SearchModel> searchNaverNews(SearchModel searchModel, HttpServletRequest request,

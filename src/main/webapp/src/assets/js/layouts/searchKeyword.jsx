@@ -11,13 +11,13 @@ class SearchKeyword extends Component {
 
   _handleChange = (e) => {
     this.setState({
-      searchKeyword: e.target.value
+      searchValue: e.target.value
     })
   }
 
   _onKeyPress = (e) => {
     if(e.key === 'Enter') {
-      console.log(this.state.searchKeyword)
+      console.log(this.state.searchValue)
     }
   }
 
@@ -36,7 +36,7 @@ class SearchKeyword extends Component {
             id="searchField" 
             type="text" 
             placeholder="궁금한 검색어를 입력해주세요"
-            value={this.props.searchKeyword}
+            value={this.props.searchValue}
             onChange={this._handleChange}
             onKeyPress={this._onKeyPress}
             />
