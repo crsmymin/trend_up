@@ -7,9 +7,6 @@ import "react-datepicker/dist/react-datepicker.css";
 class SearchKeyword extends Component {
   constructor(props) {
     super(props) 
-    this.state = {
-      searchKeyword : ""
-    };
   }
 
   _handleChange = (e) => {
@@ -39,7 +36,7 @@ class SearchKeyword extends Component {
             id="searchField" 
             type="text" 
             placeholder="궁금한 검색어를 입력해주세요"
-            value={this.state.searchKeyword}
+            value={this.props.searchKeyword}
             onChange={this._handleChange}
             onKeyPress={this._onKeyPress}
             />

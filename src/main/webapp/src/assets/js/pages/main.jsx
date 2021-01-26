@@ -105,7 +105,7 @@ class App extends Component {
   }
   // get search result by keywords
   _getSearchResultByKeywords = (keyword) => {
-    console.log("_getSearchResultByKeywords"+this.state.searchValue);
+    //console.log("_getSearchResultByKeywords"+this.state.searchValue);
     this.setState({
       isLoadingArticle: true,
       isLoadingBuzz: true,
