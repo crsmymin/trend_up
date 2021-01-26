@@ -127,11 +127,20 @@ public class MorphemeAnalysisSevice {
 					}
 				}
 			}
-
+			List<Map<String, Object>> returnList = new ArrayList<>();
+			Map<String, Object> tMap = new HashMap<>();
 			if (0 < morphemesMap.size()) {
 				morphemes = new ArrayList<Morpheme>(morphemesMap.values());
 				morphemes.sort((morpheme1, morpheme2) -> {
 					return morpheme2.count - morpheme1.count;
+				});
+
+				// 형태소들 중 명사들에 대해서 많이 노출된 순으로 출력 ( 최대 5개 )
+				morphemes.stream().filter(morpheme -> {
+					return morpheme.type.equals("NNG") || morpheme.type.equals("NNP") || morpheme.type.equals("NNB");
+				}).limit(20).forEach(morpheme -> {
+					//System.out.println("[명사] " + morpheme.text + " (" + morpheme.count + ")");
+					tMap.put(morpheme.text, morpheme.count);
 				});
 			}
 
@@ -140,27 +149,17 @@ public class MorphemeAnalysisSevice {
 				nameEntities.sort((nameEntity1, nameEntity2) -> {
 					return nameEntity2.count - nameEntity1.count;
 				});
+
+				// 인식된 개채명들 많이 노출된 순으로 출력 ( 최대 5개 )
+				nameEntities.stream().limit(20).forEach(nameEntity -> {
+					//System.out.println("[개체명] " + nameEntity.text + " (" + nameEntity.count + ")");
+					if( tMap.containsKey(nameEntity.text) ) {
+						tMap.put(nameEntity.text,  (Integer)tMap.get(nameEntity.text) + nameEntity.count);
+					}else {
+						tMap.put(nameEntity.text, nameEntity.count);
+					}
+				});
 			}
-
-			List<Map<String, Object>> returnList = new ArrayList<>();
-			Map<String, Object> tMap = new HashMap<>();
-			// 형태소들 중 명사들에 대해서 많이 노출된 순으로 출력 ( 최대 5개 )
-			morphemes.stream().filter(morpheme -> {
-				return morpheme.type.equals("NNG") || morpheme.type.equals("NNP") || morpheme.type.equals("NNB");
-			}).limit(20).forEach(morpheme -> {
-				//System.out.println("[명사] " + morpheme.text + " (" + morpheme.count + ")");
-				tMap.put(morpheme.text, morpheme.count);
-			});
-
-			// 인식된 개채명들 많이 노출된 순으로 출력 ( 최대 5개 )
-			nameEntities.stream().limit(20).forEach(nameEntity -> {
-				//System.out.println("[개체명] " + nameEntity.text + " (" + nameEntity.count + ")");
-				if( tMap.containsKey(nameEntity.text) ) {
-					tMap.put(nameEntity.text,  (Integer)tMap.get(nameEntity.text) + nameEntity.count);
-				}else {
-					tMap.put(nameEntity.text, nameEntity.count);
-				}
-			});
 
 			for (String str : tMap.keySet()) {
 				if( str.length() < 2 || (Integer)tMap.get(str) <2) {
