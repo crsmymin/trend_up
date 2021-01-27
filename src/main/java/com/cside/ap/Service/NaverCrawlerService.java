@@ -10,6 +10,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -559,12 +560,12 @@ public class NaverCrawlerService {
 		startDate = startDate.replace(".", "");
 
 		URL url = null;
-		URLConnection connection = null;
+		HttpURLConnection connection = null;
 		StringBuilder responseBody = new StringBuilder();
 		JSONArray buzzContents = new JSONArray();
 		try {
 			url = new URL("http://svc.saltlux.ai:31781");
-			connection = url.openConnection();
+			connection = (HttpURLConnection) url.openConnection();
 			// Header 정보 지정
 			connection.addRequestProperty("Content-Type", "application/json;charset=UTF-8");
 			connection.setDoOutput(true);
@@ -586,40 +587,43 @@ public class NaverCrawlerService {
 			argument.put("interval", "day");
 
 			jsonBody.put("argument", argument);
-			
+
 			BufferedOutputStream bos = new BufferedOutputStream(connection.getOutputStream());
 
 			bos.write(jsonBody.toJSONString().getBytes(StandardCharsets.UTF_8));
 			bos.flush();
 			bos.close();
 
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-			String line = null;
-			while ((line = br.readLine()) != null) {
-				responseBody.append(line);
-			}
-			br.close();
-			
-			JSONParser parser = new JSONParser();
-			Object obj = parser.parse(responseBody.toString());
-			JSONObject jsonObj = (JSONObject) obj;
-			JSONObject jsonObj2 = (JSONObject) jsonObj.get("return_object");
+			int code = connection.getResponseCode();
 
-			// System.out.println(keyword+" "+toDate+"~"+fromDate+" ::: "+jsonObj2);
-			JSONObject retrieve = (JSONObject) jsonObj2.get("retrieve");
+			if (code==200) {
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					responseBody.append(line);
+				}
+				br.close();
 
-			String a = retrieve.toString();
-			String[] array = a.replace("{", "").replace("}", "").replace("\"", "").split(",");
+				JSONParser parser = new JSONParser();
+				Object obj = parser.parse(responseBody.toString());
+				JSONObject jsonObj = (JSONObject) obj;
+				JSONObject jsonObj2 = (JSONObject) jsonObj.get("return_object");
 
-			for (int i = 0; i < array.length; i++) {
-				JSONObject jsonObject = new JSONObject();
-				String[] inner_array = array[i].split(":");
-				jsonObject.put("date", inner_array[0].replace("-", ".").replace("T00", ""));
-				jsonObject.put("count", Integer.parseInt(inner_array[4]));
+				// System.out.println(keyword+" "+toDate+"~"+fromDate+" ::: "+jsonObj2);
+				JSONObject retrieve = (JSONObject) jsonObj2.get("retrieve");
 
-				buzzContents.add(jsonObject);
+				String a = retrieve.toString();
+				String[] array = a.replace("{", "").replace("}", "").replace("\"", "").split(",");
 
+				for (int i = 0; i < array.length; i++) {
+					JSONObject jsonObject = new JSONObject();
+					String[] inner_array = array[i].split(":");
+					jsonObject.put("date", inner_array[0].replace("-", ".").replace("T00", ""));
+					jsonObject.put("count", Integer.parseInt(inner_array[4]));
+
+					buzzContents.add(jsonObject);
+				}
 			}
 
 		} catch (Exception e) {
@@ -629,7 +633,8 @@ public class NaverCrawlerService {
 		return buzzContents;
 	}
 
-	public String getSearchCafeBuzz(String keyword, String startDate, String endDate) throws org.json.simple.parser.ParseException {
+	public String getSearchCafeBuzz(String keyword, String startDate, String endDate)
+			throws org.json.simple.parser.ParseException {
 		JSONObject jsonObject = new JSONObject();
 		String update_date = "[{\"count\":1,";
 		String date = "{\"count\":0,";
@@ -648,7 +653,7 @@ public class NaverCrawlerService {
 				// 검색 건수
 				Element ele = doc.select(".section_head .title_num").get(0);
 				String[] cntText = ele.text().split("/");
-				
+
 				// [Result] 1-10 / 68,360건
 				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 
@@ -660,14 +665,14 @@ public class NaverCrawlerService {
 
 					update_date += "\"date\":\"" + str + "\"},{\"count\":1,";
 				}
-				if(totalPage>98) {
-					totalPage=99;
+				if (totalPage > 98) {
+					totalPage = 99;
 				}
 				if (totalPage > 1) {
 					for (int i = 2; i < totalPage + 1; i++) {
 						url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), startDate,
-								endDate, i); 
-						
+								endDate, i);
+
 						doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
 						elements = doc.select(".board_list_wrap .report-item-wrap");
 
@@ -699,9 +704,9 @@ public class NaverCrawlerService {
 				c1.setTime(sDate);
 				c2.setTime(eDate);
 				update_date += date;
-				
+
 				while (c1.compareTo(c2) != 1) {
-					
+
 					update_date += "\"date\":\"" + sdf.format(c1.getTime()) + "\"},{\"count\":0,";
 					c1.add(Calendar.DATE, 1);
 				}
@@ -710,7 +715,7 @@ public class NaverCrawlerService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			if (!update_date.equals("[{\"count\":0,")) {
 				update_date = update_date.substring(0, update_date.lastIndexOf(",{\"count\":0,")) + "]";
 				// System.out.println(update_date.replaceAll(" ", ""));
@@ -788,31 +793,32 @@ public class NaverCrawlerService {
 		return jsonArr.toJSONString();
 
 	}
-	
+
 	public String getStringtoArray(String data_str) throws org.json.simple.parser.ParseException {
 		JSONArray arrayList = new JSONArray();
 		JSONParser parser = new JSONParser();
 		Object obj = parser.parse(data_str);
 		JSONArray data = (JSONArray) obj;
-		
+
 		for (int k = 0; k < data.size(); k++) {
 			Boolean unique = true;
 			JSONObject dataobj_ = (JSONObject) data.get(k);
-			
+
 			for (int h = 0; h < arrayList.size(); h++) {
 
-				JSONObject dataobj_2 =(JSONObject) arrayList.get(h);
-				
+				JSONObject dataobj_2 = (JSONObject) arrayList.get(h);
+
 				if ((dataobj_.get("date").equals(dataobj_2.get("date")))) {
-					Integer a = Integer.parseInt(dataobj_.get("count").toString())+Integer.parseInt(dataobj_2.get("count").toString());
-				
-					dataobj_2.put("count",a);
-					
+					Integer a = Integer.parseInt(dataobj_.get("count").toString())
+							+ Integer.parseInt(dataobj_2.get("count").toString());
+
+					dataobj_2.put("count", a);
+
 					unique = false;
 					arrayList.remove(h);
 					arrayList.add(dataobj_2);
-					h+=1;
-					
+					h += 1;
+
 					break;
 				}
 			}
@@ -822,20 +828,20 @@ public class NaverCrawlerService {
 		}
 		JSONArray sortedJsonArray = new JSONArray();
 
-	    List<JSONObject> jsonValues = new ArrayList<JSONObject>();
-	    for (int i = 0; i < arrayList.size(); i++) {
-	        jsonValues.add((JSONObject) arrayList.get(i));
-	    }
-	    Collections.sort( jsonValues, new Comparator<JSONObject>() {
-	        @Override
-	        public int compare(JSONObject a, JSONObject b) {
-	            Long valA = new Long(Integer.parseInt(a.get("count").toString())); 
-	            Long valB = new Long(Integer.parseInt(b.get("count").toString())); 
+		List<JSONObject> jsonValues = new ArrayList<JSONObject>();
+		for (int i = 0; i < arrayList.size(); i++) {
+			jsonValues.add((JSONObject) arrayList.get(i));
+		}
+		Collections.sort(jsonValues, new Comparator<JSONObject>() {
+			@Override
+			public int compare(JSONObject a, JSONObject b) {
+				Long valA = new Long(Integer.parseInt(a.get("count").toString()));
+				Long valB = new Long(Integer.parseInt(b.get("count").toString()));
 
-	            return -valA.compareTo(valB);
-	        }
-	    });
-	    
+				return -valA.compareTo(valB);
+			}
+		});
+
 		return arrayList.toJSONString();
 
 	}
