@@ -21,8 +21,8 @@
       url: "/searchCrawlerNews",
       data: {
         "searchValue": $('#keyword .is-selected .word').text(),
-        "fromDate": $('#selectedStartDate').val()+"T",
-        "toDate":$('#selectedEndDate').val(),
+        "startDate": $('#selectedStartDate').val()+"T",
+        "endDate":$('#selectedEndDate').val(),
         "start": page
       },
       success:function(d){
@@ -44,8 +44,8 @@
       url: "/searchCrawlerBlog",
       data: {
         "searchValue": $('#keyword .is-selected .word').text(),
-        "fromDate": $('#selectedStartDate').val()+"T",
-        "toDate":$('#selectedEndDate').val(),
+        "startDate": $('#selectedStartDate').val()+"T",
+        "endDate":$('#selectedEndDate').val(),
         "start": page
       },
       success:function(d){
@@ -67,8 +67,8 @@
       url: "/searchCrawlerCafe",
       data: {
         "searchValue": $('#keyword .is-selected .word').text(),
-        "fromDate": $('#selectedStartDate').val()+"T",
-        "toDate":$('#selectedEndDate').val(),
+        "startDate": $('#selectedStartDate').val()+"T",
+        "endDate":$('#selectedEndDate').val(),
         "start": page
       },
       success:function(d){

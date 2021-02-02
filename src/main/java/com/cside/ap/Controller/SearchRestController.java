@@ -4,8 +4,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +30,7 @@ import com.cside.ap.Service.MorphemeAnalysisSevice;
 import com.cside.ap.Service.NaverCrawlerService;
 import com.cside.ap.Service.NaverService;
 import com.cside.ap.Service.TwitterService;
+import com.cside.ap.Service.ZumService;
 import com.cside.ap.Service.EmotionAnalysisService;
 import com.cside.ap.VO.SearchModel;
 
@@ -34,6 +39,9 @@ public class SearchRestController {
 
 	@Autowired
 	NaverService naverService;
+
+	@Autowired
+	ZumService zumService;
 
 	@Autowired
 	NaverCrawlerService naverCrawlerService;
@@ -64,6 +72,10 @@ public class SearchRestController {
 		jsonObject_naver = naverService.getNaverRank(searchModel.getSearchValue().replace(".", "-"));
 		jsonObject.put("naver", jsonObject_naver);
 
+		JSONObject jsonObject_zum = new JSONObject();
+		jsonObject_zum = zumService.getZumRank(searchModel.getSearchValue().replace(".", ""));
+		jsonObject.put("zum", jsonObject_zum);
+		
 		String twitterSearchValue = searchModel.getSearchValue().replace("T", "/");
 		twitterSearchValue = twitterSearchValue.replace(":00:00", "").replace(".", "-");
 
@@ -156,7 +168,7 @@ public class SearchRestController {
 		// System.out.println("2"+searchModel.getSearchValue());
 		String naverContents = this.naverCrawlerService.getUnifiedSearchNewsDesc(searchModel.getSearchValue(),
 				searchModel.getStartDate(), searchModel.getEndDate());
-
+		System.out.println(searchModel.getStartDate());
 		String naverContents_news = "";
 
 		if (!naverContents.equals("") && naverContents != null && !naverContents.equals("{\"description\":\"\"}")) {
@@ -212,12 +224,10 @@ public class SearchRestController {
 
 		if (!naverContents_total.equals("")) {
 			naverContents_total = "[" + naverContents_total.substring(0, naverContents_total.length() - 1) + "]";
-			JSONParser parser2 = new JSONParser();
-			Object obj2 = parser2.parse(naverContents_total);
-			JSONArray jsonObj2 = (JSONArray) obj2;
-			searchModel.setMorpheme(jsonObj2.toString());
+			
 		}
-
+		searchModel.setMorpheme(getStringtoArray(naverContents_total,"word"));
+		
 		return new ResponseEntity(searchModel, httpStatus);
 
 	}
@@ -243,8 +253,8 @@ public class SearchRestController {
 		JSONObject jsonObj = (JSONObject)obj;
 		naverContents_cafe = (String)jsonObj.get("update_date");
 		}
-		//System.out.println("naverContents_cafe   "+naverContents_cafe);
-		searchModel.setUploadDateCafe(naverContents_cafe);
+		
+		searchModel.setUploadDateCafe(getStringtoArray(naverContents_cafe,"date"));
 
 		JSONArray naverContents_news = new JSONArray();
 		naverContents_news = this.naverCrawlerService.getSearchBuzz(searchModel.getSearchValue(),
@@ -279,6 +289,8 @@ public class SearchRestController {
 		map.put("action", "searchNaverNews");
 		String searchValue = encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
+
+		
 		searchModel.setNaverCrawlerNews(naverCrawlerService.getUnifiedSearchNews(searchModel.getSearchValue(),
 				searchModel.getStartDate(), searchModel.getEndDate(), searchModel.getStart()));
 
@@ -347,6 +359,62 @@ public class SearchRestController {
 		return new ResponseEntity<>(searchModel, httpStatus);
 	}
 	
+	public String getStringtoArray(String data_str,String data_get) throws org.json.simple.parser.ParseException {
+		JSONArray arrayList = new JSONArray();
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(data_str);
+		JSONArray data = (JSONArray) obj;
+
+		for (int k = 0; k < data.size(); k++) {
+			Boolean unique = true;
+			JSONObject dataobj_ = (JSONObject) data.get(k);
+
+			for (int h = 0; h < arrayList.size(); h++) {
+
+				JSONObject dataobj_2 = (JSONObject) arrayList.get(h);
+
+				if ((dataobj_.get(data_get).equals(dataobj_2.get(data_get)))) {
+					Integer a = Integer.parseInt(dataobj_.get("count").toString())
+							+ Integer.parseInt(dataobj_2.get("count").toString());
+
+					dataobj_2.put("count", a);
+
+					unique = false;
+					arrayList.remove(h);
+					arrayList.add(dataobj_2);
+					h += 1;
+
+					break;
+				}
+			}
+			if (unique) {
+				arrayList.add(dataobj_);
+			}
+		}
+		JSONArray sortedJsonArray = new JSONArray();
+
+		List<JSONObject> jsonValues = new ArrayList<JSONObject>();
+		for (int i = 0; i < arrayList.size(); i++) {
+			jsonValues.add((JSONObject) arrayList.get(i));
+			
+		}
+		Collections.sort(jsonValues, new Comparator<JSONObject>() {
+			@Override
+			public int compare(JSONObject a, JSONObject b) {
+				Long valA = new Long(Integer.parseInt(a.get("count").toString()));
+				Long valB = new Long(Integer.parseInt(b.get("count").toString()));
+
+				return -valA.compareTo(valB);
+			}
+		});
+		for (int i = 0; i < arrayList.size(); i++) {
+	        sortedJsonArray.add(jsonValues.get(i));
+	        if (i==29) break;
+	    }
+	    
+		return sortedJsonArray.toJSONString();
+
+	}
 	public String encodingString(String searchValue){
 
 		try {

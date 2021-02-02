@@ -20,9 +20,9 @@
     $.ajax({
       url: "/searchCrawlerNews",
       data: {
-        "searchValue": $('#keyword .is-selected .word').text(),
-        "fromDate": $('#selectedStartDate').val()+"T",
-        "toDate":$('#selectedEndDate').val(),
+        "searchValue": $('#searchField').attr("data-attr"),
+        "startDate": $('#selectedStartDate').val(),
+        "endDate":$('#selectedEndDate').val(),
         "start": page
       },
       success:function(d){
@@ -43,9 +43,9 @@
     $.ajax({
       url: "/searchCrawlerBlog",
       data: {
-        "searchValue": $('#keyword .is-selected .word').text(),
-        "fromDate": $('#selectedStartDate').val()+"T",
-        "toDate":$('#selectedEndDate').val(),
+        "searchValue": $('#searchField').attr("data-attr"),
+        "startDate": $('#selectedStartDate').val(),
+        "endDate":$('#selectedEndDate').val(),
         "start": page
       },
       success:function(d){
@@ -54,7 +54,7 @@
       var html="";
       $('.blog-page').html(obj.naverBlogPage);
       for(var i=0;i<obj.naverBlog.length;i++){
-        html+="<li><h5><a href='"+obj.naverBlog[i].link+"' target='_blank'>"+obj.naverBlog[i].title+"</a></h5><p class='source'>"+obj.naverBlog[i].medium+" | "+obj.naverBlog[i].date+" </p><p class='content'>"+obj.naverBlog[i].description+" </p></li>"
+        html+="<li><h5><a href='"+obj.naverBlog[i].url+"' target='_blank'>"+obj.naverBlog[i].title+"</a></h5><p class='source'>"+obj.naverBlog[i].writerName+" | "+obj.naverBlog[i].documentDate+" </p><p class='content'>"+obj.naverBlog[i].content+" </p></li>"
       }
       $('#articleBlog ul').html(html);
     }
@@ -66,9 +66,9 @@
     $.ajax({
       url: "/searchCrawlerCafe",
       data: {
-        "searchValue": $('#keyword .is-selected .word').text(),
-        "fromDate": $('#selectedStartDate').val()+"T",
-        "toDate":$('#selectedEndDate').val(),
+        "searchValue": $('#searchField').attr("data-attr"),
+        "startDate": $('#selectedStartDate').val(),
+        "endDate":$('#selectedEndDate').val(),
         "start": page
       },
       success:function(d){
