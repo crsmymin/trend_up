@@ -97,7 +97,7 @@ class App extends Component {
         searchValue: data.naver.naverRank[0],
       });
       $('#searchField').val(data.naver.naverRank[0]);
-
+      
       this._getSearchResultByKeywords(data.naver.naverRank[0]);
 
     })
@@ -116,6 +116,7 @@ class App extends Component {
 
   // get search result by keywords
   _getSearchResultByKeywords = (keyword) => {
+  if(keyword==undefined) keyword=this.state.searchValue;
     this.setState({
       isLoadingArticle: true,
       isLoadingBuzz: true,
@@ -492,12 +493,7 @@ class App extends Component {
             <SearchKeyword  
               searchValue={this.state.searchValue}
               getSearchResultByKeywords={this._getSearchResultByKeywords}
-            />
-            <SearchByPeriod 
-              page={this.state.page}
-              searchValue={this.state.searchValue}
               getDataByPeriod={this._getDataByPeriod}
-              getSearchResultByKeywords={this._getSearchResultByKeywords}
             />
             <Statistics 
               searchValue={this.state.searchValue}
