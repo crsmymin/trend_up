@@ -115,18 +115,14 @@ class App extends Component {
   }
 
   // get search result by keywords
-  _getSearchResultByKeywords = (keyword,occasion) => {
+  _getSearchResultByKeywords = (keyword) => {
     this.setState({
       isLoadingArticle: true,
       isLoadingBuzz: true,
       isLoadingRelated: true
     })
     //키워드를 통한 컨텐츠 조회
-    if(occasion === 1) {
-      // 기본설정 기간 검색
-      console.log("기본설정 기간 검색");
-      
-      axios({
+    axios({
         method: 'get',
         url: "/searchNaverNews",
         params: {
@@ -145,7 +141,6 @@ class App extends Component {
         let newsBlog = JSON.parse(data.naverCrawlerBlog);
         let newsCafe = JSON.parse(data.naverCrawlerCafe);
         let listOrigin = parseData.items;
-
         let searchTotal=parseData.searchTotal;
         let searchMobile=parseData.searchMobile;
         let searchPc=parseData.searchPc;
@@ -169,52 +164,6 @@ class App extends Component {
       .catch(error => {
         console.log(error)
       })
-    } else {
-      // 설정한 기간을 검색
-      console.log("설정한 기간을 검색")
-      axios({
-        method: 'get',
-        url: "/searchNaverNews",
-        params: {
-          searchValue: keyword,
-          startDate: this.state.startDate,
-          endDate: this.state.endDate,
-          start: 1
-        }
-      })
-      .then(res => {
-        const data = res.data;
-        let searchValue = data.searchValue;
-        let parseData = JSON.parse(data.naverNews);
-        let originTotal = parseData.total;
-        let newsCrawler = JSON.parse(data.naverCrawlerNews);
-        let newsBlog = JSON.parse(data.naverCrawlerBlog);
-        let newsCafe = JSON.parse(data.naverCrawlerCafe);
-        let listOrigin = parseData.items;
-
-        let searchTotal=parseData.searchTotal;
-        let searchMobile=parseData.searchMobile;
-        let searchPc=parseData.searchPc;
-        this.setState({
-        searchValue,
-        originTotal,
-        newsCrawler,
-        newsBlog,
-        newsCafe,
-        listOrigin,
-        isLoadingArticle: false,
-        searchTotal,
-        searchMobile,
-        searchPc
-        })
-        this.draw_buz();
-        this.draw_related();
-        this.draw_emotion();
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    }
   }
   
   draw_buz = () => {
