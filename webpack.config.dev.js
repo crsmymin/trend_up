@@ -6,7 +6,7 @@ module.exports = {
   mode: "development",
   devtool: "inline-source-map",
   entry: {
-    index: "./src/main/webapp/src/index.js",
+    trend_analyze: "./src/main/webapp/src/trend_analyze.js",
     keyword_analyze: "./src/main/webapp/src/keyword_analyze.js",
   },
   output: {

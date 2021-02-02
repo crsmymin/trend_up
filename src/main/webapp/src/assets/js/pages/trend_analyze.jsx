@@ -104,7 +104,7 @@ class App extends Component {
     })
   }
   // get search result by keywords
-  _getSearchResultByKeywords = (keyword) => {
+  _getSearchResultByKeywords = (keyword) => { 
     //console.log("_getSearchResultByKeywords"+this.state.searchValue);
     this.setState({
       isLoadingArticle: true,
@@ -482,7 +482,7 @@ class App extends Component {
         <SearchTrend
           getKeywordsByDate={this._getKeywordsByDate}
         />
-        <div id="mainPage" className="container cf">
+        <div id={this.state.page === "trend" ? "trend" : ""} className="container cf">
           <div className="wrap">
             <Keywords
               naver={this.state.naver}

@@ -9,7 +9,7 @@ import Chart from 'chart.js/dist/Chart.bundle.min'
 // import d3LayoutCloud from "d3-cloud/build/d3.layout.cloud"
 
 // jsx
-import './assets/js/pages/main.jsx'
+import './assets/js/pages/trend_analyze.jsx'
 
 // import css
 import './assets/sass/app.scss'

@@ -13,7 +13,7 @@
   <script src="./dist/vendors.bundle.js"></script>
   <script type="text/javascript" src="trendup/js/d3.v3.min.js"></script>
   <script type="text/javascript" src="trendup/js/d3.layout.cloud.js"></script>
-  <script src="./dist/index.bundle.js"></script>
+  <script src="./dist/trend_analyze.bundle.js"></script>
 </body>
 <script type="text/javascript">
   function news_page(page){

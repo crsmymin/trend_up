@@ -18,6 +18,9 @@ class SearchKeyword extends Component {
   _onKeyPress = (e) => {
     if(e.key === 'Enter') {
       console.log(this.state.searchValue)
+      this.props.getSearchResultByKeywords(this.state.searchValue,1);
+      $('.direct-btns .btn-s').removeClass('active');
+		  $('.direct-btns .7').addClass('active');
     }
   }
 
@@ -36,7 +39,6 @@ class SearchKeyword extends Component {
             id="searchField" 
             type="text" 
             placeholder="궁금한 검색어를 입력해주세요"
-            value={this.props.searchValue}
             onChange={this._handleChange}
             onKeyPress={this._onKeyPress}
             />

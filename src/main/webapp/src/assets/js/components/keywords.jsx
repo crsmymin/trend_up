@@ -22,7 +22,7 @@ class Keywords extends Component {
     });
   }
 
-  _getSearchResultByKeywords = () => {
+  _getSearchResultByKeywords = () => { 
     this.setState({ 
       getKeywords: event.target.getAttribute("data-tag"),
     });
