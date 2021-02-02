@@ -125,6 +125,7 @@ class App extends Component {
     if(occasion === 1) {
       // 기본설정 기간 검색
       console.log("기본설정 기간 검색");
+      
       axios({
         method: 'get',
         url: "/searchNaverNews",
