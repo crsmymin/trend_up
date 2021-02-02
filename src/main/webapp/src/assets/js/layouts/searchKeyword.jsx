@@ -37,7 +37,8 @@ class SearchKeyword extends Component {
           </h4>
           <input 
             id="searchField" 
-            type="text" 
+            type="text"
+            data-attr={this.props.searchValue} 
             placeholder="궁금한 검색어를 입력해주세요"
             onChange={this._handleChange}
             onKeyPress={this._onKeyPress}

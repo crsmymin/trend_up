@@ -290,7 +290,7 @@ public class NaverCrawlerService {
 
 			String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					start);
-			// System.out.println("getUnifiedSearchBlog: "+url);
+			 // System.out.println("getUnifiedSearchBlog: "+url);
 
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
 			Elements elements_title = doc.select(".sub_expander .txt_info");
@@ -721,7 +721,7 @@ public class NaverCrawlerService {
 				// System.out.println(update_date.replaceAll(" ", ""));
 				update_date = getChangeString(update_date.replaceAll(" ", ""));
 			}
-			jsonObject.put("update_date", getStringtoArray(update_date));
+			jsonObject.put("update_date", update_date);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -794,55 +794,4 @@ public class NaverCrawlerService {
 
 	}
 
-	public String getStringtoArray(String data_str) throws org.json.simple.parser.ParseException {
-		JSONArray arrayList = new JSONArray();
-		JSONParser parser = new JSONParser();
-		Object obj = parser.parse(data_str);
-		JSONArray data = (JSONArray) obj;
-
-		for (int k = 0; k < data.size(); k++) {
-			Boolean unique = true;
-			JSONObject dataobj_ = (JSONObject) data.get(k);
-
-			for (int h = 0; h < arrayList.size(); h++) {
-
-				JSONObject dataobj_2 = (JSONObject) arrayList.get(h);
-
-				if ((dataobj_.get("date").equals(dataobj_2.get("date")))) {
-					Integer a = Integer.parseInt(dataobj_.get("count").toString())
-							+ Integer.parseInt(dataobj_2.get("count").toString());
-
-					dataobj_2.put("count", a);
-
-					unique = false;
-					arrayList.remove(h);
-					arrayList.add(dataobj_2);
-					h += 1;
-
-					break;
-				}
-			}
-			if (unique) {
-				arrayList.add(dataobj_);
-			}
-		}
-		JSONArray sortedJsonArray = new JSONArray();
-
-		List<JSONObject> jsonValues = new ArrayList<JSONObject>();
-		for (int i = 0; i < arrayList.size(); i++) {
-			jsonValues.add((JSONObject) arrayList.get(i));
-		}
-		Collections.sort(jsonValues, new Comparator<JSONObject>() {
-			@Override
-			public int compare(JSONObject a, JSONObject b) {
-				Long valA = new Long(Integer.parseInt(a.get("count").toString()));
-				Long valB = new Long(Integer.parseInt(b.get("count").toString()));
-
-				return -valA.compareTo(valB);
-			}
-		});
-
-		return arrayList.toJSONString();
-
-	}
 }
