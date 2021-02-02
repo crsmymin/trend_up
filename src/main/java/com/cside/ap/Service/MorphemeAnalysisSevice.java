@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.DynaBeanMapDecorator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -173,7 +174,7 @@ public class MorphemeAnalysisSevice {
 				JSONArray jsonArray = getJsonArrayFromList(returnList);
 				return jsonArray.toJSONString();
 			} else {
-				System.out.println("[error] " + responeBody.get("result"));
+				System.out.println("[error] Morpheme ");
 
 			}
 		} catch (MalformedURLException e) {
