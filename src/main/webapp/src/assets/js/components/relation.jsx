@@ -20,6 +20,7 @@ class Relation extends Component {
         <h3 className="section-title">
             연관어 순위 : {this.props.searchValue}
           <img src="./src/assets/images/accordion_btn.svg" alt="" />  
+          <span className="info-tag">안내문구안내문구 입니다.</span>
         </h3>
         <div className="relation-words flex-cont">
           {/* 워드클라우드 */}

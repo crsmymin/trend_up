@@ -21,6 +21,7 @@ class Emotion extends Component {
         <h3 className="section-title">
             감성어 변화 : {this.props.searchValue}
           <img src="./src/assets/images/accordion_btn.svg" alt="" />  
+          <span className="info-tag">안내문구안내문구 입니다.</span>
         </h3>
         <div className="emotional-words flex-cont">
           {/* 감성어 버블차트 */}

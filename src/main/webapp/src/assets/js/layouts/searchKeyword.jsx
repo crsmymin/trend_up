@@ -1,8 +1,5 @@
 // import react modules
 import React, { Component } from "react";
-import axios from "axios";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 class SearchKeyword extends Component {
   constructor(props) {

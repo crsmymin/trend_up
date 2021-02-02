@@ -25,6 +25,7 @@ class Buzz extends Component {
         <h3 onClick={this._openSection} className={this.state.visible ? "section-title open":"section-title"}>
           언급량추이 : {this.props.searchValue}
           <img src="./src/assets/images/accordion_btn.svg" alt="" />
+          <span className="info-tag">안내문구안내문구 입니다.</span>
         </h3>
         <div className={this.state.visible ? "buzz-trasition flex-cont open":"buzz-trasition flex-cont"}>
           {/* 차트정보 */}
