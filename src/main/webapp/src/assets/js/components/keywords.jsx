@@ -16,7 +16,6 @@ class Keywords extends Component {
     for (let i = 0; i < keyword.length; i++) {
       keyword[i].classList.remove("is-selected");
     }
-
     this.setState({
       isSelected: index,
     });

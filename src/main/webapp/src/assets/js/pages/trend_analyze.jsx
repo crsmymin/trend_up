@@ -83,9 +83,8 @@ class App extends Component {
       searchValue: searchResult.naver.naverRank[0]
     })
     let keyword = document.querySelectorAll(".keywords-lis");
-    let firstKeyword = keyword[0];
-    firstKeyword.classList.add("is-selected");
     for (let i = 0; i < keyword.length; i++) {
+      keyword[i].classList.remove("is-selected");
       keyword[i].addEventListener("click", function () {
         for(let j = 0; j < keyword.length; j++) {
           keyword[j].classList.remove("is-selected");    
@@ -93,6 +92,8 @@ class App extends Component {
         this.classList.add("is-selected");
       })
     }
+    let firstKeyword = keyword[0];
+    firstKeyword.classList.add("is-selected");
     this._getSearchResultByKeywords(searchResult.naver.naverRank[0])
   }
     
