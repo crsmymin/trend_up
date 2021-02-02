@@ -24,8 +24,8 @@ class SearchKeyword extends Component {
   _onKeyPress = (e) => {
     if(e.key === 'Enter') {
       this.props.getSearchResultByKeywords(this.state.searchValue);
-      $('.direct-btns .btn-s').removeClass('active');
-		  $('.direct-btns .7').addClass('active');
+    //  $('.direct-btns .btn-s').removeClass('active');
+		//  $('.direct-btns .7').addClass('active');
     }
   }
 
