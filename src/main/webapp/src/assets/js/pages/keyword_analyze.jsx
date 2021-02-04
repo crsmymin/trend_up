@@ -23,8 +23,8 @@ class App extends Component {
     today_to_month=today_to_month>= 10 ? today_to_month : '0' + today_to_month;
     let today_to_day=today.getDate()>= 10 ? today.getDate() : '0' + today.getDate();
     let selectedDate =today.getFullYear()+"."+today_to_month+"."+today_to_day;
-    let currentHours = new Date().getHours();
-
+    let currentHours = today.getHours()>= 10 ? today.getHours() : '0'+today.getHours();
+    
     let start_date = new Date(today);
     start_date.setDate(start_date.getDate()-7);
 
@@ -97,7 +97,7 @@ class App extends Component {
         searchValue: data.naver.naverRank[0],
       });
       $('#searchField').val(data.naver.naverRank[0]);
-      
+
       this._getSearchResultByKeywords(data.naver.naverRank[0]);
 
     })
