@@ -61,6 +61,25 @@ class Keywords extends Component {
           </div>
           {/* 매스미디어 끝*/}
 
+          {/* zum */}
+          <div className="list zum">
+            <figure className="sns-icon"></figure>
+            <h4><strong>zum </strong>순위</h4>
+            <ul className="scrollbar-inner">
+              {this.props.zum.map(
+                (zum, index) =>
+                  <li key={index} className="keywords-lis zum">
+                    <span className="rank">{index + 1}.</span>
+                    <span className="word" data-tag={zum} onClick={this._getSearchResultByKeywords}>
+                      {zum}
+                    </span>
+                    <span className="media-title"></span>
+                  </li>
+              )}
+            </ul>
+          </div>
+          {/* 매스미디어 끝*/}
+
           {/* 트위터 */}
           <div className="list twitter">
             <figure className="sns-icon"></figure>

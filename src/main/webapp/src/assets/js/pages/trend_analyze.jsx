@@ -79,6 +79,7 @@ class App extends Component {
     this.setState({
       twitter: searchResult.twitter.twitterRank,
       naver: searchResult.naver.naverRank,
+      zum: searchResult.zum.zumRank,
       isLoadingKeyword: false,
       searchValue: searchResult.naver.naverRank[0]
     })

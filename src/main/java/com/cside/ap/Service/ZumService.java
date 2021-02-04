@@ -6,7 +6,9 @@ import java.security.SignatureException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -52,13 +54,21 @@ public class ZumService {
 					.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36")
 					.get();
 			System.out.println("getZumRank :  "  + "http://issue.zum.com/"+searchURL);
-			if (!searchURL.equals("")){
+			if (searchURL.equals("")){
 				
-				Elements elements = doc.select("#issueKeywordList").select("li");
+				Elements elements = doc.select("#issueKeywordOpenList").select("li");
 				List<Object> list = new ArrayList<Object>();
 				for (Element element : elements) {
-					System.out.println(element.text());
+					list.add( element.select(".word").text() );
 				}
+				jsonObject.put("zumRank", list);
+			}else {
+				Elements elements = doc.select(".ranking_list").select("li");
+				List<Object> list = new ArrayList<Object>();
+				for (Element element : elements) {
+					list.add( element.select(".word").text() );
+				}
+				jsonObject.put("zumRank", list);
 			}
 			
 		} catch (Exception e) {

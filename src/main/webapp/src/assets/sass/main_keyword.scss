@@ -18,7 +18,7 @@
   .keywords {
     margin: 0 -1%;
     .list {
-      width: 48%;
+      width: 31%;
       margin: 0 1%;
       padding: 0;
       cursor: pointer;
@@ -32,7 +32,7 @@
         }
       }
       ul {
-        height: 250px;
+        height: 300px;
         padding: 0 20px 0 0;
         overflow-y: scroll;
         &::-webkit-scrollbar {
@@ -84,7 +84,7 @@
               padding: 0 0 0 6px;
             }
             &.word {
-              width: 78%;
+              width: 65%;
               display: block;
               text-align: left;
               padding: 0 40px 0 0;
@@ -93,7 +93,7 @@
               text-overflow: ellipsis;
             }
             &.media-title {
-              width: 16%;
+              width: 25%;
               padding: 0 10px;
               text-align: right;
             }
