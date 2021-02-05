@@ -4,15 +4,12 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 
-import net.sf.json.JSON;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
@@ -20,8 +17,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -141,7 +136,7 @@ public class NaverCrawlerService {
 				if (endPage > totalPage) {
 					endPage = totalPage;
 				}
-				ArrayList page_numbers = new ArrayList();
+				ArrayList<Integer> page_numbers = new ArrayList<Integer>();
 				if (page > 1) {
 					page_numbers.add((page - 1));
 					int a = page - 1;
@@ -163,8 +158,6 @@ public class NaverCrawlerService {
 					int a = page + 1;
 					page_str += "<a class=\"news-page-num btn xi-angle-right\" onClick='news_page(" + a + ")'></a>";
 				}
-				int page_[] = { startPage, page, endPage };
-
 				page_val.put("start", startPage);
 				page_val.put("page", page);
 				page_val.put("endPage", endPage);
@@ -219,7 +212,7 @@ public class NaverCrawlerService {
 					val.put("description", element.select(".txt_wrap").text());
 
 					String str = element.select(".origin").text();
-					String[] array = str.split(" ");
+					
 					val.put("medium", str);
 
 					String date_str = element.select(".date").text();
@@ -382,7 +375,6 @@ public class NaverCrawlerService {
 			String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					"1");
 
-			// System.out.println("getUnifiedSearchNewsDesc: "+url);
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT)
 					.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
 					.ignoreContentType(true).get();
@@ -418,9 +410,7 @@ public class NaverCrawlerService {
 						}
 					}
 				}
-				// System.out.println("[news] "+totalPage+" "+description.length());
 			}
-			// System.out.println("description"+description);
 			jsonObject.put("description", description);
 
 		} catch (IOException e) {
@@ -443,7 +433,6 @@ public class NaverCrawlerService {
 			String url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					"1");
 
-			// System.out.println("getUnifiedSearchCafeDesc: "+url);
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT)
 					.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
 					.ignoreContentType(true).get();
@@ -455,7 +444,6 @@ public class NaverCrawlerService {
 				// [Result] 1-10 / 68,360건
 				String[] cntText = ele.text().split("/");
 
-				// System.out.println("[Cafe 총 건 수] " + cntText[1]);
 
 				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 
@@ -465,7 +453,6 @@ public class NaverCrawlerService {
 				for (Element element : elements) {
 					description += element.select(".txt_wrap").text();
 				}
-				// System.out.println("CafeBuzz totalPage: "+totalPage);
 				if (totalPage > 1) {
 					if (totalPage > 9) {
 						totalPage = 8;
@@ -483,7 +470,6 @@ public class NaverCrawlerService {
 						}
 					}
 				}
-				// System.out.println("[cafe] "+totalPage+" "+description.length());
 			}
 
 			jsonObject.put("description", description);
@@ -506,7 +492,6 @@ public class NaverCrawlerService {
 
 			String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					"1");
-			// System.out.println("getUnifiedSearchBlogDesc: "+url);
 
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
 			Elements elements_title = doc.select(".sub_expander .txt_info");
@@ -525,7 +510,6 @@ public class NaverCrawlerService {
 					description += element.select(".desc").text();
 				}
 
-				// System.out.println("BlogBuzz totalPage: "+totalPage);
 				if (totalPage > 1) {
 					if (totalPage > 9) {
 						totalPage = 8;
@@ -540,7 +524,6 @@ public class NaverCrawlerService {
 						}
 					}
 				}
-				// System.out.println("[blog] "+totalPage+" "+description.length());
 			}
 
 			jsonObject.put("description", description);
@@ -609,8 +592,6 @@ public class NaverCrawlerService {
 				Object obj = parser.parse(responseBody.toString());
 				JSONObject jsonObj = (JSONObject) obj;
 				JSONObject jsonObj2 = (JSONObject) jsonObj.get("return_object");
-
-				// System.out.println(keyword+" "+toDate+"~"+fromDate+" ::: "+jsonObj2);
 				JSONObject retrieve = (JSONObject) jsonObj2.get("retrieve");
 
 				String a = retrieve.toString();
@@ -718,7 +699,6 @@ public class NaverCrawlerService {
 
 			if (!update_date.equals("[{\"count\":0,")) {
 				update_date = update_date.substring(0, update_date.lastIndexOf(",{\"count\":0,")) + "]";
-				// System.out.println(update_date.replaceAll(" ", ""));
 				update_date = getChangeString(update_date.replaceAll(" ", ""));
 			}
 			jsonObject.put("update_date", update_date);
@@ -739,13 +719,12 @@ public class NaverCrawlerService {
 		try {
 			jsonArr = (JSONArray) new JSONParser().parse(buzzContents);
 
-			// System.out.println(jsonArr.size());
 			for (int i = 0; i < jsonArr.size(); i++) {
 				JSONObject jsonObj = (JSONObject) jsonArr.get(i);
 				Date date = new Date();
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(date);
-				// System.out.println(jsonObj.get("date"));
+				
 				if (jsonObj.get("date").toString().indexOf("일전") != -1) {
 					String add_str = jsonObj.get("date").toString().substring(0,
 							jsonObj.get("date").toString().indexOf("일전"));
@@ -787,9 +766,6 @@ public class NaverCrawlerService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		// System.out.println(jsonArr);
-
 		return jsonArr.toJSONString();
 
 	}

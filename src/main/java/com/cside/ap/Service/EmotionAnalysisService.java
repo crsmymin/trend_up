@@ -1,36 +1,27 @@
 package com.cside.ap.Service;
 
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.json.JSONException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import com.google.gson.Gson;
 
 @Service
 public class EmotionAnalysisService {
 	public static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36";
 
-	private static String KEY = "<replace-with-your-text-analytics-key-here>";
-	private static String ENDPOINT = "<replace-with-your-text-analytics-endpoint-here>";
-
 	public String getEmotionAnalysis(String keyword, String fromDate, String toDate) {
 		JSONObject jsonObject = new JSONObject();
 
-		String description = "";
 		try {
 			fromDate = fromDate.replace("-", "").replace(".", "");
 			toDate = toDate.replace(".", "");
@@ -43,12 +34,11 @@ public class EmotionAnalysisService {
 					.method(Connection.Method.GET).ignoreContentType(true).get();
 			JSONParser parser = new JSONParser();
 			JSONObject jsonObj = (JSONObject) parser.parse(doc.text());
-			JSONObject polarities = new JSONObject();
 
 			if (jsonObj.get("code").equals("200")) {
 
 				JSONObject item = (JSONObject) jsonObj.get("item");
-				// System.out.println(item);
+				
 				JSONArray jsonArray = (JSONArray) item.get("rows");
 
 				JSONObject keywordMap = new JSONObject();

@@ -24,6 +24,9 @@ class Header extends Component {
                 <li>
                   <a href="/keyword">키워드 분석</a>
                 </li>
+                <li>
+                  <a href="/hashtag">해시태그 분석</a>
+                </li>
               </ul>
             </nav>
           </div>

@@ -1,16 +1,10 @@
 package com.cside.ap.Service;
 
 import java.net.URI;
-import java.security.GeneralSecurityException;
-import java.security.SignatureException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -33,7 +27,6 @@ public class NaverService {
 	private static final String CLIENT_ID = "rsIfqMXzEMcYTGeA2ZMn";
 	private static final String CLIENT_SECRET = "Zi0w9eUsaE";
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
 	public JSONObject getNaverRank(String searchValue) {
 		JSONObject jsonObject = new JSONObject();
 		
@@ -79,7 +72,6 @@ public class NaverService {
 		} catch (Exception e) {
 			System.out.println("[네이버 실시간 순위 에러] " +e);
 		}
-		//System.out.println("네이버 실시간 순위 : {} "+ jsonObject);
 		return jsonObject;
 	}
 	
@@ -149,7 +141,6 @@ public class NaverService {
 		} catch (Exception e) {
 			System.out.println("[네이버 뉴스 검색 에러] "+ e);
 		}
-		//System.out.println("네이버 뉴스 검색 : {} "+result);
 		return jsonObject.toString();
 	}
 }

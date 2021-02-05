@@ -1,8 +1,5 @@
 package com.cside.ap.Controller;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cside.ap.Service.MorphemeAnalysisSevice;
@@ -31,12 +27,16 @@ import com.cside.ap.Service.NaverCrawlerService;
 import com.cside.ap.Service.NaverService;
 import com.cside.ap.Service.TwitterService;
 import com.cside.ap.Service.ZumService;
+import com.cside.ap.Service.AdminService;
 import com.cside.ap.Service.EmotionAnalysisService;
 import com.cside.ap.VO.SearchModel;
 
 @RestController
 public class SearchRestController {
 
+	@Autowired
+	AdminService adminService;
+	
 	@Autowired
 	NaverService naverService;
 
@@ -54,7 +54,7 @@ public class SearchRestController {
 
 	@Autowired
 	EmotionAnalysisService emotionAnalysisService;
-
+	
 	@RequestMapping(value = "/searchRank")
 	public void searchRank(SearchModel searchModel, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -132,11 +132,10 @@ public class SearchRestController {
 		map.put("login_id", loginID);
 		map.put("action", "searchNaverNews");
 
-		String searchValue = encodingString(searchModel.getSearchValue());
+		String searchValue = adminService.encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 		searchModel.setNaverNews(naverService.getNaverNews(searchModel.getSearchValue()));
 
-		// System.out.println("1"+searchModel.getSearchValue());
 		// Twitter API
 		// searchModel.setTwitter(
 		// twitterService.getTwitterSearch(searchModel.getSearchValue()) );
@@ -158,17 +157,16 @@ public class SearchRestController {
 		HttpStatus httpStatus = HttpStatus.OK;
 		HttpSession session = request.getSession();
 		String loginID = (String) session.getAttribute("loginID");
-		Map<String, String> map = new HashMap();
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("login_id", loginID);
 		map.put("action", "drawWordCloud");
 
-		String searchValue = encodingString(searchModel.getSearchValue());
+		String searchValue = adminService.encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 
-		// System.out.println("2"+searchModel.getSearchValue());
 		String naverContents = this.naverCrawlerService.getUnifiedSearchNewsDesc(searchModel.getSearchValue(),
 				searchModel.getStartDate(), searchModel.getEndDate());
-		System.out.println(searchModel.getStartDate());
+		
 		String naverContents_news = "";
 
 		if (!naverContents.equals("") && naverContents != null && !naverContents.equals("{\"description\":\"\"}")) {
@@ -179,13 +177,11 @@ public class SearchRestController {
 			if (naverContents.length() > 10000) {
 				naverContents = naverContents.substring(10000);
 			}
-			// System.out.println(naverContents);
 			naverContents_news = this.morphemeAnalysisSevice.getMorpheme(naverContents);
 		}
 
 		naverContents = this.naverCrawlerService.getUnifiedSearchCafeDesc(searchModel.getSearchValue(),
 				searchModel.getStartDate(), searchModel.getEndDate());
-		// System.out.println("naverContents_news"+naverContents);
 		String naverContents_cafe = "";
 
 		if (!naverContents.equals("") && naverContents != null && !naverContents.equals("{\"description\":\"\"}")) {
@@ -228,20 +224,20 @@ public class SearchRestController {
 		}
 		searchModel.setMorpheme(getStringtoArray(naverContents_total,"word"));
 		
-		return new ResponseEntity(searchModel, httpStatus);
+		return new ResponseEntity<>(searchModel, httpStatus);
 
 	}
 
 	@RequestMapping(value = "/drawBuzzChart")
 	public ResponseEntity<SearchModel> drawBuzzChart(SearchModel searchModel, HttpServletRequest request)
 			throws Exception {
-		String searchValue = encodingString(searchModel.getSearchValue());
+		String searchValue = adminService.encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 		
 		HttpStatus httpStatus = HttpStatus.OK;
 		HttpSession session = request.getSession();
 		String loginID = (String) session.getAttribute("loginID");
-		Map<String, String> map = new HashMap();
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("login_id", loginID);
 		map.put("action", "drawBuzzChart");
 		
@@ -269,10 +265,7 @@ public class SearchRestController {
 		searchModel.setUploadDateBlog(naverContents_blog.toJSONString());
 		//System.out.println("naverContents_blog  "+naverContents_blog.toJSONString());
 
-		// System.out.println(naverContents_news);
-		// System.out.println(naverContents_blog);
-		// System.out.println(naverContents_cafe);
-		return new ResponseEntity(searchModel, httpStatus);
+		return new ResponseEntity<>(searchModel, httpStatus);
 	}
 
 	@RequestMapping(value = "/searchCrawlerNews")
@@ -287,7 +280,7 @@ public class SearchRestController {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("login_id", loginID);
 		map.put("action", "searchNaverNews");
-		String searchValue = encodingString(searchModel.getSearchValue());
+		String searchValue = adminService.encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 
 		
@@ -309,7 +302,7 @@ public class SearchRestController {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("login_id", loginID);
 		map.put("action", "searchNaverNews");
-		String searchValue = encodingString(searchModel.getSearchValue());
+		String searchValue = adminService.encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 		searchModel.setNaverCrawlerCafe(naverCrawlerService.getUnifiedSearchCafe(searchModel.getSearchValue(),
 				searchModel.getStartDate(), searchModel.getEndDate(), searchModel.getStart()));
@@ -329,7 +322,7 @@ public class SearchRestController {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("login_id", loginID);
 		map.put("action", "searchNaverNews");
-		String searchValue = encodingString(searchModel.getSearchValue());
+		String searchValue = adminService.encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 		searchModel.setNaverCrawlerBlog(naverCrawlerService.getUnifiedSearchBlog(searchModel.getSearchValue(),
 				searchModel.getStartDate(), searchModel.getEndDate(), searchModel.getStart()));
@@ -350,7 +343,7 @@ public class SearchRestController {
 		map.put("login_id", loginID);
 		map.put("action", "emotionAnalysis");
 
-		String searchValue = encodingString(searchModel.getSearchValue());
+		String searchValue = adminService.encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 
 		searchModel.setEmotionAnalysis(emotionAnalysisService.getEmotionAnalysis(searchModel.getSearchValue(),
@@ -414,17 +407,5 @@ public class SearchRestController {
 	    
 		return sortedJsonArray.toJSONString();
 
-	}
-	public String encodingString(String searchValue){
-
-		try {
-			searchValue = new String(searchValue.getBytes("iso-8859-1"), "utf-8");
-			//searchValue =searchValue; // 운영서버에 반영할 때!
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return searchValue;
 	}
 }

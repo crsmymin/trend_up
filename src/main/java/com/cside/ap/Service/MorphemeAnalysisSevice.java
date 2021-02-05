@@ -13,11 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.DynaBeanMapDecorator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -33,7 +30,6 @@ public class MorphemeAnalysisSevice {
 		return this.wordMorph2(str);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String wordMorph2(String text) {
 		// text="네 안녕하세요 홍길동 교숩니다";
 		Map<String, Object> request = new HashMap<>();
