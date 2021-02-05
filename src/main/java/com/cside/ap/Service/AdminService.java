@@ -20,5 +20,16 @@ public class AdminService {
 		
 		return dataDAO.getList(vo);
 	}
-	
+	public String encodingString(String searchValue){
+
+		try {
+			searchValue = new String(searchValue.getBytes("iso-8859-1"), "utf-8");
+			//searchValue =searchValue; // 운영서버에 반영할 때!
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return searchValue;
+	}
 }

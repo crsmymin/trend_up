@@ -2,8 +2,6 @@ package com.cside.ap.Service;
 
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +15,6 @@ import org.jsoup.select.Elements;
 @Service
 public class TwitterService {
 	
-	private static final String CUSTOMER_KEY = "Yl6XbO2cEnONIenOHbdzgrDeq";
-	private static final String CUSTOMER_SECRET = "PY64FQQEOnbehRH0kV2nSAFIAYHhPGL4HSOd0mF5zMxBoIsKkM";
-	private static final String ACCESS_TOKEN = "1230384928841330690-w4SewVEdoIiIcbFQeY0dpBGM3Ax4r8";
-	private static final String ACCESS_TOKEN_SECRET = "t2RGoOQdbcASPg3U7q76tGm8pmbsneswklwTmyusbxVN4";
-	
-	
-	@SuppressWarnings("unchecked")
 	public JSONObject getTwitterRank(String searchValue) {
 		JSONObject jsonObject_result = new JSONObject();
 		JSONArray jsonArray = new JSONArray();

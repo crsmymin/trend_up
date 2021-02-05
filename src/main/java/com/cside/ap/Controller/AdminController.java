@@ -1,18 +1,10 @@
 package com.cside.ap.Controller;
 
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.security.Security;
-import java.security.SignatureException;
 import java.util.Map;
-import java.util.Properties;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cside.ap.Service.AdminService;
-import com.cside.ap.Service.PropertiesLoader;
 import com.cside.ap.VO.AdminVO;
 
 import net.sf.json.JSONObject;
@@ -39,6 +30,7 @@ public class AdminController {
 	public String admin(){
 		return "admin_login";
 	}
+
 	@RequestMapping(value="/")
 	public String dashboard(){
 		return "dashboard";
@@ -51,7 +43,7 @@ public class AdminController {
 	public String keyword(){
 		return "keyword_analyze";
 	}
-	
+
 	@RequestMapping(value="/login_action" , method = RequestMethod.POST)
 	public @ResponseBody Object login_action(@RequestBody AdminVO vo,HttpServletRequest request){
 		JSONObject json = new JSONObject();
