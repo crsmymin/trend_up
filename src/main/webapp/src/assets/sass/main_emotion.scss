@@ -6,12 +6,13 @@
     border-bottom: 2px solid #ccc;
     cursor: pointer;
   }
-
-  .emotional-words {
+  .section-inner {
     display: none;
     &.open {
-      display: flex;
+      display: block;
     }
+  }
+  .emotional-words {
     .inner-box {
       width: 70%;
       position: relative;

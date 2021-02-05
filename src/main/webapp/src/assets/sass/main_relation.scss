@@ -6,11 +6,14 @@
     border-bottom: 2px solid #ccc;
     cursor: pointer;
   }
-  .relation-words {
+  .section-inner {
     display: none;
     &.open {
-      display: flex;
+      display: block;
     }
+  }
+  .relation-words {
+    display: flex;
     #wordCloud {
       width: 70%;
     }

@@ -20,8 +20,7 @@ class Buzz extends Component {
 
   render() {
     return (
-      <section id="buzz">
-        <>  
+      <section id="buzz">        
         <h3 onClick={this._openSection} className={this.state.visible ? "section-title open":"section-title"}>
           언급량 추이 : {this.props.searchValue}
           <img src="./src/assets/images/accordion_btn.svg" alt="" />
@@ -29,35 +28,42 @@ class Buzz extends Component {
           뉴스·블로그: saltlux 분석API / 게시판: zum
           </span>
         </h3>
-        <div className={this.state.visible ? "buzz-trasition flex-cont open":"buzz-trasition flex-cont"}>
-          {/* 차트정보 */}
-          <div className="info">
-            <h4>{this.props.searchValue}</h4>
-            <div className="buzz-quantity">
-              <span>전체 언급량</span>
-              <strong>
-                {this.props.buzzTotal}
-              </strong>
-              <div className="keyword-sort">
-              <span className="title">NEWS : {this.props.buzzTotalNews}</span>
+        <div className={this.state.visible ? "section-inner open" : "section-inner"}>
+          {this.props.isLoadingBuzz === true ? (
+            <div className="loading-indicator">
+              <div className="loader"></div>  
             </div>
-            <div className="keyword-sort">
-              <span className="title">BLOG : {this.props.buzzTotalBlog}</span>
-            </div>
-            <div className="keyword-sort">
-              <span className="title">BOARD : {this.props.buzzTotalCafe}</span>
-            </div>
-            </div>
-          </div>
-          {/* 차트정보 끝 */}
+          ) : (
+            <div className="buzz-trasition flex-cont">
+              {/* 차트정보 */}
+              <div className="info">
+                <h4>{this.props.searchValue}</h4>
+                <div className="buzz-quantity">
+                  <span>전체 언급량</span>
+                  <strong>
+                    {this.props.buzzTotal}
+                  </strong>
+                  <div className="keyword-sort">
+                  <span className="title">NEWS : {this.props.buzzTotalNews}</span>
+                </div>
+                <div className="keyword-sort">
+                  <span className="title">BLOG : {this.props.buzzTotalBlog}</span>
+                </div>
+                <div className="keyword-sort">
+                  <span className="title">BOARD : {this.props.buzzTotalCafe}</span>
+                </div>
+                </div>
+              </div>
+              {/* 차트정보 끝 */}
 
-          {/* 차트 그래프 */}
-          <div className="chart">
-          <canvas id="buzzChart"></canvas>
-          </div>
-          {/* 차트 그래프 끝*/}
+              {/* 차트 그래프 */}
+              <div className="chart">
+              <canvas id="buzzChart"></canvas>
+              </div>
+              {/* 차트 그래프 끝*/}
+            </div>
+          )}
         </div>
-        </>
       </section>
     )
   }

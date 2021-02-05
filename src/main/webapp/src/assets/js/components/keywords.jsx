@@ -33,7 +33,7 @@ class Keywords extends Component {
   }
 
   render() {    
-    return (
+    return ( 
       <section id="keyword" className={this.props.isLoadingKeyword === true ? ("is-loading"):("")}>
         {this.props.isLoadingKeyword === true ? (
         <div className="loading-indicator">

@@ -98,10 +98,8 @@ $main-color : #337ab7;
   }
 }
 .loading-indicator {
-  position: absolute;
   width: 100%;
-  left: 0;
-  top: 31%;
+  padding: 100px 0 150px;
   .loader {
     margin: auto;
     width: 120px;

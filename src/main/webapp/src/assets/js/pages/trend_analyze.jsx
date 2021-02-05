@@ -70,6 +70,7 @@ class App extends Component {
       isLoadingArticle : true,
       isLoadingBuzz: true,
       isLoadingRelated: true,
+      isLoadingEmotion: true,
     }
   }
   
@@ -80,8 +81,8 @@ class App extends Component {
       twitter: searchResult.twitter.twitterRank,
       naver: searchResult.naver.naverRank,
       zum: searchResult.zum.zumRank,
+      searchValue: searchResult.naver.naverRank[0],
       isLoadingKeyword: false,
-      searchValue: searchResult.naver.naverRank[0]
     })
     let keyword = document.querySelectorAll(".keywords-lis");
     for (let i = 0; i < keyword.length; i++) {
@@ -111,7 +112,8 @@ class App extends Component {
     this.setState({
       isLoadingArticle: true,
       isLoadingBuzz: true,
-      isLoadingRelated: true
+      isLoadingRelated: true,
+      isLoadingEmotion: true
     })
     //키워드를 통한 컨텐츠 조회
     axios({
@@ -160,7 +162,6 @@ class App extends Component {
   }
 
   draw_buz = () => {
-    
     axios({
       method: 'get',
       url: "/drawBuzzChart",
@@ -379,7 +380,8 @@ class App extends Component {
        keywordNegative: emotionAnalysis.keywordMap.negative,
        keywordNeutral :emotionAnalysis.keywordMap.neutral,
        keywordPositive :emotionAnalysis.keywordMap.positive,
-       keywordEtc :emotionAnalysis.keywordMap.other
+       keywordEtc :emotionAnalysis.keywordMap.other,
+       isLoadingEmotion: false
      })
      // set word cloud
      let resData = this.state.emotionWords;
@@ -511,14 +513,15 @@ class App extends Component {
             <Buzz
               searchValue={this.state.searchValue}
               buzzTotal={this.state.buzzTotal}
-              isLoadingBuzz={this.state.isLoadingBuzz}
               buzzTotalNews={this.state.buzzTotalNews}
               buzzTotalBlog={this.state.buzzTotalBlog}
               buzzTotalCafe={this.state.buzzTotalCafe}
+              isLoadingBuzz={this.state.isLoadingBuzz}
             />
             <Relation
               searchValue={this.state.searchValue}
               relatedWords={this.state.relatedWords}
+              isLoadingRelated={this.state.isLoadingRelated}
             />
             <Emotion 
               searchValue={this.state.searchValue}
@@ -527,6 +530,7 @@ class App extends Component {
               keywordPositive={this.state.keywordPositive}
               keywordEtc={this.state.keywordEtc}
               emotionWords={this.state.emotionWords}
+              isLoadingEmotion={this.state.isLoadingEmotion}
             />
             <Article
               searchValue={this.state.searchValue}
@@ -535,6 +539,7 @@ class App extends Component {
               newsCrawler={this.state.newsCrawler}
               newsBlog={this.state.newsBlog}
               newsCafe={this.state.newsCafe}
+              isLoadingArticle={this.state.isLoadingArticle}
             />
           </div>
         </div>

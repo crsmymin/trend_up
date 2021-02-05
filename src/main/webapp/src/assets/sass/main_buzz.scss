@@ -6,11 +6,13 @@
     border-bottom: 2px solid #ccc;
     cursor: pointer;
   }
-  .buzz-trasition {
+  .section-inner {
     display: none;
     &.open {
-      display: flex;
-    }
+      display: block;
+    }  
+  }
+  .buzz-trasition {
     .info {
       width: 25%;
       padding: 0 0 0;
