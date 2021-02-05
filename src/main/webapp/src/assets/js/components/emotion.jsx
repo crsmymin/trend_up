@@ -21,7 +21,9 @@ class Emotion extends Component {
         <h3 className="section-title">
             감성어 변화 : {this.props.searchValue}
           <img src="./src/assets/images/accordion_btn.svg" alt="" />  
-          <span className="info-tag">안내문구안내문구 입니다.</span>
+          <span className="info-tag">긍정, 부정, 중립으로 분류한 감성 사전에 의해 추출된 연관성이 높은 감성 단어를 제공합니다.<br></br>
+          감성어 랭킹: 썸트렌드
+          </span>
         </h3>
         <div className="emotional-words flex-cont">
           {/* 감성어 버블차트 */}

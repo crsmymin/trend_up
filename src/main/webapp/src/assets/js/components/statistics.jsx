@@ -18,7 +18,7 @@ class Statistics extends Component {
         <div className="statistic flex-cont">
           <div className="amount search">
             <h4>월간 검색량</h4>
-            <p>(최근 한달간 네이버에서 키워드가 검색된 횟수입니다.)</p>
+            <p>(최근 한 달간 네이버에서 키워드가 검색된 횟수입니다.)</p>
             <div className="sorts flex-cont">
               <div className="factor">
                 <span className="img"></span>
@@ -51,7 +51,7 @@ class Statistics extends Component {
           </div>
           <div className="amount contents">
             <h4>콘텐츠 발행량</h4>
-            <p>(검색 기간 기준 발행된 키워드 관련 컨텐츠 수 입니다.)</p>
+            <p>(검색 기간 기준 발행된 키워드 관련 콘텐츠 수입니다. - 원문 기준)</p>
             <div className="sorts flex-cont">
               <div className="factor">
                 <span className="img"></span>
@@ -60,7 +60,7 @@ class Statistics extends Component {
                 ) : (
                 <span className="counts">{this.props.newsCrawler.naverNewsCnt}</span>
                 )}
-                <span className="type">뉴스</span>
+                <span className="type">NEWS</span>
               </div>
               <div className="factor">
                 <span className="img"></span>
@@ -69,7 +69,7 @@ class Statistics extends Component {
                 ):(
                 <span className="counts">{this.props.newsBlog.naverBlogCnt}</span>
                 )}
-                <span className="type">블로그</span>
+                <span className="type">BLOG</span>
               </div>
               <div className="factor">
                 <span className="img"></span>
@@ -78,7 +78,7 @@ class Statistics extends Component {
                 ):(
                 <span className="counts">{this.props.newsCafe.naverCafeCnt}</span>
                 )}
-                <span className="type">게시판</span>
+                <span className="type">BOARD</span>
               </div>
             </div>
           </div>

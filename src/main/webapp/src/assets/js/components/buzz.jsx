@@ -23,9 +23,11 @@ class Buzz extends Component {
       <section id="buzz">
         <>  
         <h3 onClick={this._openSection} className={this.state.visible ? "section-title open":"section-title"}>
-          언급량추이 : {this.props.searchValue}
+          언급량 추이 : {this.props.searchValue}
           <img src="./src/assets/images/accordion_btn.svg" alt="" />
-          <span className="info-tag">안내문구안내문구 입니다.</span>
+          <span className="info-tag">관련 콘텐츠를 수집하여, 특정 기간 내 키워드가 포함된 문서 건수를 주기별 집계하여 제공합니다.<br></br>
+          뉴스·블로그: saltlux 분석API / 게시판: zum
+          </span>
         </h3>
         <div className={this.state.visible ? "buzz-trasition flex-cont open":"buzz-trasition flex-cont"}>
           {/* 차트정보 */}

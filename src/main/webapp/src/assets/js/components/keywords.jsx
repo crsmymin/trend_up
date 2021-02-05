@@ -93,7 +93,7 @@ class Keywords extends Component {
                       {twitter.rank}
                     </span>
                     <span className="media-title">
-                      {twitter.rank2}
+                     
                     </span>
                   </li>
               )}

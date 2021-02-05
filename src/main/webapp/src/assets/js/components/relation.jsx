@@ -17,10 +17,12 @@ class Relation extends Component {
     return (
       <section id="relation" className="cf">
         <>
-        <h3 className="section-title">
+        <h3 className="section-title"> 
             연관어 순위 : {this.props.searchValue}
           <img src="./src/assets/images/accordion_btn.svg" alt="" />  
-          <span className="info-tag">안내문구안내문구 입니다.</span>
+          <span className="info-tag">관련 콘텐츠의 문장을 형태소 분석을 통해 연관어를 제공합니다. <br></br>
+          분석 API: aiopen.etri
+          </span>
         </h3>
         <div className="relation-words flex-cont">
           {/* 워드클라우드 */}

@@ -35,7 +35,8 @@ class Article extends Component {
         <h3 onClick={this._openSection} className={this.state.visible ? "section-title open":"section-title"}>
           원문보기
           <img src="./src/assets/images/accordion_btn.svg" alt="" />  
-          <span className="info-tag">안내문구안내문구 입니다.</span>
+          <span className="info-tag">키워드가 포함된 문서 원문 및 링크를 제공합니다. <br></br>
+          원문: 네이버 API(전체기간) / 뉴스·게시판: ZUM / 블로그: 다음</span>
         </h3>
         <div className={this.state.visible ? "articles open":"articles"}>
           <ul className="tab-menu flex-cont">
