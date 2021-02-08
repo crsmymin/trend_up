@@ -13,9 +13,22 @@
     }
   }
   .relation-words {
-    display: flex;
-    #wordCloud {
+    .inner-box {
       width: 70%;
+      position: relative;
+      #wordCloud {
+        width: 100%;
+        h5 {
+          width: 100%;
+          height: 400px;
+          font-size: 30px;
+          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: grey;
+        }
+      }
     }
     .words {
       width: 30%;

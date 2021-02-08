@@ -31,7 +31,7 @@ public class MorphemeAnalysisSevice {
 	}
 
 	public String wordMorph2(String text) {
-		// text="네 안녕하세요 홍길동 교숩니다";
+	
 		Map<String, Object> request = new HashMap<>();
 		Map<String, String> argument = new HashMap<>();
 
@@ -41,7 +41,6 @@ public class MorphemeAnalysisSevice {
 		request.put("access_key", OPEN_API_KEY);
 		request.put("argument", argument);
 
-		// System.out.println(text.length()+" "+text);
 		URL url;
 		Integer responseCode = null;
 		String responBodyJson = null;
@@ -161,7 +160,6 @@ public class MorphemeAnalysisSevice {
 					if (str.length() < 2 || (Integer) tMap.get(str) < 2) {
 						continue;
 					}
-					// System.out.println(str+ tMap.get(str));
 					Map<String, Object> returnMap = new HashMap<>();
 					returnMap.put("word", str);
 					returnMap.put("count", tMap.get(str));

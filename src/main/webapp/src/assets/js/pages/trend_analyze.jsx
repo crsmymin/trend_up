@@ -302,6 +302,7 @@ class App extends Component {
             }
         }
      }
+
       this.setState({
         isLoadingRelated: false,
         relatedWords :arrayList
@@ -315,45 +316,51 @@ class App extends Component {
       let fill = d3.scale.category20c();
       let wordScale = d3.scale.linear().range([30, 70]);
 
-      let subjects = resData
-        .map(function (d) { return { text: d.word, size: +d.count } })
-        .sort(function (a, b) { return d3.descending(a.size, b.size); })
-        .slice(0, 100);
+      if(resData.length === 0) {
+        console.log("조회된 감성어 데이터없음");
+        document.querySelector(".relation-words .inner-box").style.width = "100%";
+        document.getElementById("wordCloud").innerHTML="<h5>조회된 연관어 데이터가 없습니다.</h5>"
+      } else {
+        document.querySelector(".relation-words .inner-box").style.width = "70%";
+        let subjects = resData
+          .map(function (d) { return { text: d.word, size: +d.count } })
+          .sort(function (a, b) { return d3.descending(a.size, b.size); })
+          .slice(0, 100);
 
-      wordScale.domain([
-        d3.min(subjects, function (d) { return d.size; }),
-        d3.max(subjects, function (d) { return d.size; }),
-      ]);
+        wordScale.domain([
+          d3.min(subjects, function (d) { return d.size; }),
+          d3.max(subjects, function (d) { return d.size; }),
+        ]);
 
-      d3.layout.cloud().size([width, height])
-        .words(subjects)
-        .padding(1)
-        .rotate(function () { return ~~(Math.random() * 2) * 0; })
-        .font("Impact")
-        .fontSize(function (d) { return wordScale(d.size); })
-        .on("end", draw)
-        .start();
+        d3.layout.cloud().size([width, height])
+          .words(subjects)
+          .padding(1)
+          .rotate(function () { return ~~(Math.random() * 2) * 0; })
+          .font("Impact")
+          .fontSize(function (d) { return wordScale(d.size); })
+          .on("end", draw)
+          .start();
 
-      function draw(words) {
-        let wordCloudWrap = document.getElementById("wordCloud");
-        
-			  $('#wordCloud').html("");
-        d3.select(wordCloudWrap).append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          .append("g")
-          .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")")
-          .selectAll("text")
-          .data(words)
-          .enter().append("text")
-          .style("font-size", function (d) { return d.size + "px"; })
-          .style("font-family", "Impact")
-          .style("fill", function (d, i) { return fill(d.size) })
-          .attr("text-anchor", "middle")
-          .attr("transform", function (d) {
-            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-          })
-          .text(function (d) { return d.text; });
+        function draw(words) {
+          let wordCloudWrap = document.getElementById("wordCloud");
+          
+          d3.select(wordCloudWrap).append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")")
+            .selectAll("text")
+            .data(words)
+            .enter().append("text")
+            .style("font-size", function (d) { return d.size + "px"; })
+            .style("font-family", "Impact")
+            .style("fill", function (d, i) { return fill(d.size) })
+            .attr("text-anchor", "middle")
+            .attr("transform", function (d) {
+              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+            .text(function (d) { return d.text; });
+        }
       }
     })
     .catch(error => {

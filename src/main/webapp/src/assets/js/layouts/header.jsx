@@ -54,6 +54,15 @@ class Header extends Component {
                   </p>
                 </>
               ):("")}
+               {this.props.page === "hashtag" ? (
+                <>
+                  <h2>Hashtag 트렌드</h2>
+                  <p>
+                  인스타그램에 게시 된 총 수와 함께 상위 100개 Hashtag를 추천하고, <br/>
+                  선택한 키워드와 함께 사용하는 가장 인기있는 키워드들을 추천해드립니다. 
+                  </p>
+                </>
+              ):("")}
             </div>
           </div>
         </div>

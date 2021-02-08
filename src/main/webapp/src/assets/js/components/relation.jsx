@@ -34,11 +34,13 @@ class Relation extends Component {
             </div>
           ) : (
             <div className="relation-words flex-cont">
+              <div className="inner-box">
               {/* 워드클라우드 */}
               <div id="wordCloud"></div>
               {/* 워드클라우드 끝*/}
-    
+              </div>
               {/* 연관어 리스트}*/}
+              {this.props.relatedWords.length === 0 ? "" : (
               <div className="words">
                 <h4><strong>{this.props.searchValue}</strong> 연관어</h4>
                 <ul>
@@ -53,6 +55,7 @@ class Relation extends Component {
                   )} 
                 </ul>
               </div>
+               )}
               {/*연관어 리스트 끝*/}
             </div>
           )}

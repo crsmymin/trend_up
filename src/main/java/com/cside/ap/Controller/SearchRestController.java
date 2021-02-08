@@ -220,9 +220,13 @@ public class SearchRestController {
 
 		if (!naverContents_total.equals("")) {
 			naverContents_total = "[" + naverContents_total.substring(0, naverContents_total.length() - 1) + "]";
+			naverContents_total =getStringtoArray(naverContents_total,"word");
 			
+		}else {
+			naverContents_total="[]";
 		}
-		searchModel.setMorpheme(getStringtoArray(naverContents_total,"word"));
+		
+		searchModel.setMorpheme(naverContents_total);
 		
 		return new ResponseEntity<>(searchModel, httpStatus);
 
