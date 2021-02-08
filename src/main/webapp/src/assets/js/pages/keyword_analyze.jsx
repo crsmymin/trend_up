@@ -74,7 +74,6 @@ class App extends Component {
       newsBlog: [],
       newsCafe: [],
       //로딩 플러그 
-      isLoadingKeyword: true,
       isLoadingArticle : true,
       isLoadingBuzz: true,
       isLoadingRelated: true,

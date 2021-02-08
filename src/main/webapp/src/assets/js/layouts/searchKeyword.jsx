@@ -11,7 +11,7 @@ class SearchKeyword extends Component {
     super(props)
     this.state = {
       startDate : start_date,
-      endDate : today
+      endDate : today,
     };
   }
 
@@ -24,8 +24,6 @@ class SearchKeyword extends Component {
   _onKeyPress = (e) => {
     if(e.key === 'Enter') {
       this.props.getSearchResultByKeywords(this.state.searchValue);
-    //  $('.direct-btns .btn-s').removeClass('active');
-		//  $('.direct-btns .7').addClass('active');
     }
   }
 
@@ -75,6 +73,7 @@ class SearchKeyword extends Component {
   }
 
   componentDidMount() {
+
   }
 
   render() {

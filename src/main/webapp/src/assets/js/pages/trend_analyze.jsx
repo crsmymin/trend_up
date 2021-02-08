@@ -499,8 +499,8 @@ class App extends Component {
               naver={this.state.naver}
               zum={this.state.zum}
               twitter={this.state.twitter}
-              isLoadingKeyword={this.state.isLoadingKeyword}
               getSearchResultByKeywords={this._getSearchResultByKeywords}
+              isLoadingKeyword={this.state.isLoadingKeyword}
             />
             <SearchByPeriod 
               searchValue={this.state.searchValue}
