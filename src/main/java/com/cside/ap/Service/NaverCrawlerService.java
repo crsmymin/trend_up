@@ -44,7 +44,8 @@ public class NaverCrawlerService {
 	 */
 	// public static final String NAVER_UNIFIED_NEWS_URL =
 	// "https://search.naver.com/search.naver?where=news&query=%s&pd=3&ds=%s&de=%s&start=%s&sort=1";
-	public static final String NAVER_UNIFIED_NEWS_URL = "https://search.zum.com/search.zum?method=news&cluster=no&option=date&query=%s&rd=1&scp=0&startdate=%s&enddate=%s&datetype=input&period=w&page=%s";
+	//public static final String NAVER_UNIFIED_NEWS_URL = "https://search.zum.com/search.zum?method=news&cluster=no&option=date&query=%s&rd=1&scp=0&startdate=%s&enddate=%s&datetype=input&period=w&page=%s";
+	public static final String NAVER_UNIFIED_NEWS_URL = "https://news.nate.com/search?q=%s&ps=3&ps1=%s&ps2=%s&page=%s";
 
 	/**
 	 * 네이버 통합검색 카페 URL (거래글제외 일반글만)
@@ -60,6 +61,7 @@ public class NaverCrawlerService {
 	// "https://search.naver.com/search.naver?where=post&query=%s&date_option=8&date_from=%s&date_to=%s";
 	public static final String NAVER_UNIFIED_BLOG_URL = "https://search.daum.net/search?w=blog&sort=timely&q=%s&DA=STC&sd=%s&ed=%s&page=%s&period=w";
 
+	//네이트
 	public String getUnifiedSearchNews(String keyword, String startDate, String endDate, String start) {
 		// 뉴스 원문 검색
 		JSONObject jsonObject = new JSONObject();
@@ -70,64 +72,60 @@ public class NaverCrawlerService {
 
 			String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					start);
-			 //System.out.println("getUnifiedSearchNews : " + url);
-
+			//System.out.println(url);
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT)
 					.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
 					.ignoreContentType(true).get();
-			Elements elements_title = doc.select(".section_head .title_num");
+			Elements elements_title = doc.select(".search-menu .cnt");
 
 			if (elements_title.size() > 0) {
 				// 검색 건수
-				Element ele = doc.select(".section_head .title_num").get(0);
+				Element ele = doc.select(".search-menu .cnt").get(0);
 				// [Result] 1-10 / 68,360건
-				String[] cntText = ele.text().split("/");
-				cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
-
+				String[] cntText = ele.text().split("총 ");
+				String[] cntText2 = cntText[1].split("개");
+				cnt = cntText2[0].replaceAll(",", "");
+				
 				SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
 				String format_time1 = format1.format (System.currentTimeMillis());
 				System.out.println(format_time1+"  ["+keyword+"]  News 총 건 수 ; " + cnt);
 
-				Elements elements = doc.select(".news_wrap #newsItemUl li");
+				
+				Elements elements = doc.select(".search-list .items");
 
 				List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 				for (Element element : elements) {
 					Map<String, String> val = new HashMap<String, String>();
-					val.put("link", element.select(".report-link").attr("href"));
-					val.put("title", element.select(".report-link").text());
-
+					val.put("link", element.getElementsByAttribute("href").attr("href"));
+					val.put("title", element.select(".tit").text());
+					
 					val.put("description", element.select(".txt").text());
 
-					String str = element.select(".txt_block").text();
-					String[] array = str.split(" ");
+					String str = element.select("a .info .time").html();
+					
+					String[] array = str.split("<span class=\"div\"></span>");
+					
+					val.put("date", array[1]);
 					val.put("medium", array[0]);
-
-					String date_str = element.select(".txt_block span").text();
-					val.put("date", date_str);
-
+					
 					list.add(val);
-					// System.out.println("[링크]" +
-					// element.getElementsByAttribute("href").attr("href"));
-					// System.out.println("[제목]" + element.select("dt a").text());
-					// System.out.println("[신문사]" + element.select(".txt_inline
-					// ._sp_each_source").text().replaceAll("언론사 선정", ""));
-					// System.out.println("[내용]" + element.select("dd").get(1).text());
-
 				}
-
+				
 				List<Map<String, Integer>> page_list = new ArrayList<Map<String, Integer>>();
 				Map<String, Integer> page_val = new HashMap<String, Integer>();
-
-				String page_str = "";
+				
+				String page_str="";
 				int page = Integer.parseInt(start);
-				int countList = 10;
+				int countList = 15;
 				int countPage = 10;
 				int totalCount = Integer.parseInt(cnt);
 				int totalPage = totalCount / countList;
 				if (totalCount % countList > 0) {
 					totalPage++;
 				}
-
+				if (totalPage > 100) {
+					totalPage = 100;
+				}
 				if (totalPage < page) {
 					page = totalPage;
 				}
@@ -137,28 +135,29 @@ public class NaverCrawlerService {
 				if (endPage > totalPage) {
 					endPage = totalPage;
 				}
-				ArrayList<Integer> page_numbers = new ArrayList<Integer>();
+				ArrayList page_numbers = new ArrayList();
 				if (page > 1) {
 					page_numbers.add((page - 1));
-					int a = page - 1;
-					page_str += "<a class=\"news-page-num btn xi-angle-left\" onClick='news_page(" + a + ")'></a>";
+					int a=page-1;
+					page_str+="<a class=\"news-page-num btn xi-angle-left\" onClick='news_page("+a+")'></a>";
 				}
 
 				for (int iCount = startPage; iCount <= endPage; iCount++) {
 					if (iCount == page) {
-						page_str += "<a class='news-page-num on' onClick='news_page(" + iCount + ")'>" + iCount
-								+ "</a>";
+						page_str+="<a class='news-page-num on' onClick='news_page("+iCount+")'>"+iCount+"</a>";
 					} else {
-						page_str += "<a class='news-page-num' onClick='news_page(" + iCount + ")'>" + iCount + "</a>";
+						page_str+="<a class='news-page-num' onClick='news_page("+iCount+")'>"+iCount+"</a>";
 					}
 					page_numbers.add(iCount);
 				}
 
 				if (page < totalPage) {
 					page_numbers.add((page + 1));
-					int a = page + 1;
-					page_str += "<a class=\"news-page-num btn xi-angle-right\" onClick='news_page(" + a + ")'></a>";
+					int a=page+1;
+					page_str+="<a class=\"news-page-num btn xi-angle-right\" onClick='news_page("+a+")'></a>";
 				}
+				int page_[]= {startPage,page,endPage};
+
 				page_val.put("start", startPage);
 				page_val.put("page", page);
 				page_val.put("endPage", endPage);
@@ -187,13 +186,14 @@ public class NaverCrawlerService {
 
 			String url = String.format(NAVER_UNIFIED_CAFE_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					start);
-			// System.out.println("getUnifiedSearchCafe: "+url);
+			//System.out.println("getUnifiedSearchCafe: "+url);
 
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT)
 					.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
 					.ignoreContentType(true).get();
 			Elements elements_title = doc.select(".section_head .title_num");
 
+		
 			if (elements_title.size() > 0) {
 				// 검색 건수
 				Element ele = doc.select(".section_head .title_num").get(0);
@@ -239,6 +239,9 @@ public class NaverCrawlerService {
 					totalPage++;
 				}
 
+				if (totalPage > 100) {
+					totalPage = 99;
+				}
 				if (totalPage < page) {
 					page = totalPage;
 				}
@@ -287,7 +290,7 @@ public class NaverCrawlerService {
 
 			String url = String.format(NAVER_UNIFIED_BLOG_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					start);
-			 // System.out.println("getUnifiedSearchBlog: "+url);
+			//System.out.println("getUnifiedSearchBlog: "+url);
 
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).get();
 			Elements elements_title = doc.select(".sub_expander .txt_info");
@@ -332,6 +335,9 @@ public class NaverCrawlerService {
 					totalPage++;
 				}
 
+				if (totalPage > 70) {
+					totalPage = 70;
+				}
 				if (totalPage < page) {
 					page = totalPage;
 				}
@@ -386,23 +392,25 @@ public class NaverCrawlerService {
 					.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
 					.ignoreContentType(true).get();
 
-			Elements elements_title = doc.select(".section_head .title_num");
+			Elements elements_title = doc.select(".search-menu .cnt");
 			if (elements_title.size() > 0) {
 				// 검색 건수
-				Element ele = doc.select(".section_head .title_num").get(0);
+				Element ele = doc.select(".search-menu .cnt").get(0);
 				// [Result] 1-10 / 68,360건
-				String[] cntText = ele.text().split("/");
-				String cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 
-				int totalPage = Integer.parseInt(cnt) / 10;
-				Elements elements = doc.select(".news_wrap #newsItemUl li");
+				String[] cntText = ele.text().split("총 ");
+				String[] cntText2 = cntText[1].split("개");
+				String cnt = cntText2[0].replaceAll(",", "");
+				
+				int totalPage = Integer.parseInt(cnt) / 15;
+				Elements elements =doc.select(".search-list .items");
 
 				for (Element element : elements) {
 					description += element.select(".txt").text();
 				}
 				if (totalPage > 1) {
-					if (totalPage > 9) {
-						totalPage = 8;
+					if (totalPage > 14) {
+						totalPage = 13;
 					}
 					for (int i = 1; i < totalPage + 1; i++) {
 						url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), startDate,
@@ -410,7 +418,7 @@ public class NaverCrawlerService {
 						doc = Jsoup.connect(url).userAgent(USER_AGENT)
 								.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
 								.ignoreContentType(true).get();
-						doc.select(".news_wrap #newsItemUl li");
+						elements = doc.select(".search-list .items");
 
 						for (Element element : elements) {
 							description += element.select(".txt").text();

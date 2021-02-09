@@ -19,6 +19,7 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -162,6 +163,124 @@ public class NaverCrawlerService2 {
 
 		return new Gson().toJson(jsonObject);
 	}
+	
+	//줌
+	/*
+		public String getUnifiedSearchNews(String keyword, String startDate, String endDate, String start) {
+			// 뉴스 원문 검색
+			JSONObject jsonObject = new JSONObject();
+			String cnt = "0";
+			try {
+				startDate = startDate.replace(".", "");
+				endDate = endDate.replace(".", "");
+
+				String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
+						start);
+				 //System.out.println("getUnifiedSearchNews : " + url);
+
+				Document doc = Jsoup.connect(url).userAgent(USER_AGENT)
+						.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
+						.ignoreContentType(true).get();
+				Elements elements_title = doc.select(".section_head .title_num");
+
+				if (elements_title.size() > 0) {
+					// 검색 건수
+					Element ele = doc.select(".section_head .title_num").get(0);
+					// [Result] 1-10 / 68,360건
+					String[] cntText = ele.text().split("/");
+					cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
+
+					SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+					String format_time1 = format1.format (System.currentTimeMillis());
+					System.out.println(format_time1+"  ["+keyword+"]  News 총 건 수 ; " + cnt);
+
+					Elements elements = doc.select(".news_wrap #newsItemUl li");
+
+					List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+					for (Element element : elements) {
+						Map<String, String> val = new HashMap<String, String>();
+						val.put("link", element.select(".report-link").attr("href"));
+						val.put("title", element.select(".report-link").text());
+
+						val.put("description", element.select(".txt").text());
+
+						String str = element.select(".txt_block").text();
+						String[] array = str.split(" ");
+						val.put("medium", array[0]);
+
+						String date_str = element.select(".txt_block span").text();
+						val.put("date", date_str);
+
+						list.add(val);
+						// System.out.println("[링크]" +
+						// element.getElementsByAttribute("href").attr("href"));
+						// System.out.println("[제목]" + element.select("dt a").text());
+						// System.out.println("[신문사]" + element.select(".txt_inline
+						// ._sp_each_source").text().replaceAll("언론사 선정", ""));
+						// System.out.println("[내용]" + element.select("dd").get(1).text());
+
+					}
+
+					List<Map<String, Integer>> page_list = new ArrayList<Map<String, Integer>>();
+					Map<String, Integer> page_val = new HashMap<String, Integer>();
+
+					String page_str = "";
+					int page = Integer.parseInt(start);
+					int countList = 10;
+					int countPage = 10;
+					int totalCount = Integer.parseInt(cnt);
+					int totalPage = totalCount / countList;
+					if (totalCount % countList > 0) {
+						totalPage++;
+					}
+
+					if (totalPage < page) {
+						page = totalPage;
+					}
+
+					int startPage = ((page - 1) / 10) * 10 + 1;
+					int endPage = startPage + countPage - 1;
+					if (endPage > totalPage) {
+						endPage = totalPage;
+					}
+					ArrayList<Integer> page_numbers = new ArrayList<Integer>();
+					if (page > 1) {
+						page_numbers.add((page - 1));
+						int a = page - 1;
+						page_str += "<a class=\"news-page-num btn xi-angle-left\" onClick='news_page(" + a + ")'></a>";
+					}
+
+					for (int iCount = startPage; iCount <= endPage; iCount++) {
+						if (iCount == page) {
+							page_str += "<a class='news-page-num on' onClick='news_page(" + iCount + ")'>" + iCount
+									+ "</a>";
+						} else {
+							page_str += "<a class='news-page-num' onClick='news_page(" + iCount + ")'>" + iCount + "</a>";
+						}
+						page_numbers.add(iCount);
+					}
+
+					if (page < totalPage) {
+						page_numbers.add((page + 1));
+						int a = page + 1;
+						page_str += "<a class=\"news-page-num btn xi-angle-right\" onClick='news_page(" + a + ")'></a>";
+					}
+					page_val.put("start", startPage);
+					page_val.put("page", page);
+					page_val.put("endPage", endPage);
+					page_list.add(page_val);
+
+					jsonObject.put("naverNews", list);
+					jsonObject.put("naverNewsPage", page_str);
+				}
+				jsonObject.put("naverNewsCnt", cnt);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return new Gson().toJson(jsonObject);
+		}*/
 	public String getUnifiedSearchCafe(String keyword, String fromDate, String toDate, String start) {
 		// 카페 원문 검색
 		JSONObject jsonObject = new JSONObject();
