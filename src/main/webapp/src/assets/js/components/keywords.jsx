@@ -45,7 +45,7 @@ class Keywords extends Component {
           {/* 매스미디어 */}
           <div className="list mass-media">
             <figure className="sns-icon"></figure>
-            <h4><strong>매스미디어 </strong>순위</h4>
+            <h4><strong>Naver </strong>순위</h4>
             <ul className="scrollbar-inner">
               {this.props.naver.map(
                 (naver, index) =>
@@ -64,7 +64,7 @@ class Keywords extends Component {
           {/* zum */}
           <div className="list zum">
             <figure className="sns-icon"></figure>
-            <h4><strong>zum </strong>순위</h4>
+            <h4><strong>ZUM </strong>순위</h4>
             <ul className="scrollbar-inner">
               {this.props.zum.map(
                 (zum, index) =>
@@ -83,14 +83,14 @@ class Keywords extends Component {
           {/* 트위터 */}
           <div className="list twitter">
             <figure className="sns-icon"></figure>
-            <h4><strong>트위터 </strong>순위</h4>
+            <h4><strong>NATE </strong>순위</h4>
             <ul className="scrollbar-inner">
-              {this.props.twitter.map(
-                (twitter, index) =>
+              {this.props.nate.map(
+                (nate, index) =>
                   <li className="keywords-lis twitter" key={index}>
                     <span className="rank">{index + 1}.</span>
-                    <span className="word" data-tag={twitter.rank} onClick={this._getSearchResultByKeywords}>
-                      {twitter.rank}
+                    <span className="word" data-tag={nate} onClick={this._getSearchResultByKeywords}>
+                      {nate}
                     </span>
                     <span className="media-title">
                      

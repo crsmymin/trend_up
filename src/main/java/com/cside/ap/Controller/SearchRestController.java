@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cside.ap.Service.MorphemeAnalysisSevice;
+import com.cside.ap.Service.NateService;
 import com.cside.ap.Service.NaverCrawlerService;
 import com.cside.ap.Service.NaverService;
 import com.cside.ap.Service.TwitterService;
@@ -43,6 +44,9 @@ public class SearchRestController {
 	@Autowired
 	ZumService zumService;
 
+	@Autowired
+	NateService nateService;
+	
 	@Autowired
 	NaverCrawlerService naverCrawlerService;
 
@@ -76,6 +80,7 @@ public class SearchRestController {
 		jsonObject_zum = zumService.getZumRank(searchModel.getSearchValue().replace(".", ""));
 		jsonObject.put("zum", jsonObject_zum);
 		
+		/*
 		String twitterSearchValue = searchModel.getSearchValue().replace("T", "/");
 		twitterSearchValue = twitterSearchValue.replace(":00:00", "").replace(".", "-");
 
@@ -97,6 +102,11 @@ public class SearchRestController {
 		JSONObject jsonObject_twitter = new JSONObject();
 		jsonObject_twitter = twitterService.getTwitterRank(twitterSearchValue);
 		jsonObject.put("twitter", jsonObject_twitter);
+		*/
+		JSONObject jsonObject_nate = new JSONObject();
+		jsonObject_nate = nateService.getNateRank(searchModel.getSearchValue().replace(".", "-").replace("T", " "));
+		jsonObject.put("nate", jsonObject_nate);
+		
 		response.getWriter().print(jsonObject);
 	}
 	@RequestMapping(value = "/searchRankAuto")

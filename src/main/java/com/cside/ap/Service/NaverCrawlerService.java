@@ -70,12 +70,11 @@ public class NaverCrawlerService {
 
 			String url = String.format(NAVER_UNIFIED_NEWS_URL, URLEncoder.encode(keyword, "UTF-8"), startDate, endDate,
 					start);
-			// System.out.println("getUnifiedSearchNews : " + url);
+			 //System.out.println("getUnifiedSearchNews : " + url);
 
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT)
 					.header("Content-Type", "application/json;charset=UTF-8").method(Connection.Method.GET)
 					.ignoreContentType(true).get();
-
 			Elements elements_title = doc.select(".section_head .title_num");
 
 			if (elements_title.size() > 0) {
@@ -85,7 +84,9 @@ public class NaverCrawlerService {
 				String[] cntText = ele.text().split("/");
 				cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
 
-				System.out.println("[News 총 건 수] " + cnt);
+				SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+				String format_time1 = format1.format (System.currentTimeMillis());
+				System.out.println(format_time1+"  ["+keyword+"]  News 총 건 수 ; " + cnt);
 
 				Elements elements = doc.select(".news_wrap #newsItemUl li");
 
@@ -199,8 +200,11 @@ public class NaverCrawlerService {
 				// [Result] 1-10 / 68,360건
 				String[] cntText = ele.text().split("/");
 				cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
+				
+				SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+				String format_time1 = format1.format (System.currentTimeMillis());
+				System.out.println(format_time1+"  ["+keyword+"]  Board 총 건 수 ; " + cnt);
 
-				System.out.println("[Cafe 총 건 수] " + cnt);
 				Elements elements = doc.select(".board_list_wrap .report-item-wrap");
 
 				List<Map<String, String>> list = new ArrayList<Map<String, String>>();
@@ -294,8 +298,11 @@ public class NaverCrawlerService {
 				// [Result] 1-10 / 68,360건
 				String[] cntText = ele.text().split("/");
 				cnt = cntText[1].replaceAll(",", "").replaceAll("건", "").replaceAll("약", "").replaceAll(" ", "");
+				
+				SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+				String format_time1 = format1.format (System.currentTimeMillis());
+				System.out.println(format_time1+"  ["+keyword+"]  Blog 총 건 수 ; " + cnt);
 
-				System.out.println("[Blog 총 건 수] " + cnt);
 				Elements elements = doc.select("#blogColl .coll_cont li");
 
 				List<Map<String, String>> list = new ArrayList<Map<String, String>>();

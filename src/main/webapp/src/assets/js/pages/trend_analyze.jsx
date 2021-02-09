@@ -42,7 +42,7 @@ class App extends Component {
       // 키워드 순위
       naver: [],
       zum: [],
-      twitter: [],
+      nate: [],
       // 원간 검색량 
       searchTotal: 0,
       searchPC: 0,
@@ -78,7 +78,7 @@ class App extends Component {
   _getKeywordsByDate = (searchResult) => {
   // 일자별 키워드 순위 세팅
     this.setState({
-      twitter: searchResult.twitter.twitterRank,
+      nate: searchResult.nate.nateRank,
       naver: searchResult.naver.naverRank,
       zum: searchResult.zum.zumRank,
       searchValue: searchResult.naver.naverRank[0],
@@ -498,7 +498,7 @@ class App extends Component {
             <Keywords
               naver={this.state.naver}
               zum={this.state.zum}
-              twitter={this.state.twitter}
+              nate={this.state.nate}
               isLoadingKeyword={this.state.isLoadingKeyword}
               getSearchResultByKeywords={this._getSearchResultByKeywords}
             />

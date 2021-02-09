@@ -50,7 +50,7 @@ class App extends Component {
       // 키워드 순위
       naver: [],
       zum: [],
-      twitter: [],
+      nate: [],
       // 원간 검색량 
       searchTotal: 0,
       searchPC: 0,
