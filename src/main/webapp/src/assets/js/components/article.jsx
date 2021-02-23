@@ -36,7 +36,7 @@ class Article extends Component {
           원문보기
           <img src="./src/assets/images/accordion_btn.svg" alt="" />  
           <span className="info-tag">키워드가 포함된 문서 원문 및 링크를 제공합니다. <br></br>
-          원문: 네이버 API(전체기간) / 뉴스·게시판: ZUM / 블로그: 다음</span>
+          원문: 네이버 API(전체기간) / 뉴스: NATE / 블로그: 다음 / 게시판: ZUM </span>
         </h3>
         <div className={this.state.visible ? "section-inner open":"section-inner"}>
           {this.props.isLoadingArticle === true ? (

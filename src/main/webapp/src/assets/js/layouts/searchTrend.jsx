@@ -38,17 +38,25 @@ class SearchTrend extends Component {
     let limit = new Date('2017-03-29');
     limit.setHours(0);
 
-    this.setState({
-      isLoadingAll: true
-    })
-    
+    let today = new Date();  
+    let hours = today.getHours()>= 10 ? today.getHours() : '0'+today.getHours();
+
+
     if(this.state.selectedDate<limit){
       alert("2017년 03월 29일 이후로만 가능합니다.");
-      return false;
+      this.setState({
+        hours : hours+":00:00",
+        selectedDate : today
+      });
     } else if (selectedDate === toDay && numberOfHours > currentHours) {
       alert("검색은 현재시간 이전으로만 가능합니다.");
-      return false;
+      this.setState({ hours : hours+":00:00"});
+      //return false;
     } else {
+      this.setState({
+        isLoadingAll: true
+      })
+      
       axios({
         method: 'get',
         url: "/searchRank",

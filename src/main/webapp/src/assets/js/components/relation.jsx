@@ -14,6 +14,10 @@ class Relation extends Component {
     }));
   }
 
+  _getSearchResultByKeywords = () => { 
+    location.href="keyword?"+event.target.getAttribute("data-tag");
+  }
+
   componentDidMount() {
     
   }
@@ -24,7 +28,8 @@ class Relation extends Component {
             연관어 순위 : {this.props.searchValue}
           <img src="./src/assets/images/accordion_btn.svg" alt="" />  
           <span className="info-tag">관련 콘텐츠의 문장을 형태소 분석을 통해 연관어를 제공합니다. <br></br>
-          분석 API: aiopen.etri
+          콘텐츠: NATE 뉴스 / 다음 블로그 / ZUM 게시판
+          <br></br>분석 API: aiopen.etri
           </span>
         </h3>
         <div className={this.state.visible ? "section-inner open" : "section-inner"}>
@@ -49,7 +54,7 @@ class Relation extends Component {
                   .map((relatedWords, index) =>
                     <li key={index + 1} className="flex-cont">
                       <em>{index + 1}.</em>
-                      <p>{relatedWords.word}</p>
+                      <p onClick={this._getSearchResultByKeywords} data-tag={relatedWords.word}>{relatedWords.word}</p>
                       <span>{relatedWords.count}</span>
                     </li>
                   )} 

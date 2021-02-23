@@ -480,7 +480,15 @@ class App extends Component {
   }
 
   componentDidMount (){
-    this._getKeywordsByDate();
+    var search=window.location.search;
+    if(search===''){
+      this._getKeywordsByDate();
+    }else{
+      search=search.replace('?','');
+      var dec = decodeURI(search);
+      $('#searchField').val(dec);
+      this._getSearchResultByKeywords(dec);
+    }
   }
 
   render() {

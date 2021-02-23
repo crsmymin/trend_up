@@ -71,7 +71,7 @@ public class EmotionAnalysisService {
 
 
 						data.add(new_dataArray);
-						if(j==9) break;
+						if(j==29) break;
 					}
 				}
 				Double total=(double) (negative+neutral+positive+other);
@@ -129,7 +129,7 @@ public class EmotionAnalysisService {
 
 			    for (int i = 0; i < arrayList.size(); i++) {
 			        sortedJsonArray.add(jsonValues.get(i));
-			        if (i==9) break;
+			        if (i==29) break;
 			    }
 			    
 				jsonObject.put("data", sortedJsonArray);

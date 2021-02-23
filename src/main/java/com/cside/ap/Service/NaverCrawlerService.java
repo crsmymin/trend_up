@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -166,7 +167,9 @@ public class NaverCrawlerService {
 				jsonObject.put("naverNews", list);
 				jsonObject.put("naverNewsPage", page_str);
 			}
-			jsonObject.put("naverNewsCnt", cnt);
+			DecimalFormat df = new DecimalFormat("#,###");
+			
+			jsonObject.put("naverNewsCnt", df.format(Integer.parseInt(cnt)));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -271,7 +274,9 @@ public class NaverCrawlerService {
 				jsonObject.put("naverCafe", list);
 				jsonObject.put("naverCafePage", page_str);
 			}
-			jsonObject.put("naverCafeCnt", cnt);
+			DecimalFormat df = new DecimalFormat("#,###");
+			
+			jsonObject.put("naverCafeCnt", df.format(Integer.parseInt(cnt)));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -367,7 +372,9 @@ public class NaverCrawlerService {
 				jsonObject.put("naverBlog", list);
 				jsonObject.put("naverBlogPage", page_str);
 			}
-			jsonObject.put("naverBlogCnt", cnt);
+			DecimalFormat df = new DecimalFormat("#,###");
+			
+			jsonObject.put("naverBlogCnt",df.format(Integer.parseInt(cnt)));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

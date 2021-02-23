@@ -343,7 +343,8 @@ class App extends Component {
 
         function draw(words) {
           let wordCloudWrap = document.getElementById("wordCloud");
-          
+
+          $('#wordCloud').html("");
           d3.select(wordCloudWrap).append("svg")
             .attr("width", width)
             .attr("height", height)

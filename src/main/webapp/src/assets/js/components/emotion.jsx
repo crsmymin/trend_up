@@ -22,7 +22,7 @@ class Emotion extends Component {
     return (
       <section id="emotion" className="cf">
         <h3 onClick={this._openSection} className={this.state.visible ? "section-title open":"section-title"}>
-            감성어 변화 : {this.props.searchValue}
+            감성 연관어 : {this.props.searchValue}
           <img src="./src/assets/images/accordion_btn.svg" alt="" />  
           <span className="info-tag">긍정, 부정, 중립으로 분류한 감성 사전에 의해 추출된 연관성이 높은 감성 단어를 제공합니다.<br></br>
           감성어 랭킹: 썸트렌드
@@ -41,7 +41,7 @@ class Emotion extends Component {
                 <div id="wordCloud2">
                 </div>
                 <div className="ratio">
-                  <h5>"{this.props.searchValue}" 감성 연관어 TOP 10</h5>
+                  <h5></h5>
                   {this.props.emotionWords.length === 0 ? "" : (
                   <ul>
                     <li className="type pos">긍정 {this.props.keywordPositive}%</li>
@@ -67,6 +67,9 @@ class Emotion extends Component {
                       <th>건수</th>
                     </tr>
                   </thead>
+                  </table>
+                  <div className="words_scroll">
+                  <table>
                   <tbody>
                     {this.props.emotionWords
                     .sort((a, b) => b.count - a.count)
@@ -82,7 +85,8 @@ class Emotion extends Component {
                       </tr>
                     )} 
                   </tbody>
-                </table>
+                  
+                </table></div>
               </div>
               )}
               {/*감성어 리스트 끝*/}

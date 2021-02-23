@@ -1,6 +1,7 @@
 package com.cside.ap.Service;
 
 import java.net.URI;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,9 +124,11 @@ public class NaverService {
 					String search_pc=ele.toString().replaceAll("<td class=\"center\"> ", "").replaceAll(" </td>", "").replaceAll(",", "");
 					String search_mobile=ele2.toString().replaceAll("<td class=\"center\"> ", "").replaceAll(" </td>", "").replaceAll(",", "");
 					
-					jsonObject.put("searchPc",Integer.parseInt(search_pc));
-					jsonObject.put("searchMobile",Integer.parseInt(search_mobile));
-					jsonObject.put("searchTotal",Integer.parseInt(search_pc)+ Integer.parseInt(search_mobile));
+					DecimalFormat df = new DecimalFormat("#,###");
+					
+					jsonObject.put("searchPc",df.format(Integer.parseInt(search_pc)));
+					jsonObject.put("searchMobile",df.format(Integer.parseInt(search_mobile)));
+					jsonObject.put("searchTotal",df.format(Integer.parseInt(search_pc)+ Integer.parseInt(search_mobile)));
 							
 				} else {
 					jsonObject.put("searchPc",0);

@@ -32,6 +32,7 @@
     }
     .words {
       width: 30%;
+      cursor: pointer;
       h4 {
         margin: 0 0 20px;
         font-size: 1.2rem;
@@ -58,6 +59,10 @@
           p {
             padding: 0 0 0 5px;
             width: 80%;
+          }
+          &:hover {
+            color: $main-color;
+            font-weight: bold;
           }
           span {
             width: 10%;
