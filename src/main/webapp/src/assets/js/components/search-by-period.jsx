@@ -17,10 +17,48 @@ class SearchByPeriod extends Component {
 
   _onChangeDateStart = date => {
     this.setState({ startDate: date });
+    
+    let start_date = new Date(date);
+    let end_date = new Date(this.state.endDate);
+    
+    let yearOfstartDate = start_date.getFullYear();
+    let yearOfendDate = end_date.getFullYear();
+    let monthOfstartDate = (1 + start_date.getMonth());
+        monthOfstartDate = monthOfstartDate >= 10 ? monthOfstartDate : '0' + monthOfstartDate;
+    let monthOfendDate = (1 + end_date.getMonth());
+        monthOfendDate = monthOfendDate >= 10 ? monthOfendDate : '0' + monthOfendDate;
+    let dayOfstartDate = start_date.getDate();
+        dayOfstartDate = dayOfstartDate >= 10 ? dayOfstartDate : '0' + dayOfstartDate;
+    let dayOfendDate = end_date.getDate();
+        dayOfendDate = dayOfendDate >= 10 ? dayOfendDate : '0' + dayOfendDate;
+    let startDate = yearOfstartDate + '.' + monthOfstartDate + '.' + dayOfstartDate;
+    let endDate = yearOfendDate + '.' + monthOfendDate + '.' + dayOfendDate;
+
+    console.log("SearchByPeriod: "+startDate+"~"+endDate);
+    this.props.getDataByPeriod(startDate,endDate);
   }
   
   _onChangeDateEnd = date => {
     this.setState({ endDate: date });
+
+    let end_date = new Date(date);
+    let start_date = new Date(this.state.startDate);
+    
+    let yearOfstartDate = start_date.getFullYear();
+    let yearOfendDate = end_date.getFullYear();
+    let monthOfstartDate = (1 + start_date.getMonth());
+        monthOfstartDate = monthOfstartDate >= 10 ? monthOfstartDate : '0' + monthOfstartDate;
+    let monthOfendDate = (1 + end_date.getMonth());
+        monthOfendDate = monthOfendDate >= 10 ? monthOfendDate : '0' + monthOfendDate;
+    let dayOfstartDate = start_date.getDate();
+        dayOfstartDate = dayOfstartDate >= 10 ? dayOfstartDate : '0' + dayOfstartDate;
+    let dayOfendDate = end_date.getDate();
+        dayOfendDate = dayOfendDate >= 10 ? dayOfendDate : '0' + dayOfendDate;
+    let startDate = yearOfstartDate + '.' + monthOfstartDate + '.' + dayOfstartDate;
+    let endDate = yearOfendDate + '.' + monthOfendDate + '.' + dayOfendDate;
+
+    console.log("SearchByPeriod: "+startDate+"~"+endDate);
+    this.props.getDataByPeriod(startDate,endDate);
   }
 
   _directBtnsClick = e =>{
