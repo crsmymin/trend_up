@@ -130,7 +130,7 @@ class App extends Component {
       const data = res.data;
       let searchValue = data.searchValue;
       let parseData = JSON.parse(data.naverNews);
-      let originTotal = parseData.total;
+      let originTotal = parseData.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       let newsCrawler = JSON.parse(data.naverCrawlerNews);
       let newsBlog = JSON.parse(data.naverCrawlerBlog);
       let newsCafe = JSON.parse(data.naverCrawlerCafe);

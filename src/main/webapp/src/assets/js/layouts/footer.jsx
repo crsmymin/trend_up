@@ -16,7 +16,7 @@ class Footer extends Component {
               TEL : 02 338 9395  <br/>  E-MAIL : master@cside.co.kr
           </p>
           <p className="copyright">
-            Copyright 2020  C.VIEWCorp. All rights reserved.
+            Copyright 2020  C.VIEW Corp. All rights reserved.
           </p>
         </div>
       </footer>
