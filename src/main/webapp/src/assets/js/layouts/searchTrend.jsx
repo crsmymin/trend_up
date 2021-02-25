@@ -71,6 +71,7 @@ class SearchTrend extends Component {
           isLoadingAll: false
         });
         this.props.getKeywordsByDate(this.state.searchResult,this.state.isLoadingAll);
+        $(".keywords .list ul").scrollTop(0);
       })
       .catch(error => {
         console.log(error)

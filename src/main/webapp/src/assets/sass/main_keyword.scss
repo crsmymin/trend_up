@@ -22,13 +22,35 @@
       margin: 0 1%;
       padding: 0;
       cursor: pointer;
+      &.zum {
+        h4 {
+          strong  {
+            color: #1b52ed;
+          }
+        }
+      }
+      &.mass-media {
+        h4 {
+          strong {
+            color: #19ce60;
+          }
+        }
+      }
+      &.twitter {
+        h4 {
+          strong  {
+            color: #ff2c2e;
+          }
+        }
+      }
       h4 {
         margin: 0 0 15px;
         padding: 0 0 20px;
         font-size: 1.1rem;
         border-bottom: 2px solid grey;
         strong {
-          font-size: 1.1rem;
+          font-size: 1.5rem;
+          text-shadow: 2px 2px 2px #ccc;
         }
       }
       ul {

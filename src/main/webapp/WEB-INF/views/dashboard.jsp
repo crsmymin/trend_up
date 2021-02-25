@@ -35,6 +35,7 @@
         html+="<li><h5><a href='"+obj.naverNews[i].link+"' target='_blank'>"+obj.naverNews[i].title+"</a></h5><p class='source'>"+obj.naverNews[i].medium+" | "+obj.naverNews[i].date+" </p><p class='content'>"+obj.naverNews[i].description+" </p></li>"
       }
       $('#articleNews ul').html(html);
+      $("section.article ul").scrollTop(0);
     }
     })
     
@@ -59,6 +60,7 @@
         html+="<li><h5><a href='"+obj.naverBlog[i].url+"' target='_blank'>"+obj.naverBlog[i].title+"</a></h5><p class='source'>"+obj.naverBlog[i].writerName+" | "+obj.naverBlog[i].documentDate+" </p><p class='content'>"+obj.naverBlog[i].content+" </p></li>"
       }
       $('#articleBlog ul').html(html);
+      $("section.article ul").scrollTop(0);
     }
     })
     
@@ -83,6 +85,7 @@
         html+="<li><h5><a href='"+obj.naverCafe[i].link+"' target='_blank'>"+obj.naverCafe[i].title+"</a></h5><p class='source'>"+obj.naverCafe[i].medium+" | "+obj.naverCafe[i].date+" </p><p class='content'>"+obj.naverCafe[i].description+" </p></li>"
       }
       $('#articleCafe ul').html(html);
+      $("section.article ul").scrollTop(0);
     }
     })
     

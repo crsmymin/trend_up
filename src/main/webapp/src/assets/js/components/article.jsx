@@ -8,7 +8,8 @@ class Article extends Component {
       start : 1,
       end : 10,
       activeTab : 0,
-      items : []
+      items : [],
+      visible: true
     }
   }
 

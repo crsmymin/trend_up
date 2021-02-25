@@ -4,7 +4,7 @@ class Emotion extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      
+      visible: true
     }
   }
  

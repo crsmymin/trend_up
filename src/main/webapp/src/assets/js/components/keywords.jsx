@@ -35,17 +35,12 @@ class Keywords extends Component {
   render() {    
     return ( 
       <section id="keyword" className={this.props.isLoadingKeyword === true ? ("is-loading"):("")}>
-        {this.props.isLoadingKeyword === true ? (
-        <div className="loading-indicator">
-            <div className="loader"></div>  
-        </div>
-        ) : (
         <>
         <div className="keywords flex-cont">
           {/* 매스미디어 */}
           <div className="list mass-media">
             <figure className="sns-icon"></figure>
-            <h4><strong>Naver </strong>순위</h4>
+            <h4><strong>NAVER</strong> 순위</h4>
             <ul className="scrollbar-inner">
               {this.props.naver.map(
                 (naver, index) =>
@@ -102,7 +97,6 @@ class Keywords extends Component {
           {/* 트위터 끝*/}
         </div>
         </>
-        )}
         <div className="search-amount">
           
         </div>

@@ -74,7 +74,7 @@ $main-color : #337ab7;
 
 .loading-indicator-all {
   display: none;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -88,25 +88,25 @@ $main-color : #337ab7;
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 150px;
-    height: 150px;
-    margin: -75px 0 0 -75px;
+    width: 200px;
+    height: 200px;
+    margin: -100px 0 0 -100px;
     background-image: url(../images/loader2.gif);
     background-repeat: no-repeat;
-    background-size: 150px;
+    background-size: 128px;
     background-position: center;
   }
 }
 .loading-indicator {
   width: 100%;
-  padding: 100px 0 150px;
+  padding: 100px 0 110px;
   .loader {
     margin: auto;
-    width: 120px;
-    height: 120px;
-    background-image: url(../images/loader.gif);
+    width: 150px;
+    height: 150px;
+    background-image: url(../images/loader2.gif);
     background-repeat: no-repeat;
-    background-size: 95px;
+    background-size: 96px;
     background-position: center;
   }
 }

@@ -4,7 +4,7 @@ class Relation extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      
+      visible: true
     }
   }
  
@@ -35,7 +35,9 @@ class Relation extends Component {
         <div className={this.state.visible ? "section-inner open" : "section-inner"}>
           {this.props.isLoadingRelated === true ? (
             <div className="loading-indicator">
-              <div className="loader"></div>  
+              <div className="loader">
+                  
+              </div>  
             </div>
           ) : (
             <div className="relation-words flex-cont">
