@@ -49,7 +49,6 @@ class Keywords extends Component {
                     <span className="word" data-tag={naver} onClick={this._getSearchResultByKeywords}>
                       {naver}
                     </span>
-                    <span className="media-title"></span>
                   </li>
               )}
             </ul>
@@ -68,7 +67,6 @@ class Keywords extends Component {
                     <span className="word" data-tag={zum} onClick={this._getSearchResultByKeywords}>
                       {zum}
                     </span>
-                    <span className="media-title"></span>
                   </li>
               )}
             </ul>
@@ -86,9 +84,6 @@ class Keywords extends Component {
                     <span className="rank">{index + 1}.</span>
                     <span className="word" data-tag={nate} onClick={this._getSearchResultByKeywords}>
                       {nate}
-                    </span>
-                    <span className="media-title">
-                     
                     </span>
                   </li>
               )}

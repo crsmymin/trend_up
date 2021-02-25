@@ -14,6 +14,8 @@
       @import './main_relation.scss';
       @import './main_emotion.scss';
       @import './main_article.scss';
+      @import './main_best_hashtag.scss';
+      @import './main_related_hashtag.scss';
     }
     .section-title {
       position: relative;
@@ -124,8 +126,37 @@
 }
 
 // search area
-#searchArea {
+.search-area {
   margin: -95px 0 0;
+  &.hashtag {
+    .wrap {
+      padding: 35px 22px 30px;
+      border-bottom: 2px solid #ccc;
+      border-radius: 10px 10px 10px 10px;
+      -webkit-border-radius: 10px 10px 10px 10px;
+      -moz-border-radius: 10px 10px 10px 10px;
+      -ms-border-radius: 10px 10px 10px 10px;
+      -o-border-radius: 10px 10px 10px 10px;
+      .flex-cont {
+        justify-content: space-between;
+        .btn-wrap {
+          width: 230px;
+          button {
+            background-color: #282828;
+            width: 100%;
+            height: 56px;
+            margin: 0;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -ms-border-radius: 5px;
+            -o-border-radius: 5px;
+          }
+        }
+      }
+    }
+  }
   .wrap {
     width: 1200px;
     margin: 0 auto;

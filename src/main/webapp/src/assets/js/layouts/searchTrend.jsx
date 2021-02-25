@@ -89,7 +89,7 @@ class SearchTrend extends Component {
         <div className={this.state.isLoadingAll === true ? ("loading-indicator-all show"):("loading-indicator-all")}>
           <div className="loader-all"></div>
         </div>
-        <div id="searchArea">
+        <div class="search-area">
           <div className="wrap flex-cont">
             <h4>
               궁금한 <strong>날짜</strong> 를 검색해보세요

@@ -8,6 +8,7 @@ module.exports = {
   entry: {
     trend_analyze: "./src/main/webapp/src/trend_analyze.js",
     keyword_analyze: "./src/main/webapp/src/keyword_analyze.js",
+    hashtag_analyze: "./src/main/webapp/src/hashtag_analyze.js",
   },
   output: {
     filename: "[name].bundle.js",

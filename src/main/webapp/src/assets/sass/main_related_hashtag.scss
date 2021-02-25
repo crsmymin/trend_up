@@ -1,0 +1,52 @@
+&#relatedHashtag {
+  .section-title {
+    margin: 15px 0 35px;
+    font-size: 1.4rem;
+    padding: 0 0 15px 35px;
+    border-bottom: 2px solid #ccc;
+    cursor: pointer;
+  }
+  .section-inner {
+    display: none;
+    &.open {
+      display: block;
+    }
+    .related-hashtag-list {
+      li {
+        padding: 30px 22px;
+        margin: 0 0 35px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+        -o-border-radius: 5px;
+        .mentions {
+          width: 85%;
+          padding: 0 20px 0 0;
+          color: #5373a9;
+          font-size: 20px;
+          line-height: 1.45;
+        }
+        .btn-wrap {
+          width: 15%;
+          button {
+            width: 100%;
+            height: 100%;
+            display: block;
+            color: #fff;
+            cursor: pointer;
+            font-size: 22px;
+            background-color: #5373a9;
+            border: 0;
+            border-radius: 10px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            -ms-border-radius: 10px;
+            -o-border-radius: 10px;
+}
+        }
+      }
+    }
+  }
+}
