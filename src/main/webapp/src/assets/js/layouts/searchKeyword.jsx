@@ -114,7 +114,7 @@ class SearchKeyword extends Component {
 
   render() {
     return(
-      <div class="search-area">
+      <div className="search-area">
         <div className="wrap">
           <h4>
             궁금한 <strong>키워드</strong> 를 검색해보세요
