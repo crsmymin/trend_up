@@ -27,9 +27,10 @@ public class HashtagController {
 	public String admin(){
 		return "hashtag";
 	}
-	
-	@RequestMapping(value="/hashtagRank" , method = RequestMethod.POST)
+
+	@RequestMapping(value="/hashtagRank", produces = "application/json; charset=utf8")
 	public void hashtagRank (HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setHeader("Content-Type", "text/html;charset=utf-8");
 		JSONObject jsonObject = new JSONObject();
 		
 		JSONObject jsonObject_kor = new JSONObject();
@@ -49,14 +50,14 @@ public class HashtagController {
 		response.getWriter().print(jsonObject);
 	}
 	
-	@RequestMapping(value = "/searchRelatedHashtag")
+	@RequestMapping(value = "/relatedHashtag")
 	public void searchRelatedHashtags(SearchModel searchModel, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-
+		response.setHeader("Content-Type", "text/html;charset=utf-8");
+		
 		String searchValue = adminService.encodingString(searchModel.getSearchValue());
 		searchModel.setSearchValue(searchValue);
 
-		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject = hashtagService.getRelatedHashtags(searchModel.getSearchValue());
 	

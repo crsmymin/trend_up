@@ -19,18 +19,19 @@ public class HashtagService {
 		JSONObject jsonObject = new JSONObject();
 		
 		try {
-			Document doc = Jsoup.connect("http://cocotag.kr")
+			Document doc = Jsoup.connect("https://www.tagsfinder.com/ko-kr/stats/")
 					.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36")
 					.get();
 			
-			Elements elements = doc.select(".table100-body").select("tr");
-
+			Elements elements = doc.select(".card-table").first().select("tr");
+			
 			if( elements.size() > 0 ) {
 				List<Object> list = new ArrayList<Object>();
 				for (Element element : elements) {
 					Map<String, String> val = new HashMap<String, String>();
 					val.put("tag",element.select("a").text());
-					val.put("cnt",element.select(".column3").text());
+					val.put("tag_text",element.select("a").text().replace("#", ""));
+					val.put("cnt",element.select(".text-right").text());
 					list.add(val);
 				}
 				jsonObject.put("KorHashtagRank", list);
@@ -56,6 +57,7 @@ public class HashtagService {
 				for (Element element : elements) {
 					Map<String, String> val = new HashMap<String, String>();
 					val.put("tag",element.select("a").text());
+					val.put("tag_text",element.select("a").text().replace("#", ""));
 					val.put("cnt",element.select(".i-total").text());
 					list.add(val);
 				}
@@ -82,6 +84,7 @@ public class HashtagService {
 				for (Element element : elements) {
 					Map<String, String> val = new HashMap<String, String>();
 					val.put("tag",element.select("strong").text());
+					val.put("tag_text",element.select("strong").text().replace("#", ""));
 					val.put("cnt",element.select(".i-total").text());
 					list.add(val);
 				}
