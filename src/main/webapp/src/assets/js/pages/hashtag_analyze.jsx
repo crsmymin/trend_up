@@ -148,7 +148,7 @@ class App extends Component {
               onKeyPress={this._onKeyPress}
               />
               <div className="btn-wrap">
-                <button type="button" className="btn-s" onClick={this._getCopyText}>
+                <button type="button" className="btn-s" onClick={this._doAnalyze}>
                   분석실행
                 </button>
               </div>
