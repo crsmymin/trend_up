@@ -138,7 +138,15 @@
       -ms-border-radius: 10px 10px 10px 10px;
       -o-border-radius: 10px 10px 10px 10px;
       .flex-cont {
+        position: relative;
         justify-content: space-between;
+        #hashIcon {
+          position: absolute;
+          top: 8px;
+          left: 22px;
+          font-size: 35px;
+          color: #337ab7;
+        }
         .btn-wrap {
           width: 230px;
           button {

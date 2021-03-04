@@ -41,7 +41,7 @@ class Keywords extends Component {
           <div className="list mass-media">
             <figure className="sns-icon"></figure>
             <h4><strong>NAVER</strong> 순위</h4>
-            <ul className="scrollbar-inner">
+            <ul className="scrollbar-inner"> 
               {this.props.naver.map(
                 (naver, index) =>
                   <li key={index} className="keywords-lis naver">

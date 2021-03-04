@@ -9,12 +9,17 @@ import Footer from '../layouts/footer.jsx'
 
 class App extends Component {
   constructor(props) {
-
     super(props);
     this.state = {
       page : "hashtag",
       visible1: true,
-      visible2: true
+      visible2: true,
+      engRank : [],
+      korRank : [],
+      tiktokRank : [],
+      relatedHashtag : [],
+      searchValue : "",
+      isLoadingAll : true,
     }
   }
 
@@ -55,10 +60,11 @@ class App extends Component {
     .then(res => {
       const data = res.data;
       this.setState({
-        korRank:data.korRank.KorHashtagRank,
-        engRank:data.engRank.EngHashtagRank,
-        tiktokRank:data.tiktokRank.TiktokHashtagRank,
-        searchValue:data.korRank.KorHashtagRank[0].tag_text
+        isLoadingAll: false,
+        korRank: data.korRank.KorHashtagRank,
+        engRank: data.engRank.EngHashtagRank,
+        tiktokRank: data.tiktokRank.TiktokHashtagRank,
+        searchValue: data.korRank.KorHashtagRank[0].tag_text
       })
       $('#searchField').val(data.korRank.KorHashtagRank[0].tag_text);
       this._getRelatedHashtag(data.korRank.KorHashtagRank[0].tag_text);
@@ -71,7 +77,9 @@ class App extends Component {
 
   _getRelatedHashtag = (keyword) => {
     if(keyword==undefined) keyword=this.state.searchValue;
-
+    this.setState({
+      isLoadingAll : true,
+    })
     //키워드를 통한 컨텐츠 조회
     axios({
         method: 'get',
@@ -83,7 +91,8 @@ class App extends Component {
       .then(res => {
         const data = res.data;
         this.setState({
-          relatedHashtag:data
+          relatedHashtag: data.Hashtags,
+          isLoadingAll : false
         })
       })
       .catch(error => {
@@ -99,13 +108,27 @@ class App extends Component {
     this._getRelatedHashtag(event.target.getAttribute("data-tag"));
   }
 
+  _getCopyText = (e) => {
+    let tags = e.target.parentNode.previousSibling;
+    let copyText = tags.value;
+    tags.focus();
+    tags.select();
+    document.execCommand("Copy");
+    alert("해당 영역의 태그가 복사되었습니다.");
+    console.log(copyText);
+  }
+
   componentDidMount (){
     this._getHashtagRank();
+    
   }
 
   render() {
     return(
       <Fragment>
+        <div className={this.state.isLoadingAll === true ? ("loading-indicator-all show"):("loading-indicator-all")}>
+          <div className="loader-all"></div>
+        </div>
         <Header 
           page={this.state.page} 
         />
@@ -116,16 +139,16 @@ class App extends Component {
               인기 <strong>해시태그</strong> 를 검색해보세요
             </h4>
             <div className="flex-cont">
+              <span id="hashIcon">#</span>
               <input 
               id="searchField" 
               type="text"
               data-attr={this.searchValue} 
-              placeholder="#"
               onChange={this._handleChange}
               onKeyPress={this._onKeyPress}
               />
               <div className="btn-wrap">
-                <button type="button" className="btn-s" onClick={this._doAnalyze}>
+                <button type="button" className="btn-s" onClick={this._getCopyText}>
                   분석실행
                 </button>
               </div>
@@ -133,10 +156,17 @@ class App extends Component {
           </div>
         </div>
         {/* end search area */}
+
         <div id={this.state.page === "hashtag" ? "hashtag" : ""} className="container cf">
           <div className="wrap">
-
             <section id="bestHashtag">
+              <ul className="social-icons flex-cont">
+                <li><a target="_blank" href="https://www.instagram.com/">Instagram</a></li>
+                <li><a target="_blank" href="https://www.tiktok.com/">Tiktok</a></li>
+                <li><a target="_blank" href="https://www.youtube.com/">Youtube</a></li>
+                <li><a target="_blank" href="https://www.facebook.com/">Facebook</a></li>
+                <li><a target="_blank" href="https://twitter.com/">Twitter</a></li>
+              </ul>
               <h3 onClick={this._openSection1} className={this.state.visible1 ? "section-title open":"section-title"}>
                 #Top100 HashTags
                 <img src="./src/assets/images/accordion_btn.svg" alt="" />
@@ -146,33 +176,42 @@ class App extends Component {
               <div className={this.state.visible1 ? "section-inner open" : "section-inner"}>
                 <div className="best-hashtag-list flex-cont">
                   <div className="list">
-                    <h4>INSTAGRAM</h4>
+                    <h4>INSTAGRAM( KOR )</h4>
                     <ul className="scrollbar-inner">
-                    <li className="tag-lis insta">
-                        <span className="rank">1.</span>
-                        <span className="word" data-tag="여행" onClick={this._getRelatedHashtagByRank}>법정구속</span>
-                        <span className="metion-amount">10k</span>
+                      {this.state.korRank.map(
+                      (korRank,index) =>
+                      <li className="tag-lis insta" key={index}>
+                        <span className="rank">{index + 1}</span>
+                        <span onClick={this._getRelatedHashtagByRank} className="word" data-tag={korRank.tag_text}># {korRank.tag_text}</span>
+                        <span className="metion-amount">{korRank.cnt}</span>
                       </li>
+                      )}
+                    </ul>
+                  </div>
+                  <div className="list">
+                    <h4>INSTAGRAM( ENG )</h4>
+                    <ul className="scrollbar-inner">
+                      {this.state.engRank.map(
+                      (engRank, index) =>
+                      <li className="tag-lis tik" key={index}>
+                        <span className="rank">{index + 1}</span>
+                        <span onClick={this._getRelatedHashtagByRank} className="word" data-tag={engRank.tag_text}># {engRank.tag_text}</span>
+                        <span className="metion-amount">{engRank.cnt}</span>
+                      </li>
+                      )}
                     </ul>
                   </div>
                   <div className="list">
                     <h4>TIKTOK</h4>
                     <ul className="scrollbar-inner">
-                      <li className="tag-lis tik">
-                        <span className="rank">1.</span>
-                        <span className="word">법정구속</span>
-                        <span className="metion-amount">10k</span>
+                      {this.state.tiktokRank.map(
+                      (tiktokRank,index) =>
+                      <li className="tag-lis twit" key={index}>
+                        <span className="rank">{index + 1}</span>
+                        <span onClick={this._getRelatedHashtagByRank} className="word" data-tag={tiktokRank.tag_text}># {tiktokRank.tag_text}</span>
+                        <span className="metion-amount">{tiktokRank.cnt}</span>
                       </li>
-                    </ul>
-                  </div>
-                  <div className="list">
-                    <h4>TWITTER</h4>
-                    <ul className="scrollbar-inner">
-                      <li className="tag-lis twit">
-                        <span className="rank">1.</span>
-                        <span className="word">법정구속</span>
-                        <span className="metion-amount">10k</span>
-                      </li>
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -188,56 +227,15 @@ class App extends Component {
               </h3>
               <div className={this.state.visible2 ? "section-inner open" : "section-inner"}>
                 <ul className="related-hashtag-list">
-                  <li className="flex-cont">
-                    <div className="mentions">
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                    </div>
+                  {this.state.relatedHashtag.map(
+                  (relatedHashtag, index) =>
+                  <li className="flex-cont" key={index}>
+                    <textarea className="mentions" value={relatedHashtag} readOnly></textarea>
                     <div className="btn-wrap">
-                      <button className="btn-copy">Copy</button>
+                      <button className="btn-copy" onClick={this._getCopyText}>Copy</button>
                     </div>
                   </li>
-                  <li className="flex-cont">
-                    <div className="mentions">
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                    </div>
-                    <div className="btn-wrap">
-                      <button className="btn-copy">Copy</button>
-                    </div>
-                  </li>
-                  <li className="flex-cont">
-                    <div className="mentions">
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                    </div>
-                    <div className="btn-wrap">
-                      <button className="btn-copy">Copy</button>
-                    </div>
-                  </li>
-                  <li className="flex-cont">
-                    <div className="mentions">
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                    </div>
-                    <div className="btn-wrap">
-                      <button className="btn-copy">Copy</button>
-                    </div>
-                  </li>
-                  <li className="flex-cont">
-                    <div className="mentions">
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                      #법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속#법정구속
-                    </div>
-                    <div className="btn-wrap">
-                      <button className="btn-copy">Copy</button>
-                    </div>
-                  </li>
+                  )}
                 </ul>
               </div>
             </section>
