@@ -13,7 +13,7 @@
     }
     .related-hashtag-list {
       li {
-        padding: 30px 22px;
+        padding: 10px 22px;
         margin: 0 0 35px;
         border: 2px solid #ccc;
         border-radius: 5px;
@@ -23,10 +23,10 @@
         -o-border-radius: 5px;
         .mentions {
           width: 90%;
-          height: 160px;
+          height: 135px;
           padding: 0 20px 0 0;
           color: #5373a9;
-          font-size: 20px;
+          font-size: 16px;
           line-height: 1.45;
           resize: none;
           border: none;
@@ -36,11 +36,11 @@
           button {
             width: 100%;
             height: 95px;
-            margin: 32px 0 0;
+            margin: 20px 0 0;
             display: block;
             color: #fff;
             cursor: pointer;
-            font-size: 22px;
+            font-size: 20px;
             background-color: #5373a9;
             border: 0;
             border-radius: 10px;

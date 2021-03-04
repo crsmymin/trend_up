@@ -27,7 +27,7 @@ public class EmotionAnalysisService {
 			toDate = toDate.replace(".", "");
 			keyword = keyword.replace(",", "").replace(" ", "");
 
-			String url = "https://some.co.kr/sometrend/analysis/trend/sentiment-transition?sources=13&categories=2046&period=1&endDate="
+			String url = "https://some.co.kr/sometrend/analysis/trend/sentiment-transition-period?sources=blog&sources=news&sources=twitter&categories=2046&period=1&topN=100&analysisMonths=0&categorySetName=TSN&endDate="
 					+ toDate + "&startDate=" + fromDate + "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
 			
 			Document doc = Jsoup.connect(url).userAgent(USER_AGENT).header("Content-Type", "application/json")

@@ -161,11 +161,14 @@ class App extends Component {
           <div className="wrap">
             <section id="bestHashtag">
               <ul className="social-icons flex-cont">
-                <li><a target="_blank" href="https://www.instagram.com/">Instagram</a></li>
-                <li><a target="_blank" href="https://www.tiktok.com/">Tiktok</a></li>
-                <li><a target="_blank" href="https://www.youtube.com/">Youtube</a></li>
-                <li><a target="_blank" href="https://www.facebook.com/">Facebook</a></li>
-                <li><a target="_blank" href="https://twitter.com/">Twitter</a></li>
+               <h3>소셜미디어 컨텐츠</h3>
+                <li><a target="_blank" href="https://www.youtube.com/results?search_query=%23love">Youtube</a></li>
+                <li><a target="_blank" href="https://www.instagram.com/explore/tags/love">Instagram</a></li>
+                <li><a target="_blank" href="https://www.facebook.com/hashtag/love">Facebook</a></li>
+                <li><a target="_blank" href="https://www.tiktok.com/tag/love">Tiktok</a></li>
+                <li><a target="_blank" href="https://twitter.com/search?q=%23love">Twitter</a></li>
+                <li><a target="_blank" href="https://www.pinterest.com/search/pins/?q=%23love">Pinterest</a></li>
+                <li><a target="_blank" href="https://www.tumblr.com/search/%23love">Tumblr</a></li>
               </ul>
               <h3 onClick={this._openSection1} className={this.state.visible1 ? "section-title open":"section-title"}>
                 #Top100 HashTags
@@ -183,7 +186,7 @@ class App extends Component {
                       <li className="tag-lis insta" key={index}>
                         <span className="rank">{index + 1}</span>
                         <span onClick={this._getRelatedHashtagByRank} className="word" data-tag={korRank.tag_text}># {korRank.tag_text}</span>
-                        <span className="metion-amount">{korRank.cnt}</span>
+                        <span className="metion-amount"></span>
                       </li>
                       )}
                     </ul>
@@ -196,7 +199,7 @@ class App extends Component {
                       <li className="tag-lis tik" key={index}>
                         <span className="rank">{index + 1}</span>
                         <span onClick={this._getRelatedHashtagByRank} className="word" data-tag={engRank.tag_text}># {engRank.tag_text}</span>
-                        <span className="metion-amount">{engRank.cnt}</span>
+                        <span className="metion-amount"></span>
                       </li>
                       )}
                     </ul>
@@ -209,7 +212,7 @@ class App extends Component {
                       <li className="tag-lis twit" key={index}>
                         <span className="rank">{index + 1}</span>
                         <span onClick={this._getRelatedHashtagByRank} className="word" data-tag={tiktokRank.tag_text}># {tiktokRank.tag_text}</span>
-                        <span className="metion-amount">{tiktokRank.cnt}</span>
+                        <span className="metion-amount"></span>
                       </li>
                       )}
                     </ul>
