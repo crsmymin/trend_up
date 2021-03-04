@@ -17,7 +17,7 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, '../../resources/static/dist')
+    path: path.resolve(__dirname, './src/main/webapp/dist')
   },
   module: {
     rules: [
