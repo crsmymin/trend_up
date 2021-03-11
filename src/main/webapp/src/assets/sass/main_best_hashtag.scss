@@ -1,30 +1,38 @@
-&#bestHashtag {
+&#socialMedia {
   margin: 50px 0 0;
   .social-icons {
-    margin: 0 0 30px;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
     li {
-      width: 95px;
-      margin-right: 10px;
+      width: 23%;
+      margin: 0 1% 25px;
       a {
         width: 100%;
-        padding: 10px 0;
+        padding: 12px 14px;
         display: block;
         text-align: center;
         font-size: 16px;
         color: #fff;
-        background-color: #ccc;
+        background-color: darkgray;
         border-radius: 35px;
         -webkit-border-radius: 35px;
         -moz-border-radius: 35px;
         -ms-border-radius: 35px;
         -o-border-radius: 35px;
         &:hover {
-          background-color:#000;
+          background-color: #000;
           box-shadow: 1.5px 1.5px 5px 2.5px #ccc;
         }
       }
     }
   }
+}
+
+&#bestHashtag {
+  margin: 20px 0 0;
   .section-title {
     margin: 15px 0 35px;
     font-size: 1.4rem;

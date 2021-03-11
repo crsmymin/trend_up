@@ -159,17 +159,54 @@ class App extends Component {
 
         <div id={this.state.page === "hashtag" ? "hashtag" : ""} className="container cf">
           <div className="wrap">
-            <section id="bestHashtag">
+            <section id="socialMedia">  
+              <h3 className="section-title">소셜미디어 컨텐츠</h3>
               <ul className="social-icons flex-cont">
-               <h3>소셜미디어 컨텐츠</h3>
-                <li><a target="_blank" href="https://www.youtube.com/results?search_query=%23love">Youtube</a></li>
-                <li><a target="_blank" href="https://www.instagram.com/explore/tags/love">Instagram</a></li>
-                <li><a target="_blank" href="https://www.facebook.com/hashtag/love">Facebook</a></li>
-                <li><a target="_blank" href="https://www.tiktok.com/tag/love">Tiktok</a></li>
-                <li><a target="_blank" href="https://twitter.com/search?q=%23love">Twitter</a></li>
-                <li><a target="_blank" href="https://www.pinterest.com/search/pins/?q=%23love">Pinterest</a></li>
-                <li><a target="_blank" href="https://www.tumblr.com/search/%23love">Tumblr</a></li>
+                <li>
+                  <a target="_blank" 
+                      href={"https://www.youtube.com/results?search_query=%23" + this.state.searchValue}>
+                      Youtube 검색 : {this.state.searchValue}
+                  </a>
+                </li>
+                <li>
+                  <a target="_blank" 
+                      href={"https://www.instagram.com/explore/tags/" + this.state.searchValue}>
+                      Instagram 검색 : {this.state.searchValue}
+                  </a>
+                </li>
+                <li>
+                  <a target="_blank" 
+                      href={"https://www.facebook.com/hashtag/" + this.state.searchValue}>
+                      Facebook 검색 : {this.state.searchValue}
+                  </a>
+                </li>
+                <li>
+                  <a target="_blank" 
+                      href={"https://www.tiktok.com/tag/" + this.state.searchValue}>
+                      Tiktok 검색 : {this.state.searchValue}
+                  </a>
+                </li>
+                <li>
+                  <a target="_blank" 
+                      href={"https://twitter.com/search?q=%23" + this.state.searchValue}>
+                      Twitter 검색 : {this.state.searchValue}
+                  </a>
+                </li>
+                <li>
+                  <a target="_blank" 
+                      href={"https://www.pinterest.com/search/pins/?q=%23" + this.state.searchValue}>
+                        Pinterest 검색 : {this.state.searchValue}
+                  </a>
+                </li>
+                <li>
+                  <a target="_blank" 
+                      href={"https://www.tumblr.com/search/%23" + this.state.searchValue}>
+                        Tumblr 검색 : {this.state.searchValue}
+                  </a>
+                </li>
               </ul>
+            </section>
+            <section id="bestHashtag">
               <h3 onClick={this._openSection1} className={this.state.visible1 ? "section-title open":"section-title"}>
                 #Top100 HashTags
                 <img src="./src/assets/images/accordion_btn.svg" alt="" />
